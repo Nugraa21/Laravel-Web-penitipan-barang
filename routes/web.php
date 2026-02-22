@@ -21,6 +21,13 @@ Route::get('/', function () {
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ChatController;
 
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'ja', 'id'])) {
+        session()->put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('lang.switch');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [ItemController::class, 'index'])->name('dashboard');
     Route::resource('items', ItemController::class);

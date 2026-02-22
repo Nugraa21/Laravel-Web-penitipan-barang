@@ -25,7 +25,7 @@
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
                             </path>
                         </svg>
-                        @if(Auth::user()->role === 'admin') Barang Masuk @else Dashboard @endif
+                        @if(Auth::user()->role === 'admin') {{ __('Barang Masuk') }} @else {{ __('Dashboard') }} @endif
                     </a>
 
                     @if(Auth::user()->role === 'admin')
@@ -36,7 +36,7 @@
                                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
                                 </path>
                             </svg>
-                            Overview
+                            {{ __('Overview') }}
                         </a>
                         <a href="{{ route('admin.users.index') }}"
                             class="flex items-center gap-2 px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all rounded-xl {{ request()->routeIs('admin.users.index') ? 'bg-gray-800 text-white shadow-md' : 'text-gray-600 hover:bg-white/50 hover:text-gray-900' }}">
@@ -45,7 +45,7 @@
                                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
                                 </path>
                             </svg>
-                            Pengguna
+                            {{ __('Pengguna') }}
                         </a>
                         <a href="{{ route('admin.scan') }}"
                             class="flex items-center gap-2 px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all rounded-xl {{ request()->routeIs('admin.scan') ? 'bg-gradient-to-r from-amber-300 to-amber-500 text-gray-900 shadow-md' : 'text-gray-600 hover:bg-white/50 hover:text-gray-900' }}">
@@ -54,7 +54,7 @@
                                     d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z">
                                 </path>
                             </svg>
-                            Scan Token
+                            {{ __('Scan Token') }}
                         </a>
                     @endif
 
@@ -65,7 +65,7 @@
                                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
                             </path>
                         </svg>
-                        Pesan
+                        {{ __('Pesan') }}
                     </a>
 
                     @if(Auth::user()->role !== 'admin')
@@ -75,15 +75,46 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
                                 </path>
                             </svg>
-                            Titip Barang
+                            {{ __('Titip Barang') }}
                         </a>
                     @endif
                 </div>
             </div>
 
-            <!-- Right: User Dropdown -->
-            <div class="hidden sm:flex sm:items-center pl-6 my-2 border-l border-white/40">
-                <div x-data="{ dropOpen: false }" class="relative">
+            <!-- Right: User Dropdown & Language Switcher -->
+            <div class="hidden sm:flex sm:items-center pl-6 my-2 border-l border-white/40 gap-4">
+
+                <!-- Language Dropdown -->
+                <div x-data="{ langOpen: false }" class="relative">
+                    <button @click="langOpen = !langOpen"
+                        class="flex items-center gap-1.5 px-2 py-1.5 rounded-xl text-sm font-bold uppercase transition-all hover:bg-white/40 text-gray-800">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129">
+                            </path>
+                        </svg>
+                        <span>{{ strtoupper(App::getLocale()) }}</span>
+                    </button>
+                    <div x-show="langOpen" @click.outside="langOpen = false"
+                        style="display: none; top: 50px; right: 0; position: absolute;"
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                        class="w-32 glass-card border border-white overflow-hidden shadow-lg z-[100] mt-2">
+                        <div class="p-1">
+                            <a href="{{ route('lang.switch', 'id') }}"
+                                class="block px-3 py-2 text-sm text-gray-700 hover:bg-white/50 rounded-lg font-bold {{ App::getLocale() == 'id' ? 'bg-white/60' : '' }}">🇮🇩
+                                ID</a>
+                            <a href="{{ route('lang.switch', 'en') }}"
+                                class="block px-3 py-2 text-sm text-gray-700 hover:bg-white/50 rounded-lg font-bold {{ App::getLocale() == 'en' ? 'bg-white/60' : '' }}">🇬🇧
+                                EN</a>
+                            <a href="{{ route('lang.switch', 'ja') }}"
+                                class="block px-3 py-2 text-sm text-gray-700 hover:bg-white/50 rounded-lg font-bold {{ App::getLocale() == 'ja' ? 'bg-white/60' : '' }}">🇯🇵
+                                JA</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-data="{ dropOpen: false }" class="relative border-l border-white/40 pl-4">
                     <button @click="dropOpen = !dropOpen"
                         class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-sm font-bold uppercase transition-all hover:bg-white/40 border border-transparent hover:border-white/60 text-gray-800">
                         @if(Auth::user()->avatar)
@@ -126,7 +157,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
-                                Edit Profil
+                                {{ __('Edit Profil') }}
                             </a>
                             <a href="{{ route('chat.inbox') }}"
                                 class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-white/50 transition-colors font-bold uppercase mt-1">
@@ -136,7 +167,7 @@
                                         d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
                                     </path>
                                 </svg>
-                                Pesan
+                                {{ __('Pesan') }}
                             </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -147,7 +178,7 @@
                                             d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
                                         </path>
                                     </svg>
-                                    Keluar
+                                    {{ __('Keluar') }}
                                 </button>
                             </form>
                         </div>
@@ -180,26 +211,39 @@
             @if(Auth::user()->role === 'admin')
                 <a href="{{ route('admin.dashboard') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-bold uppercase transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-gray-800 text-white border-gray-800' : 'text-gray-800 border-white/60 hover:bg-white/50' }}">
-                    Overview
+                    {{ __('Overview') }}
                 </a>
                 <a href="{{ route('admin.users.index') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-bold uppercase transition-colors {{ request()->routeIs('admin.users.index') ? 'bg-gray-800 text-white border-gray-800' : 'text-gray-800 border-white/60 hover:bg-white/50' }}">
-                    Pengguna
+                    {{ __('Pengguna') }}
                 </a>
                 <a href="{{ route('admin.scan') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-bold uppercase transition-colors {{ request()->routeIs('admin.scan') ? 'bg-gradient-to-r from-amber-300 to-amber-500 text-gray-900 border-amber-400' : 'text-gray-800 border-white/60 hover:bg-white/50' }}">
-                    Scan Token
+                    {{ __('Scan Token') }}
                 </a>
             @endif
             @if(Auth::user()->role !== 'admin')
                 <a href="{{ route('items.create') }}"
                     class="glass-btn flex items-center justify-center gap-3 px-4 py-3 border w-full mt-4">
-                    + Titip Barang
+                    + {{ __('Titip Barang') }}
                 </a>
             @endif
         </div>
 
         <div class="p-4 bg-white/20 border-t border-white/40">
+            <!-- Mobile Language Switcher -->
+            <div class="flex items-center gap-3 p-3 mb-4 rounded-xl bg-white/30 border border-white/50 justify-between">
+                <span class="text-xs font-bold text-gray-600 uppercase">{{ __('Bahasa') }}</span>
+                <div class="flex gap-2">
+                    <a href="{{ route('lang.switch', 'id') }}"
+                        class="px-2 py-1 rounded-md text-sm font-bold {{ App::getLocale() == 'id' ? 'bg-amber-400 text-white' : 'bg-white/40 text-gray-700' }}">ID</a>
+                    <a href="{{ route('lang.switch', 'en') }}"
+                        class="px-2 py-1 rounded-md text-sm font-bold {{ App::getLocale() == 'en' ? 'bg-amber-400 text-white' : 'bg-white/40 text-gray-700' }}">EN</a>
+                    <a href="{{ route('lang.switch', 'ja') }}"
+                        class="px-2 py-1 rounded-md text-sm font-bold {{ App::getLocale() == 'ja' ? 'bg-amber-400 text-white' : 'bg-white/40 text-gray-700' }}">JA</a>
+                </div>
+            </div>
+
             <div class="flex items-center gap-3 p-3 mb-4 rounded-xl bg-white/30 border border-white/50">
                 @if(Auth::user()->avatar)
                     <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="Avatar"
@@ -219,13 +263,13 @@
             <div class="flex gap-2">
                 <a href="{{ route('profile.edit') }}"
                     class="flex-1 text-center py-2.5 rounded-xl border border-white/60 bg-white/40 hover:bg-white/60 text-sm font-bold text-gray-800 transition-colors">
-                    Profil
+                    {{ __('Profil') }}
                 </a>
                 <form method="POST" action="{{ route('logout') }}" class="flex-1">
                     @csrf
                     <button type="submit"
                         class="w-full text-center py-2.5 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-sm font-bold text-red-600 transition-colors">
-                        Keluar
+                        {{ __('Keluar') }}
                     </button>
                 </form>
             </div>

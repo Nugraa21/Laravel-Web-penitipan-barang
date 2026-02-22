@@ -4,16 +4,16 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
             <div>
                 <h2 style="font-size: 1.875rem; font-weight: 800; color: var(--c-gray-900);">
-                    @if(Auth::user()->role === 'admin') Kelola Barang @else Dashboard @endif
+                    @if(Auth::user()->role === 'admin') {{ __('Kelola Barang') }} @else {{ __('Dashboard') }} @endif
                 </h2>
                 <p style="color: var(--c-gray-600); font-size: 0.875rem;">
-                    Selamat datang, <span style="font-weight: 700; color: #d97706;">{{ Auth::user()->name }}</span>
+                    {{ __('Selamat datang,') }} <span style="font-weight: 700; color: #d97706;">{{ Auth::user()->name }}</span>
                 </p>
             </div>
             @if(Auth::user()->role !== 'admin')
                 <a href="{{ route('items.create') }}" class="btn btn-primary">
                     <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    Titip Barang Baru
+                    {{ __('Titip Barang Baru') }}
                 </a>
             @endif
         </div>
@@ -33,7 +33,7 @@
                     <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(59,130,246,0.1); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <svg style="width: 24px; height: 24px; color: #3b82f6;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4M8 16H4V8H8V16ZM16 16H12V8H16V16ZM20 16H20V8H20V16Z"></path></svg>
                     </div>
-                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--c-gray-500); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Total Barang</p>
+                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--c-gray-500); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">{{ __('Total Barang') }}</p>
                     <p style="font-size: 3rem; font-weight: 800; color: var(--c-gray-900); line-height: 1;">{{ $total }}</p>
                 </div>
                 <!-- Pending -->
@@ -41,7 +41,7 @@
                     <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(245,158,11,0.1); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <svg style="width: 24px; height: 24px; color: #f59e0b;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8V12L15 15M21 12A9 9 0 113 12A9 9 0 0121 12Z"></path></svg>
                     </div>
-                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--c-gray-500); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Pending</p>
+                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--c-gray-500); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">{{ __('Pending') }}</p>
                     <p style="font-size: 3rem; font-weight: 800; color: var(--c-gray-900); line-height: 1;">{{ $pending }}</p>
                 </div>
                 <!-- Stored -->
@@ -49,7 +49,7 @@
                     <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(217,119,6,0.1); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <svg style="width: 24px; height: 24px; color: #d97706;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13L9 17L19 7"></path></svg>
                     </div>
-                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--c-gray-500); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Disimpan</p>
+                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--c-gray-500); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">{{ __('Disimpan') }}</p>
                     <p style="font-size: 3rem; font-weight: 800; color: var(--c-gray-900); line-height: 1;">{{ $stored }}</p>
                 </div>
                 <!-- Retrieved -->
@@ -57,7 +57,7 @@
                     <div style="position: absolute; top: 1rem; right: 1rem; background: rgba(16,185,129,0.1); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <svg style="width: 24px; height: 24px; color: #10b981;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16L21 12M21 12L17 8M21 12H3"></path></svg>
                     </div>
-                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--c-gray-500); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Diambil</p>
+                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--c-gray-500); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">{{ __('Diambil') }}</p>
                     <p style="font-size: 3rem; font-weight: 800; color: var(--c-gray-900); line-height: 1;">{{ $retrieved }}</p>
                 </div>
             </div>
@@ -66,27 +66,27 @@
         <div class="glass-card" style="padding: 0; margin-bottom: 2rem;">
             <div style="padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.4); display: flex; flex-direction: column; gap: 1.5rem; sm:flex-row; sm:items-center; sm:justify-between; background: rgba(255,255,255,0.3);">
                 <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--c-gray-900);">
-                    Daftar Barang Titipan 
+                    {{ __('Daftar Barang Titipan') }} 
                     <span style="font-size: 0.875rem; background: rgba(0,0,0,0.1); color: var(--c-gray-900); padding: 0.2rem 0.6rem; border-radius: var(--radius-full); margin-left: 0.5rem; font-weight: 600;">{{ $items->count() }}</span>
                 </h3>
                 
                 <!-- Search, Filter & Sort Form -->
                 <form action="{{ route('dashboard') }}" method="GET" style="display: flex; flex-wrap: wrap; gap: 0.75rem; width: 100%; max-width: 650px;">
                     <div style="position: relative; flex-grow: 1; min-width: 200px;">
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama barang atau nomor resi..." class="glass-input form-input" style="padding-left: 2.75rem;">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="{{ __('Cari nama barang atau nomor resi...') }}" class="glass-input form-input" style="padding-left: 2.75rem;">
                         <svg style="width: 18px; height: 18px; color: var(--c-gray-500); position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); pointer-events: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
                     <select name="status" class="glass-input form-input" style="width: auto;" onchange="this.form.submit()">
-                        <option value="">Status</option>
-                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                        <option value="stored" {{ request('status') == 'stored' ? 'selected' : '' }}>Disimpan</option>
-                        <option value="retrieved" {{ request('status') == 'retrieved' ? 'selected' : '' }}>Diambil</option>
+                        <option value="">{{ __('Status') }}</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>{{ __('Pending') }}</option>
+                        <option value="stored" {{ request('status') == 'stored' ? 'selected' : '' }}>{{ __('Disimpan') }}</option>
+                        <option value="retrieved" {{ request('status') == 'retrieved' ? 'selected' : '' }}>{{ __('Diambil') }}</option>
                     </select>
                     <select name="sort" class="glass-input form-input" style="width: auto;" onchange="this.form.submit()">
-                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Terbaru</option>
-                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Terlama</option>
-                        <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Nama (A-Z)</option>
-                        <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Nama (Z-A)</option>
+                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>{{ __('Terbaru') }}</option>
+                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>{{ __('Terlama') }}</option>
+                        <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>{{ __('Nama (A-Z)') }}</option>
+                        <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>{{ __('Nama (Z-A)') }}</option>
                     </select>
                 </form>
             </div>
@@ -97,11 +97,11 @@
                         <div style="width: 80px; height: 80px; margin: 0 auto 1.5rem; border-radius: 50%; background: var(--c-gray-50); border: 2px dashed var(--c-gray-200); display: flex; align-items: center; justify-content: center;">
                             <svg style="width: 32px; height: 32px; color: var(--c-gray-300);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
                         </div>
-                        <h4 style="font-size: 1.125rem; font-weight: 800; color: var(--c-gray-900); margin-bottom: 0.5rem;">Belum Ada Barang</h4>
-                        <p style="color: var(--c-gray-500); font-size: 0.875rem; margin-bottom: 2rem;">Mulai titipkan barang pertama kamu sekarang dan dapatkan struk digital.</p>
+                        <h4 style="font-size: 1.125rem; font-weight: 800; color: var(--c-gray-900); margin-bottom: 0.5rem;">{{ __('Belum Ada Barang') }}</h4>
+                        <p style="color: var(--c-gray-500); font-size: 0.875rem; margin-bottom: 2rem;">{{ __('Mulai titipkan barang pertama kamu sekarang dan dapatkan struk digital.') }}</p>
                         @if(Auth::user()->role !== 'admin')
                             <a href="{{ route('items.create') }}" class="btn btn-primary">
-                                Titip Sekarang
+                                {{ __('Titip Sekarang') }}
                             </a>
                         @endif
                     </div>
@@ -114,12 +114,12 @@
                                     <img src="{{ Storage::url($item->photo_path) }}" alt="{{ $item->name }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';" loading="lazy">
                                     <div style="position: absolute; top: 0.75rem; right: 0.75rem;">
                                         <span class="badge badge-{{ $item->status === 'pending' ? 'pending' : ($item->status === 'stored' ? 'stored' : 'retrieved') }}">
-                                            {{ ucfirst($item->status) }}
+                                            {{ __($item->status === 'pending' ? 'Pending' : ($item->status === 'stored' ? 'Disimpan' : 'Diambil')) }}
                                         </span>
                                     </div>
                                     <div style="position: absolute; bottom: 0.75rem; left: 0.75rem;">
                                         <span style="background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); color: var(--c-gray-900); padding: 0.35rem 0.6rem; border-radius: var(--radius-md); font-size: 0.7rem; font-weight: 700; border: 1px solid rgba(255,255,255,0.9); box-shadow: var(--shadow-sm);">
-                                            {{ $item->receipt_token ?? 'Token N/A' }}
+                                            {{ $item->receipt_token ?? __('Token N/A') }}
                                         </span>
                                     </div>
                                     @if(Auth::user()->role === 'admin' && $item->messages()->where('is_read', false)->where('sender_id', '!=', Auth::user()->id)->exists())
@@ -146,13 +146,13 @@
                                     @endif
 
                                     <p style="font-size: 0.85rem; color: var(--c-gray-600); margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-weight: 500; line-height: 1.4;">
-                                        {{ $item->description ?: 'Tidak ada deskripsi.' }}
+                                        {{ $item->description ?: __('Tidak ada deskripsi.') }}
                                     </p>
 
                                     <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.5);">
                                         <span style="font-size: 0.75rem; font-weight: 600; color: var(--c-gray-500);">{{ $item->created_at->format('d M Y') }}</span>
                                         <span style="font-size: 0.75rem; font-weight: 700; color: var(--c-primary-hover); display: flex; align-items: center; gap: 0.25rem;">
-                                            Lihat Detail
+                                            {{ __('Lihat Detail') }}
                                             <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                         </span>
                                     </div>
