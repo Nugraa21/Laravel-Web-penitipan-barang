@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('items', ItemController::class);
     Route::post('/items/{item}/mark-stored', [ItemController::class, 'markAsStored'])->name('items.mark_stored');
     Route::delete('/items/{item}/photos/{photo}', [ItemController::class, 'destroyPhoto'])->name('items.photos.destroy');
+    Route::get('/items/{item}/print', [ItemController::class, 'print'])->name('items.print');
 
     // Chat routes
     Route::get('/chats', [ChatController::class, 'inbox'])->name('chat.inbox');

@@ -224,6 +224,16 @@ class ItemController extends Controller
         }
     }
 
+    public function print(Item $item)
+    {
+        // Pastikan hanya admin atau pemilik barang yang bisa print struk
+        if (auth()->user()->role !== 'admin' && auth()->user()->id !== $item->user_id) {
+            abort(403);
+        }
+
+        return view('items.print', compact('item'));
+    }
+
     public function destroy(Item $item)
     {
         $this->authorizeAccess($item);

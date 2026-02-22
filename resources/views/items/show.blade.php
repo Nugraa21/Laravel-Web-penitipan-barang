@@ -43,8 +43,16 @@
                     
                     <!-- Digital Receipt (Struk) -->
                     <div class="glass-card" style="padding: 2rem;">
-                        <h2 style="font-weight: 800; color: var(--c-primary); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem;">Struk Penitipan</h2>
-                        <p style="color: var(--c-gray-500); font-size: 0.875rem; margin-bottom: 1.5rem;">Tunjukkan kode ini saat pengambilan barang</p>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                            <div>
+                                <h2 style="font-weight: 800; color: var(--c-primary); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.25rem;">Struk Penitipan</h2>
+                                <p style="color: var(--c-gray-500); font-size: 0.875rem; margin-bottom: 1.5rem;">Tunjukkan kode ini saat pengambilan barang</p>
+                            </div>
+                            <a href="{{ route('items.print', $item) }}" target="_blank" class="glass-btn" style="display: flex; align-items: center; gap: 0.5rem; background: var(--c-primary); color: white; padding: 0.5rem 1rem; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 0.875rem;">
+                                <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                                Cetak PDF
+                            </a>
+                        </div>
                         
                         <div style="background: rgba(255,255,255,0.4); padding: 1.5rem; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.8); margin-bottom: 1.5rem; display: inline-block; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
                             <span style="font-family: monospace; font-size: 2.5rem; font-weight: 800; color: var(--c-gray-900); letter-spacing: 4px;">{{ $item->receipt_token ?? 'N/A' }}</span>
