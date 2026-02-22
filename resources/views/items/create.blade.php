@@ -27,7 +27,8 @@
                             <!-- Left Column: Basic Info -->
                             <div class="space-y-6">
                                 <h3 class="text-lg font-bold text-gray-900 border-b pb-2 mb-4">
-                                    {{ __('Informasi Utama') }}</h3>
+                                    {{ __('Informasi Utama') }}
+                                </h3>
 
                                 <!-- Name -->
                                 <div>
@@ -65,7 +66,7 @@
                                                 </path>
                                             </svg>
                                         </div>
-                                        <select name="item_type" id="item_type"
+                                        <select name="item_type" id="item_type" onchange="calculateCost()"
                                             class="pl-10 block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200">
                                             <option value="" disabled selected>{{ __('Pilih Kategori (Opsional)') }}
                                             </option>
@@ -143,7 +144,8 @@
                                             placeholder="0" value="{{ old('estimated_value') }}">
                                     </div>
                                     <p class="text-xs text-gray-500 mt-1">
-                                        {{ __('Opsional, berguna untuk asuransi atau pengawasan ekstra.') }}</p>
+                                        {{ __('Opsional, berguna untuk asuransi atau pengawasan ekstra.') }}
+                                    </p>
                                     @error('estimated_value')
                                         <p class="text-red-500 text-xs mt-2 font-medium">{{ $message }}</p>
                                     @enderror
@@ -153,7 +155,8 @@
                             <!-- Right Column: Details & Photo -->
                             <div class="space-y-6">
                                 <h3 class="text-lg font-bold text-gray-900 border-b pb-2 mb-4">
-                                    {{ __('Detail Tambahan') }}</h3>
+                                    {{ __('Detail Tambahan') }}
+                                </h3>
 
                                 <!-- Description -->
                                 <div>
@@ -187,6 +190,48 @@
                                             placeholder="{{ __('Misal: \'Barang pecah belah\', \'Jangan ditumpuk\'') }}">{{ old('notes') }}</textarea>
                                     </div>
                                 </div>
+
+                                <!-- Estimation Section -->
+                                <div class="bg-blue-50/50 p-6 rounded-3xl border border-blue-100 space-y-4">
+                                    <h3
+                                        class="text-md font-black text-blue-900 border-b border-blue-200 pb-2 flex items-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        {{ __('Estimasi & Biaya') }}
+                                    </h3>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <x-input-label for="duration_type"
+                                                class="font-bold text-gray-700">{{ __('Rentang') }}</x-input-label>
+                                            <select name="duration_type" id="duration_type" onchange="calculateCost()"
+                                                class="mt-2 block w-full rounded-xl border-gray-200 bg-white focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-200">
+                                                <option value="hours" {{ old('duration_type') == 'hours' ? 'selected' : '' }}>{{ __('Jam') }}</option>
+                                                <option value="days" {{ old('duration_type') == 'days' ? 'selected' : '' }}>{{ __('Hari') }}</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <x-input-label for="duration_value"
+                                                class="font-bold text-gray-700">{{ __('Durasi') }}</x-input-label>
+                                            <input type="number" name="duration_value" id="duration_value" min="1"
+                                                value="{{ old('duration_value', 1) }}" oninput="calculateCost()"
+                                                class="mt-2 block w-full rounded-xl border-gray-200 bg-white focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-200">
+                                        </div>
+                                    </div>
+
+                                    <div class="pt-2">
+                                        <p class="text-xs text-blue-600 font-medium mb-1">
+                                            {{ __('Total Estimasi Biaya:') }}</p>
+                                        <div class="text-3xl font-black text-blue-700" id="cost_display">
+                                            Rp 0
+                                        </div>
+                                        <p class="text-[10px] text-gray-400 mt-1 italic leading-tight">
+                                            * {{ __('Biaya akhir mungkin berbeda saat pengambilan barang.') }}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -215,9 +260,11 @@
                                         </div>
                                         <div id="upload-text">
                                             <p class="font-bold text-gray-700 group-hover:text-blue-600">
-                                                {{ __('Klik untuk upload foto barang (Max 5)') }}</p>
+                                                {{ __('Klik untuk upload foto barang (Max 5)') }}
+                                            </p>
                                             <p class="text-sm text-gray-500 mt-1">
-                                                {{ __('PNG, JPG, JPEG (Max. 2MB per foto)') }}</p>
+                                                {{ __('PNG, JPG, JPEG (Max. 2MB per foto)') }}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -277,5 +324,30 @@
                 container.classList.add('hidden');
             }
         }
+
+        const pricing = {
+            hour: {{ $settings['price_per_hour'] ?? 5000 }},
+            day: {{ $settings['price_per_day'] ?? 50000 }},
+            multiplier: {
+                electronics: {{ $settings['multiplier_electronics'] ?? 1.5 }},
+                others: {{ $settings['multiplier_others'] ?? 1.0 }}
+            }
+        };
+
+        function calculateCost() {
+            const type = document.getElementById('duration_type').value;
+            const value = parseInt(document.getElementById('duration_value').value) || 0;
+            const itemType = document.getElementById('item_type').value;
+
+            let basePrice = type === 'hours' ? pricing.hour : pricing.day;
+            let multiplier = itemType === 'Elektronik' ? pricing.multiplier.electronics : pricing.multiplier.others;
+
+            let total = basePrice * value * multiplier;
+
+            document.getElementById('cost_display').innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(total);
+        }
+
+        // Run on load
+        window.addEventListener('load', calculateCost);
     </script>
 </x-app-layout>

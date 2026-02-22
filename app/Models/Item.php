@@ -22,6 +22,9 @@ class Item extends Model
         'photo_path',
         'status',
         'expected_retrieval_date',
+        'duration_type',
+        'duration_value',
+        'estimated_cost',
         'receipt_token',
     ];
 

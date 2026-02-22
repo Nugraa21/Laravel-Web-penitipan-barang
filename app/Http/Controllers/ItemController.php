@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\UserLog;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -67,7 +68,9 @@ class ItemController extends Controller
         if (in_array($request->user()->role, ['admin', 'super_admin'])) {
             abort(403, __('Admin tidak dapat menitipkan barang.'));
         }
-        return view('items.create');
+
+        $settings = Setting::all()->pluck('value', 'key')->toArray();
+        return view('items.create', compact('settings'));
     }
 
     public function store(Request $request)
@@ -87,8 +90,31 @@ class ItemController extends Controller
             'notes' => 'nullable|string',
             'photos' => 'required|array|min:1|max:5',
             'photos.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'duration_type' => 'required|in:hours,days',
+            'duration_value' => 'required|integer|min:1',
         ]);
 
+        $settings = Setting::all()->pluck('value', 'key')->toArray();
+        $basePrice = $request->duration_type === 'hours'
+            ? ($settings['price_per_hour'] ?? 5000)
+            : ($settings['price_per_day'] ?? 50000);
+
+        $multiplier = 1.0;
+        if ($request->item_type === 'Elektronik') {
+            $multiplier = $settings['multiplier_electronics'] ?? 1.5;
+        } else {
+            $multiplier = $settings['multiplier_others'] ?? 1.0;
+        }
+
+        $estimatedCost = $basePrice * $request->duration_value * $multiplier;
+
+        // Calculate expected retrieval date
+        $expectedRetrievalDate = now();
+        if ($request->duration_type === 'hours') {
+            $expectedRetrievalDate->addHours($request->duration_value);
+        } else {
+            $expectedRetrievalDate->addDays($request->duration_value);
+        }
         $firstPath = null;
         $allPaths = [];
 
@@ -114,6 +140,10 @@ class ItemController extends Controller
             'notes' => $request->notes,
             'photo_path' => $firstPath,
             'status' => 'pending',
+            'expected_retrieval_date' => $expectedRetrievalDate,
+            'duration_type' => $request->duration_type,
+            'duration_value' => $request->duration_value,
+            'estimated_cost' => $estimatedCost,
             'receipt_token' => $receiptToken,
         ]);
 

@@ -131,6 +131,20 @@
                                     <p style="font-weight: 800; color: var(--c-gray-900); font-size: 1.1rem;">{{ \Carbon\Carbon::parse($item->expected_retrieval_date)->format('d M Y') }}</p>
                                 </div>
                                 @endif
+                                @if($item->duration_type && $item->duration_value)
+                                <div style="background: rgba(255,255,255,0.4); padding: 1.25rem; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.6);">
+                                    <p style="font-size: 0.75rem; font-weight: 700; color: var(--c-gray-500); text-transform: uppercase;">{{ __('Durasi Penitipan') }}</p>
+                                    <p style="font-weight: 800; color: var(--c-gray-900); font-size: 1.1rem;">
+                                        {{ $item->duration_value }} {{ __($item->duration_type === 'hours' ? 'Jam' : 'Hari') }}
+                                    </p>
+                                </div>
+                                @endif
+                                @if($item->estimated_cost)
+                                <div style="background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.05) 100%); padding: 1.25rem; border-radius: var(--radius-lg); border: 1px solid rgba(16,185,129,0.2);">
+                                    <p style="font-size: 0.75rem; font-weight: 700; color: #10b981; text-transform: uppercase;">{{ __('Total Estimasi Biaya') }}</p>
+                                    <p style="font-weight: 800; color: #059669; font-size: 1.1rem;">Rp {{ number_format($item->estimated_cost, 0, ',', '.') }}</p>
+                                </div>
+                                @endif
                                 @if($item->estimated_value)
                                 <div style="background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.05) 100%); padding: 1.25rem; border-radius: var(--radius-lg); border: 1px solid rgba(59,130,246,0.2);">
                                     <p style="font-size: 0.75rem; font-weight: 700; color: #3b82f6; text-transform: uppercase;">{{ __('Estimasi Nilai') }}</p>

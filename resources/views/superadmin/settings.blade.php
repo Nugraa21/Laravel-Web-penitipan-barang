@@ -63,7 +63,16 @@
                                 </svg>
                                 {{ __('Kontak & Footer') }}
                             </button>
-                        </nav>
+
+                            <button @click="activeSection = 'pricing'"
+                                :class="{ 'bg-indigo-50 text-indigo-700': activeSection === 'pricing', 'text-gray-600 hover:bg-gray-50 hover:text-gray-900': activeSection !== 'pricing' }"
+                                class="w-full flex items-center px-4 py-3 text-sm font-bold rounded-xl transition-colors">
+                                <svg class="mr-3 h-5 w-5" :class="{ 'text-indigo-500': activeSection === 'pricing', 'text-gray-400': activeSection !== 'pricing' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                {{ __('Tarif & Biaya') }}
+                            </button>
+                       </nav>
                     </div>
                 </div>
 
@@ -148,6 +157,59 @@
                                     <label for="footer_text" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Hak Cipta Footer') }}</label>
                                     <input type="text" name="footer_text" id="footer_text" value="{{ old('footer_text', $settings['footer_text'] ?? '') }}" 
                                         class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3 text-sm" placeholder="© 2026 Hak Cipta Dilindungi">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pricing Section -->
+                        <div x-show="activeSection === 'pricing'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-x-4" x-transition:enter-end="opacity-100 transform translate-x-0" class="p-8">
+                            <div class="mb-8">
+                                <h3 class="text-xl font-black text-gray-900">{{ __('Pengaturan Tarif Penitipan') }}</h3>
+                                <p class="text-sm text-gray-500 mt-1">{{ __('Tentukan biaya dasar untuk hitungan jam, hari, dan modifier untuk jenis barang tertentu.') }}</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="space-y-6">
+                                    <h4 class="font-bold text-gray-900 border-b pb-2">{{ __('Biaya Dasar (Base Rates)') }}</h4>
+                                    
+                                    <div>
+                                        <label for="price_per_hour" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Tarif Per Jam (IDR)') }}</label>
+                                        <div class="relative rounded-xl shadow-sm">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <span class="text-gray-500 sm:text-sm">Rp</span>
+                                            </div>
+                                            <input type="number" name="price_per_hour" id="price_per_hour" value="{{ old('price_per_hour', $settings['price_per_hour'] ?? '0') }}" 
+                                                class="block w-full pl-10 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="price_per_day" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Tarif Per Hari (IDR)') }}</label>
+                                        <div class="relative rounded-xl shadow-sm">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <span class="text-gray-500 sm:text-sm">Rp</span>
+                                            </div>
+                                            <input type="number" name="price_per_day" id="price_per_day" value="{{ old('price_per_day', $settings['price_per_day'] ?? '0') }}" 
+                                                class="block w-full pl-10 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-6">
+                                    <h4 class="font-bold text-gray-900 border-b pb-2">{{ __('Pengali Jenis Barang (Multipliers)') }}</h4>
+                                    
+                                    <div>
+                                        <label for="multiplier_electronics" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Pengali Elektronik') }}</label>
+                                        <input type="number" step="0.1" name="multiplier_electronics" id="multiplier_electronics" value="{{ old('multiplier_electronics', $settings['multiplier_electronics'] ?? '1.0') }}" 
+                                            class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                        <p class="mt-1 text-xs text-gray-500">{{ __('Contoh: 1.5 berarti biaya total akan dikali 1.5 jika barang adalah Elektronik.') }}</p>
+                                    </div>
+
+                                    <div>
+                                        <label for="multiplier_others" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Pengali Lainnya / Umum') }}</label>
+                                        <input type="number" step="0.1" name="multiplier_others" id="multiplier_others" value="{{ old('multiplier_others', $settings['multiplier_others'] ?? '1.0') }}" 
+                                            class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -150,7 +150,8 @@
             <h3>DETAIL PENITIP</h3>
             <div class="info-row"><span>Nama:</span> <b>{{ strtoupper($item->user->name) }}</b></div>
             <div class="info-row"><span>ID User:</span>
-                <span>USR-{{ str_pad($item->user->id, 4, '0', STR_PAD_LEFT) }}</span></div>
+                <span>USR-{{ str_pad($item->user->id, 4, '0', STR_PAD_LEFT) }}</span>
+            </div>
 
             <br>
             <h3>DETAIL BARANG</h3>
@@ -158,7 +159,11 @@
             <div class="info-row"><span>Kategori:</span> <span>{{ strtoupper($item->item_type ?? '-') }}</span></div>
             <div class="info-row"><span>Merek:</span> <span>{{ strtoupper($item->brand ?? '-') }}</span></div>
             <div class="info-row"><span>Warna:</span> <span>{{ strtoupper($item->color ?? '-') }}</span></div>
-            <div class="info-row"><span>Estimasi:</span> <span>Rp
+            <div class="info-row"><span>Durasi Estimasi:</span> <span>{{ $item->duration_value }}
+                    {{ strtoupper(__($item->duration_type === 'hours' ? 'Jam' : 'Hari')) }}</span></div>
+            <div class="info-row"><span>Estimasi Biaya:</span> <b>RP
+                    {{ number_format($item->estimated_cost ?? 0, 0, ',', '.') }}</b></div>
+            <div class="info-row"><span>Nilai Barang:</span> <span>Rp
                     {{ number_format($item->estimated_value ?? 0, 0, ',', '.') }}</span></div>
             <div class="info-row" style="flex-direction: column; margin-top: 5px;">
                 <span>Catatan/Ciri Khusus:</span>
