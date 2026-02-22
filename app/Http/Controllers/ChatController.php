@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Item;
+use App\Models\ChatMessage;
+use Illuminate\Http\Request;
+
+class ChatController extends Controller
+{
+    public function index(Item $item)
+    {
+        $user = auth()->user();
+        if ($user->role !== 'admin' && $user->id !== $item->user_id) {
+            abort(403);
+        }
+
+        $messages = $item->messages()->with('sender')->orderBy('created_at', 'asc')->get();
+
+        // Mark as read
+        $item->messages()->where('sender_id', '!=', $user->id)->update(['is_read' => true]);
+
+        return view('chat.index', compact('item', 'messages'));
+    }
+
+    public function store(Request $request, Item $item)
+    {
+        $user = $request->user();
+        if ($user->role !== 'admin' && $user->id !== $item->user_id) {
+            abort(403);
+        }
+
+        $request->validate([
+            'message' => 'required|string|max:1000',
+        ]);
+
+        $item->messages()->create([
+            'sender_id' => $user->id,
+            'message' => $request->message,
+            'is_read' => false,
+        ]);
+
+        return back()->with('success', 'Pesan terkirim.');
+    }
+}
