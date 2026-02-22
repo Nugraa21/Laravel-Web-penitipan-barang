@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('action'); // e.g. 'login', 'logout', 'create_user', 'update_profile'
             $table->text('description')->nullable(); // detailed changes or info
+            $table->string('ip_address')->nullable();
             $table->string('user_agent')->nullable();
             $table->timestamps();
         });

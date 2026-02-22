@@ -1,82 +1,124 @@
-<h1 align="center">📦 Larakos - Sistem Penitipan Barang</h1>
+# Laravel Bag Deposit System
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
-  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
-  <img src="https://img.shields.io/badge/Alpine.js-8BC0D0?style=for-the-badge&logo=alpine.js&logoColor=white" alt="Alpine JS">
-  <img src="https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
-</p>
+A professional, multi-language web application built with Laravel 9 for managing item deposits, tracking lockers, and generating digital receipts. Designed with a clean SaaS aesthetic and optimized for high-performance inventory management.
 
-## ✨ Tentang Proyek Ini
+---
 
-**Larakos (atau PenitipanApp)** adalah sebuah aplikasi manajemen penitipan barang berbasis web yang dibangun menggunakan **Laravel 10**, **Tailwind CSS**, dan **Alpine.js**. Aplikasi ini mengusung desain antarmuka *(UI/UX)* tema **Liquid Glass** yang sangat elegan, modern, dan estetik, terinspirasi dari SaaS Dashboard premium.
+## [ Features ]
 
-Aplikasi ini dirancang untuk memudahkan proses pencatatan barang yang dititipkan, pengelolaan status barang, fitur dokumentasi foto barang, hingga fitur **Live Chat** terintegrasi antara admin dan penitip.
+- **Multi-Language Support**: Seamlessly switch between **English**, **Indonesian**, and **Japanese**.
+- **Role-Based Access Control (RBAC)**:
+    - **Super Admin**: Full control over system settings, core configurations, and detailed audit logs.
+    - **Admin (Cashier)**: Manage user accounts, verify item deposits, and process retrievals.
+    - **User (Customer)**: Register items, track deposit status, and access digital receipts.
+- **Item Lifecycle Management**: Complete tracking from "Pending" to "Stored" and finally "Retrieved".
+- **Visual Verification**: Support for multiple photo uploads per item for condition verification.
+- **Digital Receipts**: Auto-generated tokens and QR codes for quick scanning during item retrieval.
+- **Audit & Activity Logs**:
+    - **Item History**: Track every status change and edit made to an item.
+    - **User Activity Logs**: Security tracking for logins, account updates, and administrative actions (IP & User Agent included).
+- **Modern UI/UX**: Premium light theme design with a focus on usability and responsive layouts.
 
-## 🚀 Fitur Utama
+---
 
-- 🎨 **Liquid Glass UI/UX**: Desain antarmuka premium dengan efek *glassmorphism*, bayangan lembut, dan animasi *smooth*.
-- 👥 **Role-based Access Control (RBAC)**: Tersedia peran **Admin** dan **User (Penitip)** dengan hak akses yang berbeda.
-- 📸 **Manajemen Foto Barang (CRUD)**: Mendukung unggah banyak *(multiple)* foto barang sebagai bukti kondisi fisik.
-- 💬 **Live Chat Real-time**: Diskusi langsung antara Admin dan Penitip layaknya WhatsApp (dilengkapi efek *auto-scroll* ke pesan terbaru).
-- 👤 **Manajemen Profil & Avatar**: User dapat mengelola profil dan mengubah foto profil (avatar).
-- 📱 **Responsif**: Tampilan sempurna untuk desktop maupun *mobile*.
+## [ Tech Stack ]
 
-## 🛠️ Instalasi
+- **Backend**: PHP 8.0+ | Laravel 9 | MySQL
+- **Frontend**: TailwindCSS | Alpine.js | Blade Templates
+- **Builders**: Vite | PostCSS
+- **Admin Theme**: AdminLTE (Integrated for Super Admin Panel)
+- **Security**: Laravel Breeze (Authentication), CSRF Protection, and Role-based Middleware.
 
-Ikuti langkah-langkah berikut untuk menjalankan proyek ini di mesin lokal Anda:
+---
 
-1. **Clone repository ini**
+## [ Installation ]
+
+### Prerequisites
+- PHP >= 8.0
+- Composer
+- Node.js & NPM
+- MySQL
+
+### Steps
+1. **Clone the repository**:
    ```bash
-   git clone https://github.com/nugra21/larakos-penitipan-barang.git
-   cd larakos-penitipan-barang
+   git clone https://github.com/Nugraa21/Laravel-Web-penitipan-barang.git
+   cd Laravel-Web-penitipan-barang
    ```
 
-2. **Install dependency PHP & Node.js**
+2. **Install Dependencies**:
    ```bash
    composer install
    npm install
    ```
 
-3. **Duplikat file konfigurasi lingkungan (.env)**
+3. **Configure Environment**:
    ```bash
    cp .env.example .env
-   ```
-
-4. **Generate Application Key**
-   ```bash
    php artisan key:generate
    ```
+   *Note: Update your database credentials and `APP_URL` in `.env`.*
 
-5. **Konfigurasi Database**
-   Buka file `.env` dan sesuaikan pengaturan koneksi database (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`).
-
-6. **Jalankan Migrasi Database**
+4. **Run Migrations & Seeders**:
    ```bash
    php artisan migrate --seed
    ```
 
-7. **Tautkan Storage (Berfungsi untuk menyimpan Avatar & Foto Barang)**
+5. **Symlink Storage**:
    ```bash
    php artisan storage:link
    ```
 
-8. **Build Aset Frontend & Jalankan Server Lokal**
+6. **Compile Assets**:
    ```bash
+   npm run dev
+   # OR for production
    npm run build
+   ```
+
+7. **Serve the Application**:
+   ```bash
    php artisan serve
    ```
 
-   Aplikasi dapat diakses melalui `http://localhost:8000`.
+---
 
-## 📸 Screenshot
+## [ Project Structure ]
 
-*(Tambahkan gambar screenshot dari Dashboard, Halaman Chat, dan Halaman Edit Profil Anda di GitHub nanti)*
+```text
+├── app/
+│   ├── Http/Controllers/      # Logic for Items, Profiles, and Admin flows
+│   ├── Models/                # Eloquent entities (Item, User, UserLog, etc.)
+│   └── Providers/             # Service providers
+├── database/
+│   ├── migrations/            # DB Schema (Items, Logs, Settings)
+│   └── seeders/               # Initial data for Super Admin
+├── lang/                      # Translation files (en.json, id.json, ja.json)
+├── resources/
+│   ├── views/                 # Blade templates (Dashboard, Items, SuperAdmin)
+│   └── css/js/                # Vite assets
+└── public/                    # Compiled assets & storage symlink
+```
 
-## 📄 Lisensi
+---
 
-Proyek ini berlisensi open-source dan didistribusikan di bawah lisensi [MIT](https://opensource.org/licenses/MIT).
+## [ Screenshots ]
 
-## 👨‍💻 Author
+> [!NOTE]
+> You can add your own screenshots by placing them in the `screenshots/` directory and updating the links below.
 
-Dikembangkan oleh **[Nugra21](https://github.com/nugra21)** / Ludang Prasetyo Nugroho.
+| Dashboard Overview | Item Details | Admin Panel |
+| :--- | :--- | :--- |
+| ![Dashboard](screenshots/dashboard.png) | ![Item Details](screenshots/item_details.png) | ![Admin](screenshots/admin_panel.png) |
+
+---
+
+## [ License ]
+
+This project is open-sourced software licensed under the [MIT license](LICENSE).
+
+---
+
+## [ Contact ]
+
+Created by [Nugra21](https://github.com/Nugraa21)

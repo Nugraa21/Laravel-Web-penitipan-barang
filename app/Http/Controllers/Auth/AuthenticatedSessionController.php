@@ -35,6 +35,7 @@ class AuthenticatedSessionController extends Controller
             'action' => 'login',
             'description' => 'User logged in to the system.',
             'ip_address' => $request->ip(),
+            'user_agent' => $request->header('User-Agent'),
         ]);
 
         if ($request->user()->role === 'super_admin') {
@@ -55,6 +56,7 @@ class AuthenticatedSessionController extends Controller
                 'action' => 'logout',
                 'description' => 'User logged out of the system.',
                 'ip_address' => $request->ip(),
+                'user_agent' => $request->header('User-Agent'),
             ]);
         }
 

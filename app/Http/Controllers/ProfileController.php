@@ -49,6 +49,7 @@ class ProfileController extends Controller
             'action' => 'update_profile',
             'description' => 'User updated their own profile information.',
             'ip_address' => $request->ip(),
+            'user_agent' => $request->header('User-Agent'),
         ]);
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
@@ -74,6 +75,7 @@ class ProfileController extends Controller
             'action' => 'delete_account',
             'description' => "User {$user->name} deleted their own account.",
             'ip_address' => $request->ip(),
+            'user_agent' => $request->header('User-Agent'),
         ]);
 
         $request->session()->invalidate();

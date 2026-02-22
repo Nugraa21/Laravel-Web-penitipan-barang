@@ -50,6 +50,7 @@ class RegisteredUserController extends Controller
             'action' => 'register',
             'description' => 'User created a new account.',
             'ip_address' => $request->ip(),
+            'user_agent' => $request->header('User-Agent'),
         ]);
 
         Auth::login($user);

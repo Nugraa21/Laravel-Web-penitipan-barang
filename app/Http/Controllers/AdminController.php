@@ -74,6 +74,7 @@ class AdminController extends Controller
             'action' => 'create_user',
             'description' => "Created a new user account: {$request->email} with role {$request->role}.",
             'ip_address' => $request->ip(),
+            'user_agent' => $request->header('User-Agent'),
         ]);
 
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan.');
@@ -145,6 +146,7 @@ class AdminController extends Controller
             'action' => 'update_user',
             'description' => "Updated user account: {$user->email}.",
             'ip_address' => $request->ip(),
+            'user_agent' => $request->header('User-Agent'),
         ]);
 
         return redirect()->route('admin.users.index')->with('success', 'Data pengguna berhasil diperbarui.');
@@ -169,6 +171,7 @@ class AdminController extends Controller
             'action' => 'delete_user',
             'description' => "Deleted user account: {$user->email}.",
             'ip_address' => request()->ip(),
+            'user_agent' => request()->header('User-Agent'),
         ]);
 
         $user->delete();

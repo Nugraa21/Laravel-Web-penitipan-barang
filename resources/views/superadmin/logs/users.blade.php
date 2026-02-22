@@ -66,7 +66,14 @@
                                         </div>
                                     </td>
                                     <td class="py-4 px-6 text-sm font-mono text-gray-500">
-                                        {{ $log->ip_address ?? 'N/A' }}
+                                        <div class="flex flex-col">
+                                            <span>{{ $log->ip_address ?? 'N/A' }}</span>
+                                            @if($log->user_agent)
+                                                <span class="text-[10px] text-gray-400 font-sans truncate max-w-[200px]" title="{{ $log->user_agent }}">
+                                                    {{ $log->user_agent }}
+                                                </span>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
