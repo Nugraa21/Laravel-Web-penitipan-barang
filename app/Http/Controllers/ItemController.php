@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\UserLog;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -120,6 +121,13 @@ class ItemController extends Controller
             $item->photos()->create(['photo_path' => $path]);
         }
 
+        UserLog::create([
+            'user_id' => $request->user()->id,
+            'action' => 'create_item',
+            'description' => "Created item {$item->name} (Token: {$receiptToken})",
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->header('User-Agent'),
+        ]);
         return redirect()->route('dashboard')->with('success', 'Barang berhasil ditambahkan. Nomor Penitipan: ' . $receiptToken);
     }
 
@@ -167,6 +175,13 @@ class ItemController extends Controller
             }
 
             $item->save();
+            UserLog::create([
+                'user_id' => $request->user()->id,
+                'action' => 'update_item',
+                'description' => "Updated item {$item->name}",
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->header('User-Agent'),
+            ]);
             return redirect()->route('dashboard')->with('success', 'Status barang diperbarui.');
         }
 
@@ -259,6 +274,13 @@ class ItemController extends Controller
     {
         $this->authorizeAccess($item);
         $item->delete();
+        UserLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete_item',
+            'description' => "Deleted item {$item->name}",
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->header('User-Agent'),
+        ]);
         return redirect()->route('dashboard')->with('success', 'Barang dihapus.');
     }
 

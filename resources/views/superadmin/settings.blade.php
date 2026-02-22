@@ -1,4 +1,6 @@
 <x-superadmin-layout>
+<div class="bg-gradient-to-r from-indigo-100 via-white to-indigo-100 min-h-screen p-6">
+
     <x-slot name="header">
         <div class="flex flex-col md:flex-row md:justify-between md:items-center pb-4 border-b border-gray-200 gap-4">
             <div>
@@ -153,7 +155,7 @@
                         <!-- Sticky Submit Footer -->
                         <div class="bg-gray-50/80 backdrop-blur-md border-t border-gray-200 px-8 py-5 flex items-center justify-between">
                             <p class="text-sm text-gray-500">{{ __('Semua perubahan log akan disimpan ke dalam riwayat sistem.') }}</p>
-                            <button type="submit" class="inline-flex justify-center py-2.5 px-6 border border-transparent shadow-sm text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                            <button type="submit" class="inline-flex justify-center py-2.5 px-6 border border-transparent shadow-sm text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors hover:scale-105 transform">
                                 {{ __('Simpan Perubahan') }}
                             </button>
                         </div>
@@ -164,4 +166,5 @@
 
         </div>
     </div>
+</div>
 </x-superadmin-layout>
