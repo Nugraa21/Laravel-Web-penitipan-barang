@@ -26,7 +26,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <!-- Left Column: Basic Info -->
                             <div class="space-y-6">
-                                <h3 class="text-lg font-bold text-gray-900 border-b pb-2 mb-4">Informasi Utama</h3>
+                                <h3 class="text-lg font-bold text-gray-900 border-b pb-2 mb-4">
+                                    {{ __('Informasi Utama') }}</h3>
 
                                 <!-- Name -->
                                 <div>
@@ -43,8 +44,8 @@
                                         </div>
                                         <input type="text" name="name" id="name"
                                             class="pl-10 block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200 @error('name') border-red-500 @enderror"
-                                            placeholder="Contoh: Koper Hitam Polo" value="{{ old('name') }}" required
-                                            autofocus>
+                                            placeholder="{{ __('Contoh: Koper Hitam Polo') }}" value="{{ old('name') }}"
+                                            required autofocus>
                                     </div>
                                     @error('name')
                                         <p class="text-red-500 text-xs mt-2 font-medium">{{ $message }}</p>
@@ -53,8 +54,8 @@
 
                                 <!-- Item Type (Category) -->
                                 <div>
-                                    <x-input-label for="item_type" class="font-bold text-gray-700">Jenis
-                                        Barang</x-input-label>
+                                    <x-input-label for="item_type"
+                                        class="font-bold text-gray-700">{{ __('Jenis Barang') }}</x-input-label>
                                     <div class="mt-2 relative rounded-xl shadow-sm">
                                         <div class="absolute inset-y-0 left-0 pl-3 pt-3 pointer-events-none">
                                             <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
@@ -66,13 +67,16 @@
                                         </div>
                                         <select name="item_type" id="item_type"
                                             class="pl-10 block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200">
-                                            <option value="" disabled selected>Pilih Kategori (Opsional)</option>
-                                            <option value="Tas/Koper" {{ old('item_type') == 'Tas/Koper' ? 'selected' : '' }}>Tas / Koper</option>
-                                            <option value="Elektronik" {{ old('item_type') == 'Elektronik' ? 'selected' : '' }}>Elektronik (Laptop, dll)</option>
+                                            <option value="" disabled selected>{{ __('Pilih Kategori (Opsional)') }}
+                                            </option>
+                                            <option value="Tas/Koper" {{ old('item_type') == 'Tas/Koper' ? 'selected' : '' }}>{{ __('Tas / Koper') }}</option>
+                                            <option value="Elektronik" {{ old('item_type') == 'Elektronik' ? 'selected' : '' }}>{{ __('Elektronik (Laptop, dll)') }}</option>
                                             <option value="Dokumen" {{ old('item_type') == 'Dokumen' ? 'selected' : '' }}>
-                                                Dokumen Penting</option>
+                                                {{ __('Dokumen Penting') }}
+                                            </option>
                                             <option value="Lainnya" {{ old('item_type') == 'Lainnya' ? 'selected' : '' }}>
-                                                Lainnya</option>
+                                                {{ __('Lainnya') }}
+                                            </option>
                                         </select>
                                     </div>
                                     @error('item_type')
@@ -82,8 +86,8 @@
 
                                 <!-- Brand -->
                                 <div>
-                                    <x-input-label for="brand" class="font-bold text-gray-700">Merek /
-                                        Brand</x-input-label>
+                                    <x-input-label for="brand"
+                                        class="font-bold text-gray-700">{{ __('Merek / Brand') }}</x-input-label>
                                     <div class="mt-2 relative rounded-xl shadow-sm">
                                         <div class="absolute inset-y-0 left-0 pl-3 pt-3 pointer-events-none">
                                             <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
@@ -95,7 +99,8 @@
                                         </div>
                                         <input type="text" name="brand" id="brand"
                                             class="pl-10 block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200"
-                                            placeholder="Contoh: Polo, Samsung, dll" value="{{ old('brand') }}">
+                                            placeholder="{{ __('Contoh: Polo, Samsung, dll') }}"
+                                            value="{{ old('brand') }}">
                                     </div>
                                     @error('brand')
                                         <p class="text-red-500 text-xs mt-2 font-medium">{{ $message }}</p>
@@ -104,7 +109,8 @@
 
                                 <!-- Color -->
                                 <div>
-                                    <x-input-label for="color" class="font-bold text-gray-700">Warna</x-input-label>
+                                    <x-input-label for="color"
+                                        class="font-bold text-gray-700">{{ __('Warna') }}</x-input-label>
                                     <div class="mt-2 relative rounded-xl shadow-sm">
                                         <div class="absolute inset-y-0 left-0 pl-3 pt-3 pointer-events-none">
                                             <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
@@ -116,7 +122,8 @@
                                         </div>
                                         <input type="text" name="color" id="color"
                                             class="pl-10 block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200"
-                                            placeholder="Contoh: Hitam, Biru, dll" value="{{ old('color') }}">
+                                            placeholder="{{ __('Contoh: Hitam, Biru, dll') }}"
+                                            value="{{ old('color') }}">
                                     </div>
                                     @error('color')
                                         <p class="text-red-500 text-xs mt-2 font-medium">{{ $message }}</p>
@@ -125,8 +132,8 @@
 
                                 <!-- Estimated Value -->
                                 <div>
-                                    <x-input-label for="estimated_value" class="font-bold text-gray-700">Estimasi Nilai
-                                        Barang (Rp)</x-input-label>
+                                    <x-input-label for="estimated_value"
+                                        class="font-bold text-gray-700">{{ __('Estimasi Nilai Barang (Rp)') }}</x-input-label>
                                     <div class="mt-2 relative rounded-xl shadow-sm">
                                         <div class="absolute inset-y-0 left-0 pl-3 pt-3 pointer-events-none">
                                             <span class="text-gray-500 font-bold">Rp</span>
@@ -135,8 +142,8 @@
                                             class="pl-12 block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200"
                                             placeholder="0" value="{{ old('estimated_value') }}">
                                     </div>
-                                    <p class="text-xs text-gray-500 mt-1">Opsional, berguna untuk asuransi atau
-                                        pengawasan ekstra.</p>
+                                    <p class="text-xs text-gray-500 mt-1">
+                                        {{ __('Opsional, berguna untuk asuransi atau pengawasan ekstra.') }}</p>
                                     @error('estimated_value')
                                         <p class="text-red-500 text-xs mt-2 font-medium">{{ $message }}</p>
                                     @enderror
@@ -145,7 +152,8 @@
 
                             <!-- Right Column: Details & Photo -->
                             <div class="space-y-6">
-                                <h3 class="text-lg font-bold text-gray-900 border-b pb-2 mb-4">Detail Tambahan</h3>
+                                <h3 class="text-lg font-bold text-gray-900 border-b pb-2 mb-4">
+                                    {{ __('Detail Tambahan') }}</h3>
 
                                 <!-- Description -->
                                 <div>
@@ -153,30 +161,30 @@
                                         Umum</x-input-label>
                                     <div class="mt-2">
                                         <textarea id="description" name="description" rows="2"
-                                            class="block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200"
-                                            placeholder="Deskripsi singkat barang...">{{ old('description') }}</textarea>
+                                            class="block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-200 transition duration-200"
+                                            placeholder="{{ __('Deskripsi singkat barang...') }}">{{ old('description') }}</textarea>
                                     </div>
                                 </div>
 
                                 <!-- Characteristics -->
                                 <div>
-                                    <x-input-label for="characteristics" class="font-bold text-gray-700">Ciri-ciri
-                                        Khusus</x-input-label>
+                                    <x-input-label for="characteristics"
+                                        class="font-bold text-gray-700">{{ __('Ciri-ciri Khusus') }}</x-input-label>
                                     <div class="mt-2">
                                         <textarea id="characteristics" name="characteristics" rows="2"
                                             class="block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200"
-                                            placeholder="Misal: Ada lecet di ujung kanan, ritsleting lepas, dll...">{{ old('characteristics') }}</textarea>
+                                            placeholder="{{ __('Misal: Ada lecet di ujung kanan, ritsleting lepas, dll...') }}">{{ old('characteristics') }}</textarea>
                                     </div>
                                 </div>
 
                                 <!-- Notes -->
                                 <div>
-                                    <x-input-label for="notes" class="font-bold text-gray-700">Catatan untuk
-                                        Petugas</x-input-label>
+                                    <x-input-label for="notes"
+                                        class="font-bold text-gray-700">{{ __('Catatan untuk Petugas') }}</x-input-label>
                                     <div class="mt-2">
                                         <textarea id="notes" name="notes" rows="2"
                                             class="block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200"
-                                            placeholder="Misal: 'Barang pecah belah', 'Jangan ditumpuk'">{{ old('notes') }}</textarea>
+                                            placeholder="{{ __('Misal: \'Barang pecah belah\', \'Jangan ditumpuk\'') }}">{{ old('notes') }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +192,8 @@
 
                         <!-- Photo Upload (Full Width) -->
                         <div class="mt-8 pt-8 border-t border-gray-100">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">Verifikasi Visual (Bisa lebih dari 1 foto)
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">
+                                {{ __('Verifikasi Visual (Bisa lebih dari 1 foto)') }}
                                 <span class="text-red-500">*</span>
                             </h3>
                             <div class="relative group cursor-pointer">
@@ -205,9 +214,10 @@
                                             </svg>
                                         </div>
                                         <div id="upload-text">
-                                            <p class="font-bold text-gray-700 group-hover:text-blue-600">Klik untuk
-                                                upload foto barang (Max 5)</p>
-                                            <p class="text-sm text-gray-500 mt-1">PNG, JPG, JPEG (Max. 2MB per foto)</p>
+                                            <p class="font-bold text-gray-700 group-hover:text-blue-600">
+                                                {{ __('Klik untuk upload foto barang (Max 5)') }}</p>
+                                            <p class="text-sm text-gray-500 mt-1">
+                                                {{ __('PNG, JPG, JPEG (Max. 2MB per foto)') }}</p>
                                         </div>
                                     </div>
 
@@ -230,7 +240,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Simpan Data Penitipan
+                                {{ __('Simpan Data Penitipan') }}
                             </button>
                         </div>
                     </form>

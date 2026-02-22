@@ -114,7 +114,7 @@
                                     <img src="{{ Storage::url($item->photo_path) }}" alt="{{ $item->name }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';" loading="lazy">
                                     <div style="position: absolute; top: 0.75rem; right: 0.75rem;">
                                         <span class="badge badge-{{ $item->status === 'pending' ? 'pending' : ($item->status === 'stored' ? 'stored' : 'retrieved') }}">
-                                            {{ __($item->status === 'pending' ? 'Pending' : ($item->status === 'stored' ? 'Disimpan' : 'Diambil')) }}
+                                            {{ __($item->status === 'pending' ? 'Pending' : ($item->status === 'stored' ? 'Stored' : 'Retrieved')) }}
                                         </span>
                                     </div>
                                     <div style="position: absolute; bottom: 0.75rem; left: 0.75rem;">

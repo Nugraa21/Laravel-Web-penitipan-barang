@@ -1,10 +1,10 @@
 <section>
     <header class="mb-6">
         <h2 class="text-xl font-black text-gray-900">
-            Informasi Profil
+            {{ __('Informasi Profil') }}
         </h2>
         <p class="mt-1 text-sm font-medium text-gray-500">
-            Perbarui informasi profil dan alamat email akun Anda.
+            {{ __('Perbarui informasi profil dan alamat email akun Anda.') }}
         </p>
     </header>
 
@@ -18,7 +18,8 @@
 
         <!-- Avatar Upload -->
         <div>
-            <x-input-label for="avatar" value="Foto Profil (Opsional)" class="text-gray-700 font-bold mb-2" />
+            <x-input-label for="avatar" value="{{ __('Foto Profil (Opsional)') }}"
+                class="text-gray-700 font-bold mb-2" />
 
             @if ($user->avatar)
                 <div class="mt-2 mb-4">
@@ -35,7 +36,7 @@
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" value="Nama Lengkap" class="text-gray-700 font-bold mb-2" />
+            <x-input-label for="name" value="{{ __('Nama Lengkap') }}" class="text-gray-700 font-bold mb-2" />
             <input id="name" name="name" type="text"
                 class="mt-2 block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200"
                 value="{{ old('name', $user->name) }}" required autofocus autocomplete="name" />
@@ -44,7 +45,7 @@
 
         <!-- Phone Number -->
         <div>
-            <x-input-label for="phone" value="Nomor WhatsApp / HP" class="text-gray-700 font-bold mb-2" />
+            <x-input-label for="phone" value="{{ __('Nomor WhatsApp / HP') }}" class="text-gray-700 font-bold mb-2" />
             <input id="phone" name="phone" type="text"
                 class="mt-2 block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200"
                 value="{{ old('phone', $user->phone) }}" autocomplete="tel" placeholder="Contoh: 081234567890" />
@@ -53,16 +54,16 @@
 
         <!-- Address -->
         <div>
-            <x-input-label for="address" value="Alamat Lengkap" class="text-gray-700 font-bold mb-2" />
+            <x-input-label for="address" value="{{ __('Alamat Lengkap') }}" class="text-gray-700 font-bold mb-2" />
             <textarea id="address" name="address"
                 class="mt-2 block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200 px-4 py-3"
                 rows="3"
-                placeholder="Opsional, masukkan alamat lengkap Anda">{{ old('address', $user->address) }}</textarea>
+                placeholder="{{ __('Opsional, masukkan alamat lengkap Anda') }}">{{ old('address', $user->address) }}</textarea>
             <x-input-error class="mt-2 text-sm text-red-500" :messages="$errors->get('address')" />
         </div>
 
         <div>
-            <x-input-label for="email" value="Alamat Email" class="text-gray-700 font-bold mb-2" />
+            <x-input-label for="email" value="{{ __('Alamat Email') }}" class="text-gray-700 font-bold mb-2" />
             <input id="email" name="email" type="email"
                 class="mt-2 block w-full rounded-xl border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring focus:ring-blue-200 transition duration-200"
                 value="{{ old('email', $user->email) }}" required autocomplete="username" />
@@ -89,7 +90,7 @@
         </div>
 
         <div class="flex items-center gap-4 pt-4 border-t border-gray-100">
-            <button type="submit" class="btn btn-primary">Simpan Profil</button>
+            <button type="submit" class="btn btn-primary">{{ __('Simpan Profil') }}</button>
 
             @if (session('status') === 'profile-updated')
                 <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"

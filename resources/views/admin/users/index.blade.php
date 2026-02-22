@@ -12,9 +12,9 @@
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-3xl font-black text-gray-900 tracking-tight">Kelola Akses Pengguna</h2>
-                    <p class="text-gray-500 font-medium mt-1 text-sm">Memonitor seluruh akun user yang terdaftar di
-                        aplikasi penitipan barang.</p>
+                    <h2 class="text-3xl font-black text-gray-900 tracking-tight">{{ __('Kelola Akses Pengguna') }}</h2>
+                    <p class="text-gray-500 font-medium mt-1 text-sm">
+                        {{ __('Memonitor seluruh akun user yang terdaftar di aplikasi penitipan barang.') }}</p>
                 </div>
             </div>
 
@@ -22,7 +22,7 @@
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
-                Tambah Admin
+                {{ __('Tambah Admin') }}
             </a>
         </div>
 
@@ -31,13 +31,18 @@
                 <table class="w-full min-w-[600px] text-left border-collapse">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Nama</th>
-                            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Email</th>
-                            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Role</th>
+                            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                {{ __('Nama') }}</th>
+                            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                {{ __('Email') }}</th>
+                            <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                {{ __('Role') }}</th>
                             <th class="py-4 px-6 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                Tanggal Daftar</th>
+                                {{ __('Tanggal Daftar') }}
+                            </th>
                             <th class="py-4 px-6 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                Aksi</th>
+                                {{ __('Aksi') }}
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50 text-sm">
@@ -52,12 +57,12 @@
                                     @if($u->role === 'admin')
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-700">
-                                            Admin
+                                            {{ __('Admin') }}
                                         </span>
                                     @else
                                         <span
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700">
-                                            User
+                                            {{ __('User') }}
                                         </span>
                                     @endif
                                 </td>
@@ -68,7 +73,7 @@
                                     <div class="flex justify-end items-center gap-2">
                                         <a href="{{ route('admin.users.show', $u) }}"
                                             class="p-2 text-gray-400 hover:text-blue-500 bg-white rounded-lg shadow-sm border border-gray-100 transition-colors"
-                                            title="Detail User">
+                                            title="{{ __('Detail User') }}">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -81,7 +86,7 @@
                                         @if(!in_array($u->role, ['admin', 'super_admin']) || Auth::user()->role === 'super_admin')
                                             <a href="{{ route('admin.users.edit', $u) }}"
                                                 class="p-2 text-gray-400 hover:text-orange-500 bg-white rounded-lg shadow-sm border border-gray-100 transition-colors"
-                                                title="Edit User">
+                                                title="{{ __('Edit User') }}">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
@@ -90,12 +95,12 @@
                                             </a>
                                             @if(Auth::id() !== $u->id)
                                                 <form action="{{ route('admin.users.destroy', $u) }}" method="POST" class="inline"
-                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?');">
+                                                    onsubmit="return confirm('{{ __('Apakah Anda yakin ingin menghapus pengguna ini?') }}');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"
                                                         class="p-2 text-gray-400 hover:text-red-500 bg-white rounded-lg shadow-sm border border-gray-100 transition-colors"
-                                                        title="Hapus User">
+                                                        title="{{ __('Hapus User') }}">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
@@ -117,7 +122,7 @@
                                             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
                                         </path>
                                     </svg>
-                                    <p class="font-bold text-gray-400">Tidak ada user terdaftar</p>
+                                    <p class="font-bold text-gray-400">{{ __('Tidak ada user terdaftar') }}</p>
                                 </td>
                             </tr>
                         @endforelse

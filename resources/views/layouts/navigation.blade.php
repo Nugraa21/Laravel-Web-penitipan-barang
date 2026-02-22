@@ -232,7 +232,7 @@
         <div class="p-4 space-y-2">
             <a href="{{ route('dashboard') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-bold uppercase transition-colors {{ request()->routeIs('dashboard') ? 'bg-gray-800 text-white border-gray-800' : 'text-gray-800 border-white/60 hover:bg-white/50' }}">
-                @if(Auth::user()->role === 'admin') Barang Masuk @else Dashboard @endif
+                @if(Auth::user()->role === 'admin') {{ __('Barang Masuk') }} @else {{ __('Dashboard') }} @endif
             </a>
             @if(Auth::user()->role === 'super_admin')
                 <a href="{{ route('superadmin.dashboard') }}"

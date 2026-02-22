@@ -1,11 +1,10 @@
 <section class="space-y-6">
     <header>
         <h2 class="text-xl font-black text-red-600">
-            Hapus Akun Permanen
+            {{ __('Hapus Akun Permanen') }}
         </h2>
         <p class="mt-1 text-sm font-medium text-gray-500">
-            Setelah akun Anda dihapus, semua sumber daya dan datanya akan dihapus secara permanen. Harap unduh data atau
-            informasi apa pun yang ingin Anda simpan.
+            {{ __('Setelah akun Anda dihapus, semua sumber daya dan datanya akan dihapus secara permanen. Harap unduh data atau informasi apa pun yang ingin Anda simpan.') }}
         </p>
     </header>
 

@@ -1,14 +1,7 @@
 <x-superadmin-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center pb-4 border-b border-gray-200">
-            <div>
-                <h2 class="font-black text-3xl text-gray-900 tracking-tight">Super Admin Dashboard</h2>
-                <p class="text-gray-500 font-medium text-sm mt-1">Sistem Kendali Utama & Overview Menyeluruh</p>
-            </div>
-            <span
-                class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-indigo-600 bg-indigo-100/50 border border-indigo-200 rounded-full shadow-sm backdrop-blur-md">
-                <span class="w-2.5 h-2.5 bg-indigo-500 rounded-full animate-pulse"></span> Root Control
-            </span>
+        <div class="flex items-center gap-2">
+            <h2 class="font-black text-xl text-gray-900 tracking-tight">{{ __('Super Admin Dashboard') }}</h2>
         </div>
     </x-slot>
 
@@ -20,7 +13,7 @@
 
                 <!-- Admin Biasa -->
                 <div class="glass-card p-6 border-t-4 border-t-indigo-400 group">
-                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Admin Biasa</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">{{ __('Admin Biasa') }}</p>
                     <p class="text-4xl font-black text-gray-900">{{ $totalAdmins }}</p>
                     <div class="mt-4 flex justify-between items-end">
                         <div
@@ -32,13 +25,14 @@
                             </svg>
                         </div>
                         <a href="{{ route('admin.users.index') }}"
-                            class="text-xs font-bold text-indigo-600 uppercase hover:underline">Kelola Akses</a>
+                            class="text-xs font-bold text-indigo-600 uppercase hover:underline">{{ __('Kelola Akses') }}</a>
                     </div>
                 </div>
 
                 <!-- Pelanggan Aktif -->
                 <div class="glass-card p-6 border-t-4 border-t-emerald-400 group">
-                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Pelanggan Aktif</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">{{ __('Pelanggan Aktif') }}
+                    </p>
                     <p class="text-4xl font-black text-gray-900">{{ $totalUsers }}</p>
                     <div class="mt-4 flex justify-between items-end">
                         <div
@@ -50,13 +44,14 @@
                             </svg>
                         </div>
                         <a href="{{ route('admin.users.index') }}"
-                            class="text-xs font-bold text-emerald-600 uppercase hover:underline">Lihat Admin</a>
+                            class="text-xs font-bold text-emerald-600 uppercase hover:underline">{{ __('Lihat Admin') }}</a>
                     </div>
                 </div>
 
                 <!-- Total Nilai Barang -->
                 <div class="glass-card p-6 border-t-4 border-t-amber-400 group">
-                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Total Nilai Barang</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">
+                        {{ __('Total Nilai Barang') }}</p>
                     <p class="text-3xl font-black text-gray-900 truncate"
                         title="Rp {{ number_format($totalEstimatedValue, 0, ',', '.') }}">
                         Rp {{ number_format($totalEstimatedValue, 0, ',', '.') }}
@@ -70,16 +65,18 @@
                                 </path>
                             </svg>
                         </div>
-                        <span class="text-xs font-bold text-gray-400 uppercase">{{ $totalItems }} barang</span>
+                        <span class="text-xs font-bold text-gray-400 uppercase">{{ $totalItems }}
+                            {{ __('barang') }}</span>
                     </div>
                 </div>
 
                 <!-- Warehouse Overview -->
                 <div class="glass-card p-6 border-t-4 border-t-slate-800 group">
-                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Ringkasan Gudang</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">
+                        {{ __('Ringkasan Gudang') }}</p>
                     <div class="flex gap-2 items-baseline">
                         <p class="text-4xl font-black text-gray-900">{{ $storedItems }}</p>
-                        <p class="text-xs font-bold text-gray-400 uppercase">aktif</p>
+                        <p class="text-xs font-bold text-gray-400 uppercase">{{ __('aktif') }}</p>
                     </div>
                     <div class="mt-4 flex justify-between items-end">
                         <div
@@ -91,7 +88,7 @@
                             </svg>
                         </div>
                         <a href="{{ route('admin.dashboard') }}"
-                            class="text-xs font-bold text-slate-800 uppercase hover:underline">Panel Kasir</a>
+                            class="text-xs font-bold text-slate-800 uppercase hover:underline">{{ __('Panel Kasir') }}</a>
                     </div>
                 </div>
             </div>
@@ -111,13 +108,14 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="font-bold text-gray-900 text-lg">Aktivitas Terbaru</h3>
-                                <p class="text-xs text-gray-500 font-medium">Log pergerakan barang terakhir</p>
+                                <h3 class="font-bold text-gray-900 text-lg">{{ __('Aktivitas Terbaru') }}</h3>
+                                <p class="text-xs text-gray-500 font-medium">{{ __('Log pergerakan barang terakhir') }}
+                                </p>
                             </div>
                         </div>
                         <a href="{{ route('superadmin.logs.items') }}"
                             class="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors">
-                            Log Lengkap &rarr;
+                            {{ __('Log Lengkap') }} &rarr;
                         </a>
                     </div>
                     <div class="overflow-x-auto">
@@ -125,12 +123,15 @@
                             <thead>
                                 <tr class="bg-gray-50/50 border-b border-gray-100">
                                     <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                        Barang</th>
-                                    <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Token
+                                        {{ __('Barang') }}
+                                    </th>
+                                    <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                        {{ __('Token') }}
                                     </th>
                                     <th
                                         class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">
-                                        Aksi</th>
+                                        {{ __('Aksi') }}
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-50">
@@ -140,7 +141,7 @@
                                             <div class="flex flex-col">
                                                 <span
                                                     class="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">{{ $item->name }}</span>
-                                                <span class="text-xs text-gray-500 font-medium">Pemilik:
+                                                <span class="text-xs text-gray-500 font-medium">{{ __('Pemilik') }}:
                                                     {{ $item->user->name }}</span>
                                             </div>
                                         </td>
@@ -163,8 +164,8 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="3" class="py-12 text-center text-gray-400 font-bold italic">Belum ada
-                                            barang terdaftar.</td>
+                                        <td colspan="3" class="py-12 text-center text-gray-400 font-bold italic">
+                                            {{ __('Belum ada barang terdaftar.') }}</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -178,7 +179,7 @@
                     <!-- Quick Actions: Super Admin Specific -->
                     <div class="glass-card p-0 overflow-hidden">
                         <div class="px-6 py-5 border-b border-gray-100">
-                            <h3 class="font-bold text-gray-900 text-lg">Kendali Sistem</h3>
+                            <h3 class="font-bold text-gray-900 text-lg">{{ __('Kendali Sistem') }}</h3>
                         </div>
                         <div class="p-6 space-y-4">
                             <a href="{{ route('superadmin.settings') }}"
@@ -194,8 +195,9 @@
                                     </svg>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="font-bold text-gray-900 text-base">Pengaturan Core</p>
-                                    <p class="text-gray-500 text-xs truncate mt-0.5">Konfigurasi sistem utama</p>
+                                    <p class="font-bold text-gray-900 text-base">{{ __('Pengaturan Core') }}</p>
+                                    <p class="text-gray-500 text-xs truncate mt-0.5">
+                                        {{ __('Konfigurasi sistem utama') }}</p>
                                 </div>
                             </a>
 
@@ -210,8 +212,9 @@
                                     </svg>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="font-bold text-gray-900 text-base">Kelola Semua Akun</p>
-                                    <p class="text-gray-500 text-xs truncate mt-0.5">Admin & Pelanggan Aktif</p>
+                                    <p class="font-bold text-gray-900 text-base">{{ __('Kelola Semua Akun') }}</p>
+                                    <p class="text-gray-500 text-xs truncate mt-0.5">{{ __('Admin & Pelanggan Aktif') }}
+                                    </p>
                                 </div>
                             </a>
                         </div>
@@ -219,11 +222,11 @@
 
                     <!-- Status Distribution: Aligned with Admin Dashboard UI -->
                     <div class="glass-card p-6 bg-gradient-to-br from-white to-gray-50/50">
-                        <h4 class="font-bold text-gray-900 text-lg mb-5">Distribusi Status Gudang</h4>
+                        <h4 class="font-bold text-gray-900 text-lg mb-5">{{ __('Distribusi Status Gudang') }}</h4>
                         <div class="space-y-5">
                             <div>
                                 <div class="flex justify-between text-sm mb-2">
-                                    <span class="font-bold text-gray-600">Terverifikasi (Stored)</span>
+                                    <span class="font-bold text-gray-600">{{ __('Stored') }}</span>
                                     <span class="font-bold text-gray-900">{{ $storedItems }}</span>
                                 </div>
                                 <div class="h-2.5 rounded-full bg-gray-100 overflow-hidden">
@@ -234,7 +237,7 @@
                             </div>
                             <div>
                                 <div class="flex justify-between text-sm mb-2">
-                                    <span class="font-bold text-gray-600">Menunggu (Pending)</span>
+                                    <span class="font-bold text-gray-600">{{ __('Pending') }}</span>
                                     <span class="font-bold text-gray-900">{{ $pendingItems }}</span>
                                 </div>
                                 <div class="h-2.5 rounded-full bg-gray-100 overflow-hidden">
@@ -245,7 +248,7 @@
                             </div>
                             <div>
                                 <div class="flex justify-between text-sm mb-2">
-                                    <span class="font-bold text-gray-600">Telah Diambil (Retrieved)</span>
+                                    <span class="font-bold text-gray-600">{{ __('Retrieved') }}</span>
                                     <span class="font-bold text-gray-900">{{ $retrievedItems }}</span>
                                 </div>
                                 <div class="h-2.5 rounded-full bg-gray-100 overflow-hidden">

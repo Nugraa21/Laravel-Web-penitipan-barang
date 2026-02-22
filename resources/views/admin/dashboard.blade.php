@@ -2,12 +2,12 @@
     <x-slot name="header">
         <div class="flex justify-between items-center pb-4 border-b border-gray-200">
             <div>
-                <h2 class="font-black text-3xl text-gray-900 tracking-tight">Admin Overview</h2>
-                <p class="text-gray-500 font-medium text-sm mt-1">Statistik sistem penitipan — realtime</p>
+                <h2 class="font-black text-3xl text-gray-900 tracking-tight">{{ __('Admin Overview') }}</h2>
+                <p class="text-gray-500 font-medium text-sm mt-1">{{ __('Statistik sistem penitipan — realtime') }}</p>
             </div>
             <span
                 class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-orange-600 bg-orange-100/50 border border-orange-200 rounded-full shadow-sm backdrop-blur-md">
-                <span class="w-2.5 h-2.5 bg-orange-500 rounded-full animate-pulse"></span> Admin Mode
+                <span class="w-2.5 h-2.5 bg-orange-500 rounded-full animate-pulse"></span> {{ __('Admin Mode') }}
             </span>
         </div>
     </x-slot>
@@ -19,7 +19,8 @@
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Total Users -->
                 <div class="glass-card p-6 border-t-4 border-t-orange-400">
-                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Total Pengguna</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">{{ __('Total Pengguna') }}
+                    </p>
                     <p class="text-4xl font-black text-gray-900">{{ $totalUsers }}</p>
                     <div class="mt-4 flex justify-between items-end">
                         <div
@@ -30,13 +31,14 @@
                                 </path>
                             </svg>
                         </div>
-                        <span class="text-xs font-bold text-gray-400 uppercase">akun terdaftar</span>
+                        <span class="text-xs font-bold text-gray-400 uppercase">{{ __('akun terdaftar') }}</span>
                     </div>
                 </div>
 
                 <!-- Total Items -->
                 <div class="glass-card p-6 border-t-4 border-t-blue-400">
-                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Total Barang</p>
+                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">{{ __('Total Barang') }}
+                    </p>
                     <p class="text-4xl font-black text-gray-900">{{ $totalItems }}</p>
                     <div class="mt-4 flex justify-between items-end">
                         <div class="w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 text-blue-500">
@@ -45,13 +47,14 @@
                                     d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                             </svg>
                         </div>
-                        <span class="text-xs font-bold text-gray-400 uppercase">dititipkan</span>
+                        <span class="text-xs font-bold text-gray-400 uppercase">{{ __('dititipkan') }}</span>
                     </div>
                 </div>
 
                 <!-- Pending -->
                 <div class="glass-card p-6 border-t-4 border-t-red-400">
-                    <p class="text-sm font-bold text-red-500 uppercase tracking-wider mb-1">Perlu Verifikasi</p>
+                    <p class="text-sm font-bold text-red-500 uppercase tracking-wider mb-1">{{ __('Perlu Verifikasi') }}
+                    </p>
                     <p class="text-4xl font-black text-gray-900">{{ $pendingItems }}</p>
                     <div class="mt-4 flex justify-between items-end">
                         <div class="w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-red-500">
@@ -62,17 +65,17 @@
                         </div>
                         @if($pendingItems > 0)
                             <span
-                                class="text-xs font-bold text-white uppercase bg-red-500 px-2 py-1 rounded-full animate-pulse shadow-sm shadow-red-500/50">Perlu
-                                aksi!</span>
+                                class="text-xs font-bold text-white uppercase bg-red-500 px-2 py-1 rounded-full animate-pulse shadow-sm shadow-red-500/50">{{ __('Perlu aksi!') }}</span>
                         @else
-                            <span class="text-xs font-bold text-gray-400 uppercase">semua beres</span>
+                            <span class="text-xs font-bold text-gray-400 uppercase">{{ __('semua beres') }}</span>
                         @endif
                     </div>
                 </div>
 
                 <!-- Stored -->
                 <div class="glass-card p-6 border-t-4 border-t-emerald-400">
-                    <p class="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-1">Disimpan</p>
+                    <p class="text-sm font-bold text-emerald-500 uppercase tracking-wider mb-1">
+                        {{ __('Aman Disimpan') }}</p>
                     <p class="text-4xl font-black text-gray-900">{{ $storedItems }}</p>
                     <div class="mt-4 flex justify-between items-end">
                         <div
@@ -82,7 +85,7 @@
                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <span class="text-xs font-bold text-gray-400 uppercase">dalam gudang</span>
+                        <span class="text-xs font-bold text-gray-400 uppercase">{{ __('dalam gudang') }}</span>
                     </div>
                 </div>
             </div>
@@ -103,8 +106,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="font-bold text-gray-900 text-lg">Barang Terbaru</h3>
-                                <p class="text-xs text-gray-500 font-medium">10 barang terakhir masuk</p>
+                                <h3 class="font-bold text-gray-900 text-lg">{{ __('Barang Terbaru') }}</h3>
+                                <p class="text-xs text-gray-500 font-medium">{{ __('10 barang terakhir masuk') }}</p>
                             </div>
                         </div>
                         <a href="{{ route('dashboard') }}"
@@ -117,16 +120,21 @@
                             <thead>
                                 <tr class="bg-gray-50/50 border-b border-gray-100">
                                     <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                        Barang</th>
-                                    <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                        Pemilik</th>
-                                    <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Nilai
+                                        {{ __('Barang') }}
                                     </th>
                                     <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                        Status</th>
+                                        {{ __('Pemilik') }}
+                                    </th>
+                                    <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                        {{ __('Nilai') }}
+                                    </th>
+                                    <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                        {{ __('Status') }}
+                                    </th>
                                     <th
                                         class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">
-                                        Aksi</th>
+                                        {{ __('Aksi') }}
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-50">
@@ -156,7 +164,7 @@
                                         <td class="py-4 px-6">
                                             <span
                                                 class="badge badge-{{ $item->status === 'pending' ? 'pending' : ($item->status === 'stored' ? 'stored' : 'retrieved') }}">
-                                                {{ ucfirst($item->status) }}
+                                                {{ __(ucfirst($item->status)) }}
                                             </span>
                                         </td>
                                         <td class="py-4 px-6 text-right">
@@ -190,9 +198,8 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="py-10 text-center text-gray-500 font-medium text-sm">Belum
-                                            ada
-                                            data barang masuk.</td>
+                                        <td colspan="5" class="py-10 text-center text-gray-500 font-medium text-sm">
+                                            {{ __('Belum ada data barang masuk.') }}</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -205,7 +212,7 @@
                     <!-- Quick Actions -->
                     <div class="glass-card p-0 overflow-hidden">
                         <div class="px-6 py-5 border-b border-gray-100">
-                            <h3 class="font-bold text-gray-900 text-lg">Aksi Cepat</h3>
+                            <h3 class="font-bold text-gray-900 text-lg">{{ __('Aksi Cepat') }}</h3>
                         </div>
                         <div class="p-6 space-y-4">
                             <a href="{{ route('admin.users.index') }}"
@@ -219,8 +226,9 @@
                                     </svg>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="font-bold text-gray-900 text-base">Kelola Pengguna</p>
-                                    <p class="text-gray-500 text-xs truncate mt-0.5">Lihat & atur akun user</p>
+                                    <p class="font-bold text-gray-900 text-base">{{ __('Kelola Pengguna') }}</p>
+                                    <p class="text-gray-500 text-xs truncate mt-0.5">{{ __('Lihat & atur akun user') }}
+                                    </p>
                                 </div>
                             </a>
 
@@ -235,8 +243,9 @@
                                     </svg>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="font-bold text-gray-900 text-base">Semua Barang</p>
-                                    <p class="text-gray-500 text-xs truncate mt-0.5">Update & verifikasi status</p>
+                                    <p class="font-bold text-gray-900 text-base">{{ __('Semua Barang') }}</p>
+                                    <p class="text-gray-500 text-xs truncate mt-0.5">
+                                        {{ __('Update & verifikasi status') }}</p>
                                 </div>
                             </a>
                         </div>
@@ -244,11 +253,11 @@
 
                     <!-- Status Distribution -->
                     <div class="glass-card p-6 bg-gradient-to-br from-white/40 to-white/10">
-                        <h4 class="font-bold text-gray-900 text-lg mb-5">Distribusi Status</h4>
+                        <h4 class="font-bold text-gray-900 text-lg mb-5">{{ __('Distribusi Status') }}</h4>
                         <div class="space-y-5">
                             <div>
                                 <div class="flex justify-between text-sm mb-2">
-                                    <span class="font-bold text-gray-600">Pending</span>
+                                    <span class="font-bold text-gray-600">{{ __('Pending') }}</span>
                                     <span class="font-bold text-gray-900">{{ $pendingItems }}</span>
                                 </div>
                                 <div class="h-2.5 rounded-full bg-gray-100 overflow-hidden">
@@ -259,7 +268,7 @@
                             </div>
                             <div>
                                 <div class="flex justify-between text-sm mb-2">
-                                    <span class="font-bold text-gray-600">Disimpan</span>
+                                    <span class="font-bold text-gray-600">{{ __('Aman Disimpan') }}</span>
                                     <span class="font-bold text-gray-900">{{ $storedItems }}</span>
                                 </div>
                                 <div class="h-2.5 rounded-full bg-gray-100 overflow-hidden">
@@ -270,7 +279,7 @@
                             </div>
                             <div>
                                 <div class="flex justify-between text-sm mb-2">
-                                    <span class="font-bold text-gray-600">Diambil</span>
+                                    <span class="font-bold text-gray-600">{{ __('Telah Diambil') }}</span>
                                     <span
                                         class="font-bold text-gray-900">{{ $totalItems - $pendingItems - $storedItems }}</span>
                                 </div>
