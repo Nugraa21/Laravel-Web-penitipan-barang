@@ -15,7 +15,7 @@ class ChatController extends Controller
             abort(403);
         }
 
-        $messages = $item->messages()->with('sender')->orderBy('created_at', 'asc')->get();
+        $messages = $item->messages()->with('sender')->orderBy('created_at', 'desc')->get();
 
         // Mark as read
         $item->messages()->where('sender_id', '!=', $user->id)->update(['is_read' => true]);

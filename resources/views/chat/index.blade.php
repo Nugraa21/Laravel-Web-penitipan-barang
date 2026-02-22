@@ -35,9 +35,8 @@
             </div>
 
             <!-- Chat Messages Area -->
-            <!-- flex-1 and overflow-y-auto makes this container scrollable -->
-            <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 relative bg-gray-50/30" id="chat-messages"
-                style="scroll-behavior: smooth;">
+            <!-- flex-1 and overflow-y-auto makes this container scrollable. flex flex-col-reverse anchors it to the bottom natively -->
+            <div class="flex-1 overflow-y-auto p-4 md:p-6 relative bg-gray-50/30 flex flex-col-reverse gap-4" id="chat-messages">
 
                 @forelse($messages as $msg)
                     @php
@@ -99,29 +98,20 @@
     </div>
 
     <script>
-        // Auto-scroll to bottom of chat area securely
+        // Auto-scroll is no longer needed because flex-col-reverse natively pins to bottom.
         document.addEventListener("DOMContentLoaded", function () {
-            const chatBox = document.getElementById("chat-messages");
-            if (chatBox) {
-                // Scroll immediately
-                chatBox.scrollTop = chatBox.scrollHeight;
-
-                // Allow a slight delay for fonts/styles to render
-                setTimeout(() => {
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }, 100);
-            }
-
             // Also submit form on Enter (but allow Shift+Enter for new line)
             const msgInput = document.getElementById("message-input");
-            msgInput.addEventListener("keydown", function (e) {
-                if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    if (this.value.trim() !== '') {
-                        document.getElementById("chat-form").submit();
+            if (msgInput) {
+                msgInput.addEventListener("keydown", function(e) {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        if(this.value.trim() !== '') {
+                            document.getElementById("chat-form").submit();
+                        }
                     }
-                }
-            });
+                });
+            }
         });
     </script>
 </x-app-layout>
