@@ -213,17 +213,29 @@
                 {{ __('Transaksi Barang') }}
             </a>
 
-            <a href="{{ route('superadmin.logs') ?? '#' }}"
-                class="admin-nav-item {{ request()->routeIs('superadmin.logs*') ? 'active' : '' }}">
+            <a href="{{ route('superadmin.logs.items') }}"
+                class="admin-nav-item {{ request()->routeIs('superadmin.logs.items') ? 'active' : '' }}">
                 <svg class="admin-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m3-3h.01M9 13h.01M9 17h.01M13 13h3m-3 4h3">
+                    </path>
                 </svg>
-                {{ __('Log Sistem') }}
+                {{ __('Log Transaksi Barang') }}
+            </a>
+
+            <a href="{{ route('superadmin.logs.users') }}"
+                class="admin-nav-item {{ request()->routeIs('superadmin.logs.users') ? 'active' : '' }}">
+                <svg class="admin-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                    </path>
+                </svg>
+                {{ __('Log Aktivitas Pengguna') }}
             </a>
 
             <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6">
-                {{ __('Manajemen Akses') }}</p>
+                {{ __('Manajemen Akses') }}
+            </p>
 
             <a href="{{ route('admin.users.index') }}"
                 class="admin-nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
@@ -317,7 +329,8 @@
                         <div class="text-right hidden sm:block">
                             <p class="text-sm font-bold text-gray-900 leading-none mb-1">{{ Auth::user()->name }}</p>
                             <p class="text-[10px] font-bold tracking-wider text-indigo-600 uppercase">
-                                {{ Auth::user()->role }}</p>
+                                {{ Auth::user()->role }}
+                            </p>
                         </div>
                         @if(Auth::user()->avatar)
                             <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="Avatar"

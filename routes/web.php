@@ -72,7 +72,8 @@ Route::middleware(['auth', 'verified', 'super_admin'])->prefix('superadmin')->na
 
     // Transactions & Logs specifically for Super Admin
     Route::get('/transactions', [\App\Http\Controllers\SuperAdmin\TransactionController::class, 'index'])->name('transactions');
-    Route::get('/logs', [\App\Http\Controllers\SuperAdmin\LogController::class, 'index'])->name('logs');
+    Route::get('/logs/items', [\App\Http\Controllers\SuperAdmin\LogController::class, 'itemLogs'])->name('logs.items');
+    Route::get('/logs/users', [\App\Http\Controllers\SuperAdmin\LogController::class, 'userLogs'])->name('logs.users');
 });
 
 require __DIR__ . '/auth.php';

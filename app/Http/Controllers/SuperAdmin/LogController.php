@@ -9,11 +9,15 @@ use App\Models\UserLog;
 
 class LogController extends Controller
 {
-    public function index(Request $request)
+    public function itemLogs(Request $request)
     {
-        $itemLogs = ItemHistory::with(['item', 'user'])->latest()->paginate(25, ['*'], 'item_page');
-        $userLogs = UserLog::with(['user'])->latest()->paginate(25, ['*'], 'user_page');
+        $itemLogs = ItemHistory::with(['item', 'user'])->latest()->paginate(25);
+        return view('superadmin.logs.items', compact('itemLogs'));
+    }
 
-        return view('superadmin.logs', compact('itemLogs', 'userLogs'));
+    public function userLogs(Request $request)
+    {
+        $userLogs = UserLog::with(['user'])->latest()->paginate(25);
+        return view('superadmin.logs.users', compact('userLogs'));
     }
 }

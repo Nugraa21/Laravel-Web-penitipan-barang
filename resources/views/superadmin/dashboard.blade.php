@@ -1,193 +1,170 @@
 <x-superadmin-layout>
     <x-slot name="header">
-        <div class="flex flex-col md:flex-row md:justify-between md:items-center pb-4 border-b border-gray-200 gap-4">
+        <div class="flex justify-between items-center pb-4 border-b border-gray-200">
             <div>
                 <h2 class="font-black text-3xl text-gray-900 tracking-tight">Super Admin Dashboard</h2>
                 <p class="text-gray-500 font-medium text-sm mt-1">Sistem Kendali Utama & Overview Menyeluruh</p>
             </div>
-            <div class="hidden lg:flex gap-2">
-                <a href="{{ route('superadmin.settings') }}"
-                    class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-xl shadow-sm transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                        </path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                    {{ __('Settings') }}
-                </a>
-            </div>
+            <span
+                class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-indigo-600 bg-indigo-100/50 border border-indigo-200 rounded-full shadow-sm backdrop-blur-md">
+                <span class="w-2.5 h-2.5 bg-indigo-500 rounded-full animate-pulse"></span> Root Control
+            </span>
         </div>
     </x-slot>
 
     <div class="py-12 lg:py-16 my-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            <!-- AdminLTE Style Widgets / Fast Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Stat Cards: Aligned with Admin Dashboard UI -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
 
-                <!-- Super Admins -->
-                <div
-                    class="relative overflow-hidden rounded-2xl bg-indigo-600 p-6 shadow-lg shadow-indigo-600/20 text-white group">
-                    <div
-                        class="absolute -right-4 -top-4 opacity-20 group-hover:scale-110 transition-transform duration-500">
-                        <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <div class="relative z-10">
-                        <p class="text-indigo-100 font-bold uppercase tracking-wider text-xs mb-1">Super Admins</p>
-                        <h3 class="text-4xl font-black">{{ $totalSuperAdmins }}</h3>
-                        <a href="{{ route('admin.users.index') }}"
-                            class="mt-4 inline-flex items-center text-sm font-semibold text-indigo-100 hover:text-white group-hover:gap-2 transition-all">
-                            Kelola Akses <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                <!-- Admin Biasa -->
+                <div class="glass-card p-6 border-t-4 border-t-indigo-400 group">
+                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Admin Biasa</p>
+                    <p class="text-4xl font-black text-gray-900">{{ $totalAdmins }}</p>
+                    <div class="mt-4 flex justify-between items-end">
+                        <div
+                            class="w-10 h-10 rounded-full flex items-center justify-center bg-indigo-100 text-indigo-500 group-hover:scale-110 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                                </path>
                             </svg>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Admins -->
-                <div
-                    class="relative overflow-hidden rounded-2xl bg-teal-500 p-6 shadow-lg shadow-teal-500/20 text-white group">
-                    <div
-                        class="absolute -right-4 -top-4 opacity-20 group-hover:scale-110 transition-transform duration-500">
-                        <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <div class="relative z-10">
-                        <p class="text-teal-100 font-bold uppercase tracking-wider text-xs mb-1">Admin Biasa</p>
-                        <h3 class="text-4xl font-black">{{ $totalAdmins }}</h3>
-                        <a href="{{ route('admin.users.index') }}"
-                            class="mt-4 inline-flex items-center text-sm font-semibold text-teal-100 hover:text-white group-hover:gap-2 transition-all">
-                            Lihat Admin <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Users -->
-                <div
-                    class="relative overflow-hidden rounded-2xl bg-orange-500 p-6 shadow-lg shadow-orange-500/20 text-white group">
-                    <div
-                        class="absolute -right-4 -top-4 opacity-20 group-hover:scale-110 transition-transform duration-500">
-                        <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z">
-                            </path>
-                        </svg>
-                    </div>
-                    <div class="relative z-10">
-                        <p class="text-orange-100 font-bold uppercase tracking-wider text-xs mb-1">Pelanggan Aktif</p>
-                        <h3 class="text-4xl font-black">{{ $totalUsers }}</h3>
-                        <a href="{{ route('admin.users.index') }}"
-                            class="mt-4 inline-flex items-center text-sm font-semibold text-orange-100 hover:text-white group-hover:gap-2 transition-all">
-                            Daftar Pelanggan <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Items & Value -->
-                <div
-                    class="relative overflow-hidden rounded-2xl bg-slate-800 p-6 shadow-lg shadow-slate-900/20 text-white group">
-                    <div
-                        class="absolute -right-4 -top-4 opacity-20 group-hover:scale-110 transition-transform duration-500">
-                        <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm4.707 3.707a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L8.414 9H10a3 3 0 013 3v1a1 1 0 102 0v-1a5 5 0 00-5-5H8.414l1.293-1.293z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <div class="relative z-10">
-                        <p class="text-slate-400 font-bold uppercase tracking-wider text-xs mb-1">Total Nilai Barang</p>
-                        <h3 class="text-3xl font-black truncate"
-                            title="Rp {{ number_format($totalEstimatedValue, 0, ',', '.') }}">Rp
-                            {{ number_format($totalEstimatedValue, 0, ',', '.') }}
-                        </h3>
-                        <div class="mt-4 flex items-center gap-2 text-sm font-semibold text-slate-300">
-                            <span class="px-2 py-0.5 bg-white/10 rounded-md">{{ $totalItems }} Barang</span>
                         </div>
+                        <a href="{{ route('admin.users.index') }}"
+                            class="text-xs font-bold text-indigo-600 uppercase hover:underline">Kelola Akses</a>
                     </div>
                 </div>
 
+                <!-- Pelanggan Aktif -->
+                <div class="glass-card p-6 border-t-4 border-t-emerald-400 group">
+                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Pelanggan Aktif</p>
+                    <p class="text-4xl font-black text-gray-900">{{ $totalUsers }}</p>
+                    <div class="mt-4 flex justify-between items-end">
+                        <div
+                            class="w-10 h-10 rounded-full flex items-center justify-center bg-emerald-100 text-emerald-500 group-hover:scale-110 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <a href="{{ route('admin.users.index') }}"
+                            class="text-xs font-bold text-emerald-600 uppercase hover:underline">Lihat Admin</a>
+                    </div>
+                </div>
+
+                <!-- Total Nilai Barang -->
+                <div class="glass-card p-6 border-t-4 border-t-amber-400 group">
+                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Total Nilai Barang</p>
+                    <p class="text-3xl font-black text-gray-900 truncate"
+                        title="Rp {{ number_format($totalEstimatedValue, 0, ',', '.') }}">
+                        Rp {{ number_format($totalEstimatedValue, 0, ',', '.') }}
+                    </p>
+                    <div class="mt-4 flex justify-between items-end">
+                        <div
+                            class="w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 text-amber-500 group-hover:scale-110 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-gray-400 uppercase">{{ $totalItems }} barang</span>
+                    </div>
+                </div>
+
+                <!-- Warehouse Overview -->
+                <div class="glass-card p-6 border-t-4 border-t-slate-800 group">
+                    <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Ringkasan Gudang</p>
+                    <div class="flex gap-2 items-baseline">
+                        <p class="text-4xl font-black text-gray-900">{{ $storedItems }}</p>
+                        <p class="text-xs font-bold text-gray-400 uppercase">aktif</p>
+                    </div>
+                    <div class="mt-4 flex justify-between items-end">
+                        <div
+                            class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-100 text-slate-800 group-hover:scale-110 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                                </path>
+                            </svg>
+                        </div>
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="text-xs font-bold text-slate-800 uppercase hover:underline">Panel Kasir</a>
+                    </div>
+                </div>
             </div>
 
-            <!-- Main Split Layout -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+            <!-- Main Grid: Table + Sidebar -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                <!-- Left Column (Recent Activity) -->
-                <div class="lg:col-span-2 glass-card p-0 flex flex-col">
-                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                <!-- Recent Item Activity: Aligned with Admin Dashboard UI -->
+                <div class="lg:col-span-2 glass-card p-0 overflow-hidden flex flex-col">
+                    <div class="flex justify-between items-center px-6 py-5 border-b border-gray-100">
                         <div class="flex items-center gap-3">
                             <div
-                                class="w-10 h-10 rounded-xl bg-gray-100 text-gray-700 flex items-center justify-center">
+                                class="w-10 h-10 rounded-xl bg-gray-100 text-gray-800 flex items-center justify-center">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
-                            <h3 class="font-bold text-gray-900 text-lg">Aktivitas Penitipan Terakhir</h3>
+                            <div>
+                                <h3 class="font-bold text-gray-900 text-lg">Aktivitas Terbaru</h3>
+                                <p class="text-xs text-gray-500 font-medium">Log pergerakan barang terakhir</p>
+                            </div>
                         </div>
-                        <a href="{{ route('dashboard') }}"
-                            class="text-sm rounded-lg bg-gray-50 hover:bg-gray-100 px-3 py-1.5 font-bold text-gray-700 transition">Semua
-                            Barang</a>
+                        <a href="{{ route('superadmin.logs.items') }}"
+                            class="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors">
+                            Log Lengkap &rarr;
+                        </a>
                     </div>
-
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr
-                                    class="bg-gray-50/50 border-b border-gray-100 text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                    <th class="py-4 px-6 w-1/3">Barang & Pemilik</th>
-                                    <th class="py-4 px-6">Token</th>
-                                    <th class="py-4 px-6">Status</th>
-                                    <th class="py-4 px-6 text-right">Detail</th>
+                                <tr class="bg-gray-50/50 border-b border-gray-100">
+                                    <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                        Barang</th>
+                                    <th class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider">Token
+                                    </th>
+                                    <th
+                                        class="py-4 px-6 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">
+                                        Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-50">
                                 @forelse($recentItems as $item)
-                                    <tr class="hover:bg-white/40 transition-colors">
+                                    <tr class="hover:bg-white/40 transition-colors group">
                                         <td class="py-4 px-6">
                                             <div class="flex flex-col">
-                                                <span class="font-bold text-gray-900">{{ $item->name }}</span>
-                                                <span class="text-xs text-gray-500 mt-0.5">Milik:
+                                                <span
+                                                    class="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">{{ $item->name }}</span>
+                                                <span class="text-xs text-gray-500 font-medium">Pemilik:
                                                     {{ $item->user->name }}</span>
                                             </div>
                                         </td>
-                                        <td class="py-4 px-6">
-                                            <code
-                                                class="px-2 py-1 bg-gray-100 rounded text-xs font-mono font-bold">{{ $item->receipt_token }}</code>
-                                        </td>
-                                        <td class="py-4 px-6">
+                                        <td class="py-4 px-6 font-mono text-xs font-bold text-indigo-600">
                                             <span
-                                                class="badge badge-{{ $item->status === 'pending' ? 'pending' : ($item->status === 'stored' ? 'stored' : 'retrieved') }}">
-                                                {{ ucfirst($item->status) }}
-                                            </span>
+                                                class="px-2 py-1 bg-indigo-50 border border-indigo-100 rounded-md">{{ $item->receipt_token }}</span>
                                         </td>
                                         <td class="py-4 px-6 text-right">
                                             <a href="{{ route('items.show', $item) }}"
-                                                class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-bold text-sm">
-                                                Lihat &rarr;
+                                                class="inline-flex p-2 text-gray-400 hover:text-indigo-600 transition-colors bg-white rounded-lg shadow-sm border border-gray-100 hover:border-indigo-200">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                                    </path>
+                                                </svg>
                                             </a>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="py-8 text-center text-gray-400">Belum ada barang terdaftar di
-                                            seluruh sistem.</td>
+                                        <td colspan="3" class="py-12 text-center text-gray-400 font-bold italic">Belum ada
+                                            barang terdaftar.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -195,73 +172,92 @@
                     </div>
                 </div>
 
-                <!-- Right Column (System Integrity) -->
+                <!-- Right Column: Distribution & Quick Actions -->
                 <div class="space-y-6">
-                    <div class="glass-card p-6">
-                        <h4 class="font-bold text-gray-900 text-lg mb-4 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                </path>
-                            </svg>
-                            Sistem Gudang
-                        </h4>
 
-                        <div class="space-y-4">
-                            <div
-                                class="flex items-center justify-between p-4 bg-red-50/50 border border-red-100 rounded-xl">
-                                <div>
-                                    <p class="text-xs font-bold text-red-600 uppercase">Perlu Verifikasi</p>
-                                    <p class="text-2xl font-black text-gray-900 mt-1">{{ $pendingItems }}</p>
-                                </div>
+                    <!-- Quick Actions: Super Admin Specific -->
+                    <div class="glass-card p-0 overflow-hidden">
+                        <div class="px-6 py-5 border-b border-gray-100">
+                            <h3 class="font-bold text-gray-900 text-lg">Kendali Sistem</h3>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <a href="{{ route('superadmin.settings') }}"
+                                class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-white/50 hover:bg-white hover:shadow-md transition-all group">
                                 <div
-                                    class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-500">
+                                    class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-amber-100 text-amber-600 group-hover:scale-110 transition-transform">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                                        </path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     </svg>
                                 </div>
-                            </div>
-
-                            <div
-                                class="flex items-center justify-between p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl">
-                                <div>
-                                    <p class="text-xs font-bold text-emerald-600 uppercase">Aman Disimpan</p>
-                                    <p class="text-2xl font-black text-gray-900 mt-1">{{ $storedItems }}</p>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-bold text-gray-900 text-base">Pengaturan Core</p>
+                                    <p class="text-gray-500 text-xs truncate mt-0.5">Konfigurasi sistem utama</p>
                                 </div>
+                            </a>
+
+                            <a href="{{ route('admin.users.index') }}"
+                                class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-white/50 hover:bg-white hover:shadow-md transition-all group">
                                 <div
-                                    class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-500">
+                                    class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-indigo-100 text-indigo-600 group-hover:scale-110 transition-transform">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <div
-                                class="flex items-center justify-between p-4 bg-gray-50/50 border border-gray-200 rounded-xl">
-                                <div>
-                                    <p class="text-xs font-bold text-gray-600 uppercase">Telah Diambil</p>
-                                    <p class="text-2xl font-black text-gray-900 mt-1">{{ $retrievedItems }}</p>
-                                </div>
-                                <div
-                                    class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4">
+                                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
                                         </path>
                                     </svg>
                                 </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-bold text-gray-900 text-base">Kelola Semua Akun</p>
+                                    <p class="text-gray-500 text-xs truncate mt-0.5">Admin & Pelanggan Aktif</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Status Distribution: Aligned with Admin Dashboard UI -->
+                    <div class="glass-card p-6 bg-gradient-to-br from-white to-gray-50/50">
+                        <h4 class="font-bold text-gray-900 text-lg mb-5">Distribusi Status Gudang</h4>
+                        <div class="space-y-5">
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="font-bold text-gray-600">Terverifikasi (Stored)</span>
+                                    <span class="font-bold text-gray-900">{{ $storedItems }}</span>
+                                </div>
+                                <div class="h-2.5 rounded-full bg-gray-100 overflow-hidden">
+                                    <div class="h-full bg-emerald-500 rounded-full"
+                                        style="width: {{ $totalItems > 0 ? round($storedItems / $totalItems * 100) : 0 }}%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="font-bold text-gray-600">Menunggu (Pending)</span>
+                                    <span class="font-bold text-gray-900">{{ $pendingItems }}</span>
+                                </div>
+                                <div class="h-2.5 rounded-full bg-gray-100 overflow-hidden">
+                                    <div class="h-full bg-red-500 rounded-full"
+                                        style="width: {{ $totalItems > 0 ? round($pendingItems / $totalItems * 100) : 0 }}%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="font-bold text-gray-600">Telah Diambil (Retrieved)</span>
+                                    <span class="font-bold text-gray-900">{{ $retrievedItems }}</span>
+                                </div>
+                                <div class="h-2.5 rounded-full bg-gray-100 overflow-hidden">
+                                    <div class="h-full bg-indigo-500 rounded-full"
+                                        style="width: {{ $totalItems > 0 ? round($retrievedItems / $totalItems * 100) : 0 }}%">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <a href="{{ route('admin.dashboard') }}"
-                            class="mt-4 w-full flex items-center justify-center gap-2 py-3 bg-white border border-gray-200 hover:bg-gray-50 rounded-xl text-sm font-bold transition-colors">
-                            Buka Dashboard Kasir
-                        </a>
                     </div>
-                </div>
 
+                </div>
             </div>
 
         </div>
