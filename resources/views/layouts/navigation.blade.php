@@ -107,14 +107,12 @@
                     </button>
 
                     <div x-show="dropOpen" @click.outside="dropOpen = false"
-                        style="display: none; top: calc(100% + 24px); right: 0;"
+                        style="display: none; top: 72px; right: 1.5rem; position: fixed;"
                         x-transition:enter="transition ease-out duration-200"
-                        x-transition:enter-start="opacity-0 -translate-y-2 scale-95"
-                        x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                         x-transition:leave="transition ease-in duration-150"
-                        x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                        x-transition:leave-end="opacity-0 -translate-y-2 scale-95"
-                        class="absolute w-56 glass-card border border-white overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.1)] z-[100]">
+                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                        class="w-56 glass-card border border-white overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.1)] z-[100]">
                         <!-- User Info Header -->
                         <div class="px-5 py-4 border-b border-white/30 bg-white/20">
                             <p class="text-sm font-black text-gray-900 truncate uppercase">{{ Auth::user()->name }}</p>

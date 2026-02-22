@@ -45,6 +45,33 @@ class ChatController extends Controller
         return view('chat.index', compact('item', 'messages'));
     }
 
+    public function poll(Request $request, Item $item)
+    {
+        $user = $request->user();
+        if ($user->role !== 'admin' && $user->id !== $item->user_id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $lastId = $request->input('last_id', 0);
+        $messages = $item->messages()
+            ->with('sender')
+            ->where('id', '>', $lastId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        if ($messages->isEmpty()) {
+            return response()->json(['html' => '', 'last_id' => $lastId]);
+        }
+
+        // Mark as read
+        $item->messages()->where('sender_id', '!=', $user->id)->where('id', '>', $lastId)->update(['is_read' => true]);
+
+        $html = view('chat.partials.messages', compact('messages'))->render();
+        $newLastId = $messages->first()->id;
+
+        return response()->json(['html' => $html, 'last_id' => $newLastId]);
+    }
+
     public function store(Request $request, Item $item)
     {
         $user = $request->user();

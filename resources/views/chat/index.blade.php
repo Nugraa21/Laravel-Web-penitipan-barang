@@ -36,7 +36,8 @@
 
             <!-- Chat Messages Area -->
             <!-- flex-1 and overflow-y-auto makes this container scrollable. flex flex-col-reverse anchors it to the bottom natively -->
-            <div class="flex-1 overflow-y-auto p-4 md:p-6 relative bg-gray-50/30 flex flex-col-reverse gap-4" id="chat-messages">
+            <div class="flex-1 overflow-y-auto p-4 md:p-6 relative bg-gray-50/30 flex flex-col-reverse gap-4"
+                id="chat-messages">
 
                 @forelse($messages as $msg)
                     @php
@@ -56,7 +57,8 @@
                         </div>
                     </div>
                 @empty
-                    <div class="h-full flex flex-col items-center justify-center text-gray-400 space-y-3">
+                    <div id="empty-chat-state"
+                        class="h-full flex flex-col items-center justify-center text-gray-400 space-y-3 mt-auto mb-auto py-10">
                         <div
                             class="w-16 h-16 rounded-full bg-white/60 border border-white flex items-center justify-center shadow-inner">
                             <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,15 +105,33 @@
             // Also submit form on Enter (but allow Shift+Enter for new line)
             const msgInput = document.getElementById("message-input");
             if (msgInput) {
-                msgInput.addEventListener("keydown", function(e) {
+                msgInput.addEventListener("keydown", function (e) {
                     if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
-                        if(this.value.trim() !== '') {
+                        if (this.value.trim() !== '') {
                             document.getElementById("chat-form").submit();
                         }
                     }
                 });
             }
+
+            // Real-time polling
+            let lastMessageId = {{ $messages->first()->id ?? 0 }};
+            setInterval(() => {
+                fetch(`{{ route('chat.poll', $item) }}?last_id=${lastMessageId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.html) {
+                            const chatBox = document.getElementById("chat-messages");
+                            const emptyState = document.getElementById('empty-chat-state');
+                            if (emptyState) emptyState.remove();
+
+                            chatBox.insertAdjacentHTML('afterbegin', data.html);
+                            lastMessageId = data.last_id;
+                        }
+                    })
+                    .catch(err => console.error('Polling error:', err));
+            }, 3000);
         });
     </script>
 </x-app-layout>

@@ -18,14 +18,14 @@
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
-                <input type="text" placeholder="Cari percakapan..." class="bg-transparent border-none focus:ring-0 p-0 text-sm font-semibold w-full md:w-48 placeholder-gray-400">
+                <input type="text" id="search-inbox" placeholder="Cari percakapan..." class="bg-transparent border-none focus:ring-0 p-0 text-sm font-semibold w-full md:w-48 placeholder-gray-400">
             </div>
         </div>
 
         <!-- Chat List Card -->
         <div class="glass-card shadow-xl overflow-hidden rounded-2xl border border-white/60 mx-4 lg:mx-0">
             @if($items->count() > 0)
-                <div class="divide-y divide-gray-100/50">
+                <div class="divide-y divide-gray-100/50" id="chat-list">
                     @foreach($items as $item)
                         @php
                             $latestMessage = $item->messages->first();
@@ -90,4 +90,20 @@
             @endif
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-inbox');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const term = e.target.value.toLowerCase();
+                    const links = document.querySelectorAll('#chat-list > a');
+                    links.forEach(link => {
+                        const text = link.innerText.toLowerCase();
+                        link.style.display = text.includes(term) ? 'flex' : 'none';
+                    });
+                });
+            }
+        });
+    </script>
 </x-app-layout>
