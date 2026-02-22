@@ -10,9 +10,14 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+
+        if ($user->role === 'super_admin') {
+            return redirect()->route('superadmin.dashboard');
+        }
+
         $query = Item::query();
 
-        if ($user->role === 'admin') {
+        if (in_array($user->role, ['admin', 'super_admin'])) {
             $query->with('user')->latest();
         } else {
             $query->where('user_id', $user->id)->latest();
@@ -56,13 +61,20 @@ class ItemController extends Controller
         return view('dashboard', compact('items'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        if (in_array($request->user()->role, ['admin', 'super_admin'])) {
+            abort(403, __('Admin tidak dapat menitipkan barang.'));
+        }
         return view('items.create');
     }
 
     public function store(Request $request)
     {
+        if (in_array($request->user()->role, ['admin', 'super_admin'])) {
+            abort(403, __('Admin tidak dapat menitipkan barang.'));
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -127,31 +139,40 @@ class ItemController extends Controller
     {
         $user = $request->user();
 
-        if ($user->role === 'admin') {
-            $request->validate([
-                'status' => 'required|in:pending,stored,retrieved',
-            ]);
-
-            $oldStatus = $item->status;
-
-            $item->update([
-                'status' => $request->status,
-            ]);
-
-            if ($oldStatus !== $request->status) {
-                $item->histories()->create([
-                    'user_id' => $user->id,
-                    'action' => 'status_changed',
-                    'changes' => [
-                        'old_status' => $oldStatus,
-                        'new_status' => $request->status,
-                    ]
+        if (in_array($user->role, ['admin', 'super_admin'])) {
+            // Admin and Super Admin can update the status
+            if ($request->has('status')) {
+                $request->validate([
+                    'status' => 'required|in:pending,stored,retrieved',
                 ]);
+
+                $oldStatus = $item->status;
+                $item->status = $request->status;
+
+                if ($oldStatus !== $request->status) {
+                    $item->histories()->create([
+                        'user_id' => $user->id,
+                        'action' => 'status_changed',
+                        'changes' => [
+                            'old_status' => $oldStatus,
+                            'new_status' => $request->status,
+                        ]
+                    ]);
+                }
             }
 
+            // IF Super Admin, they can also update fields
+            if ($user->role === 'super_admin' && $request->has('name')) {
+                goto super_admin_fields;
+            }
+
+            $item->save();
             return redirect()->route('dashboard')->with('success', 'Status barang diperbarui.');
-        } else {
-            if ($item->status !== 'pending') {
+        }
+
+        super_admin_fields:
+        if ($user->role === 'user' || $user->role === 'super_admin') {
+            if ($item->status !== 'pending' && $user->role !== 'super_admin') {
                 return back()->withErrors(['message' => 'Hanya barang dengan status pending yang dapat diedit.']);
             }
 
@@ -227,7 +248,7 @@ class ItemController extends Controller
     public function print(Item $item)
     {
         // Pastikan hanya admin atau pemilik barang yang bisa print struk
-        if (auth()->user()->role !== 'admin' && auth()->user()->id !== $item->user_id) {
+        if (!in_array(auth()->user()->role, ['admin', 'super_admin']) && auth()->user()->id !== $item->user_id) {
             abort(403);
         }
 
@@ -270,7 +291,7 @@ class ItemController extends Controller
     public function markAsStored(Request $request, Item $item)
     {
         $user = $request->user();
-        if ($user->role !== 'admin') {
+        if (!in_array($user->role, ['admin', 'super_admin'])) {
             abort(403);
         }
 
@@ -294,7 +315,7 @@ class ItemController extends Controller
 
     private function authorizeAccess(Item $item)
     {
-        if (request()->user()->role !== 'admin' && request()->user()->id !== $item->user_id) {
+        if (!in_array(request()->user()->role, ['admin', 'super_admin']) && request()->user()->id !== $item->user_id) {
             abort(403);
         }
     }

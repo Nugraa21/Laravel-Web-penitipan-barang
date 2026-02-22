@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class IsAdmin
+class SuperAdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,10 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->user() || !in_array($request->user()->role, ['admin', 'super_admin'])) {
-            abort(403, 'Unauthorized action.');
+        if (auth()->check() && auth()->user()->role === 'super_admin') {
+            return $next($request);
         }
 
-        return $next($request);
+        abort(403, 'Anda tidak memiliki hak akses sebagai Super Admin.');
     }
 }

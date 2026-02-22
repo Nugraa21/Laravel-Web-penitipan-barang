@@ -63,4 +63,16 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::post('/scan', [AdminController::class, 'processScan'])->name('scan.process');
 });
 
+use App\Http\Controllers\SuperAdmin\SettingController;
+
+Route::middleware(['auth', 'verified', 'super_admin'])->prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\SuperAdmin\SuperAdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/settings', [SettingController::class, 'edit'])->name('settings');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    // Transactions & Logs specifically for Super Admin
+    Route::get('/transactions', [\App\Http\Controllers\SuperAdmin\TransactionController::class, 'index'])->name('transactions');
+    Route::get('/logs', [\App\Http\Controllers\SuperAdmin\LogController::class, 'index'])->name('logs');
+});
+
 require __DIR__ . '/auth.php';

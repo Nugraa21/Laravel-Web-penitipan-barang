@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\User;
+use App\Models\UserLog;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -52,6 +53,10 @@ class AdminController extends Controller
             'avatar' => 'nullable|image|max:2048',
         ]);
 
+        if ($request->role === 'admin' && auth()->user()->role !== 'super_admin') {
+            abort(403, 'Hanya Super Admin yang dapat membuat akses Admin.');
+        }
+
         $path = $request->hasFile('avatar') ? $request->file('avatar')->store('avatars', 'public') : null;
 
         User::create([
@@ -62,6 +67,13 @@ class AdminController extends Controller
             'password' => bcrypt($request->password),
             'role' => $request->role,
             'avatar' => $path,
+        ]);
+
+        UserLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'create_user',
+            'description' => "Created a new user account: {$request->email} with role {$request->role}.",
+            'ip_address' => $request->ip(),
         ]);
 
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan.');
@@ -87,6 +99,9 @@ class AdminController extends Controller
 
     public function editUser(User $user)
     {
+        if (in_array($user->role, ['admin', 'super_admin']) && auth()->user()->role !== 'super_admin') {
+            abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk mengedit administrator lain.');
+        }
         return view('admin.users.edit', compact('user'));
     }
 
@@ -100,6 +115,14 @@ class AdminController extends Controller
             'role' => 'required|in:admin,user',
             'avatar' => 'nullable|image|max:2048',
         ]);
+
+        if (in_array($user->role, ['admin', 'super_admin']) && auth()->user()->role !== 'super_admin') {
+            abort(403, 'Akses ditolak. Anda tidak memiliki izin untuk mengedit administrator lain.');
+        }
+
+        if ($request->role === 'admin' && auth()->user()->role !== 'super_admin') {
+            abort(403, 'Hanya Super Admin yang dapat menaikkan role menjadi Admin.');
+        }
 
         $data = $request->only(['name', 'email', 'phone', 'address', 'role']);
 
@@ -117,18 +140,36 @@ class AdminController extends Controller
 
         $user->update($data);
 
+        UserLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'update_user',
+            'description' => "Updated user account: {$user->email}.",
+            'ip_address' => $request->ip(),
+        ]);
+
         return redirect()->route('admin.users.index')->with('success', 'Data pengguna berhasil diperbarui.');
     }
 
     public function destroyUser(User $user)
     {
-        if ($user->role === 'admin') {
-            return back()->with('error', 'Tidak dapat menghapus admin.');
+        if (in_array($user->role, ['admin', 'super_admin']) && auth()->user()->role !== 'super_admin') {
+            return back()->with('error', 'Akses ditolak. Anda tidak memiliki izin menghapus administrator lain.');
+        }
+
+        if ($user->role === 'super_admin' && User::where('role', 'super_admin')->count() === 1) {
+            return back()->with('error', 'Tidak dapat menghapus Super Admin terakhir.');
         }
 
         if ($user->avatar) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($user->avatar);
         }
+
+        UserLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'delete_user',
+            'description' => "Deleted user account: {$user->email}.",
+            'ip_address' => request()->ip(),
+        ]);
 
         $user->delete();
         return back()->with('success', 'User ' . $user->name . ' berhasil dihapus.');

@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\UserLog;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -29,6 +30,17 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        UserLog::create([
+            'user_id' => $request->user()->id,
+            'action' => 'login',
+            'description' => 'User logged in to the system.',
+            'ip_address' => $request->ip(),
+        ]);
+
+        if ($request->user()->role === 'super_admin') {
+            return redirect()->intended(route('superadmin.dashboard'));
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -37,6 +49,15 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        if (Auth::check()) {
+            UserLog::create([
+                'user_id' => Auth::id(),
+                'action' => 'logout',
+                'description' => 'User logged out of the system.',
+                'ip_address' => $request->ip(),
+            ]);
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ $app_settings['app_name'] ?? config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -29,7 +29,7 @@
                     </svg>
                 </div>
                 <span class="font-black text-3xl text-black tracking-widest uppercase mt-2"
-                    style="text-shadow: 2px 2px 0px var(--c-primary);">PenitipanApp</span>
+                    style="text-shadow: 2px 2px 0px var(--c-primary);">{{ $app_settings['app_name'] ?? 'PenitipanApp' }}</span>
             </a>
         </div>
 

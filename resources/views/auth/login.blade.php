@@ -2,7 +2,8 @@
     <div class="text-center mb-10 border-b-4 border-black pb-6">
         <h2 class="text-3xl font-black text-black mb-2 uppercase tracking-widest"
             style="text-shadow: 2px 2px 0px var(--c-primary);">Selamat Datang!</h2>
-        <p class="text-black font-bold uppercase text-sm">Masuk ke akun PenitipanApp Anda untuk melanjutkan.</p>
+        <p class="text-black font-bold uppercase text-sm">Masuk ke akun
+            {{ $app_settings['app_name'] ?? 'PenitipanApp' }} Anda untuk melanjutkan.</p>
     </div>
 
     <!-- Session Status -->

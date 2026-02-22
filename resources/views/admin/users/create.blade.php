@@ -32,8 +32,10 @@
                                 required>
                                 <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User (Pelanggan)
                                 </option>
-                                <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin (Pengelola)
-                                </option>
+                                @if(Auth::user()->role === 'super_admin')
+                                    <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin (Pengelola)
+                                    </option>
+                                @endif
                             </select>
                             @error('role')<p class="text-red-500 text-xs mt-2 font-medium">{{ $message }}</p>
                             @enderror

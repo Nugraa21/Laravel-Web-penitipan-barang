@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\UserLog;
 
 class ProfileController extends Controller
 {
@@ -43,6 +44,13 @@ class ProfileController extends Controller
 
         $user->save();
 
+        UserLog::create([
+            'user_id' => $user->id,
+            'action' => 'update_profile',
+            'description' => 'User updated their own profile information.',
+            'ip_address' => $request->ip(),
+        ]);
+
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
@@ -60,6 +68,13 @@ class ProfileController extends Controller
         Auth::logout();
 
         $user->delete();
+
+        UserLog::create([
+            'user_id' => null, // The user is now deleted, but we log the history
+            'action' => 'delete_account',
+            'description' => "User {$user->name} deleted their own account.",
+            'ip_address' => $request->ip(),
+        ]);
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

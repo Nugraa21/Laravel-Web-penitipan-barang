@@ -50,8 +50,10 @@
                             <select id="role" name="role" class="form-input" required>
                                 <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>User
                                     (Pelanggan)</option>
-                                <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin
-                                    (Pengelola)</option>
+                                @if(Auth::user()->role === 'super_admin')
+                                    <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin
+                                        (Pengelola)</option>
+                                @endif
                             </select>
                             @error('role')<p style="color: var(--c-danger); font-size: 0.75rem; margin-top: 0.5rem;">
                                 {{ $message }}

@@ -10,7 +10,8 @@
             </div>
             <div>
                 <h2 class="text-3xl font-black text-gray-900 tracking-tight">{{ __('Profil Akun') }}</h2>
-                <p class="text-gray-500 font-medium mt-1 text-sm">Kelola informasi publik dan keamanan kata sandi Anda.
+                <p class="text-gray-500 font-medium mt-1 text-sm">
+                    {{ __('Kelola informasi publik dan keamanan kata sandi Anda.') }}
                 </p>
             </div>
         </div>

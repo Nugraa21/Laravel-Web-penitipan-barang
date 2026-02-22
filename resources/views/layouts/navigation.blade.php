@@ -12,8 +12,8 @@
                                 d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                         </svg>
                     </div>
-                    <span class="font-black text-xl text-gray-800 uppercase tracking-wider">Penitipan<span
-                            class="text-amber-500">App</span></span>
+                    <span
+                        class="font-black text-xl text-gray-800 uppercase tracking-wider">{{ $app_settings['app_name'] ?? 'PenitipanApp' }}</span>
                 </a>
 
                 <!-- Desktop Nav Links -->
@@ -28,7 +28,19 @@
                         @if(Auth::user()->role === 'admin') {{ __('Barang Masuk') }} @else {{ __('Dashboard') }} @endif
                     </a>
 
-                    @if(Auth::user()->role === 'admin')
+                    @if(Auth::user()->role === 'super_admin')
+                        <a href="{{ route('superadmin.dashboard') }}"
+                            class="flex items-center gap-2 px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all rounded-xl {{ request()->routeIs('superadmin.dashboard') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/30' : 'text-indigo-600 hover:bg-indigo-50' }}">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5">
+                                </path>
+                            </svg>
+                            {{ __('Super Admin') }}
+                        </a>
+                    @endif
+
+                    @if(in_array(Auth::user()->role, ['admin', 'super_admin']))
                         <a href="{{ route('admin.dashboard') }}"
                             class="flex items-center gap-2 px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all rounded-xl {{ request()->routeIs('admin.dashboard') ? 'bg-gray-800 text-white shadow-md' : 'text-gray-600 hover:bg-white/50 hover:text-gray-900' }}">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +80,7 @@
                         {{ __('Pesan') }}
                     </a>
 
-                    @if(Auth::user()->role !== 'admin')
+                    @if(Auth::user()->role === 'user')
                         <a href="{{ route('items.create') }}"
                             class="glass-btn flex items-center gap-2 px-5 py-2 text-sm font-bold uppercase tracking-wide ml-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,6 +171,20 @@
                                 </svg>
                                 {{ __('Edit Profil') }}
                             </a>
+                            @if(Auth::user()->role === 'super_admin')
+                                <a href="{{ route('superadmin.settings') }}"
+                                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-white/50 transition-colors font-bold uppercase mt-1">
+                                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                                        </path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    {{ __('Pengaturan') }}
+                                </a>
+                            @endif
                             <a href="{{ route('chat.inbox') }}"
                                 class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-white/50 transition-colors font-bold uppercase mt-1">
                                 <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor"
@@ -208,7 +234,13 @@
                 class="flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-bold uppercase transition-colors {{ request()->routeIs('dashboard') ? 'bg-gray-800 text-white border-gray-800' : 'text-gray-800 border-white/60 hover:bg-white/50' }}">
                 @if(Auth::user()->role === 'admin') Barang Masuk @else Dashboard @endif
             </a>
-            @if(Auth::user()->role === 'admin')
+            @if(Auth::user()->role === 'super_admin')
+                <a href="{{ route('superadmin.dashboard') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-bold uppercase transition-colors {{ request()->routeIs('superadmin.dashboard') ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-500/30' : 'text-indigo-600 border-indigo-200 bg-indigo-50/50 hover:bg-indigo-100' }}">
+                    {{ __('Super Admin') }}
+                </a>
+            @endif
+            @if(in_array(Auth::user()->role, ['admin', 'super_admin']))
                 <a href="{{ route('admin.dashboard') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-bold uppercase transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-gray-800 text-white border-gray-800' : 'text-gray-800 border-white/60 hover:bg-white/50' }}">
                     {{ __('Overview') }}
@@ -222,7 +254,7 @@
                     {{ __('Scan Token') }}
                 </a>
             @endif
-            @if(Auth::user()->role !== 'admin')
+            @if(Auth::user()->role === 'user')
                 <a href="{{ route('items.create') }}"
                     class="glass-btn flex items-center justify-center gap-3 px-4 py-3 border w-full mt-4">
                     + {{ __('Titip Barang') }}
@@ -265,6 +297,12 @@
                     class="flex-1 text-center py-2.5 rounded-xl border border-white/60 bg-white/40 hover:bg-white/60 text-sm font-bold text-gray-800 transition-colors">
                     {{ __('Profil') }}
                 </a>
+                @if(Auth::user()->role === 'super_admin')
+                    <a href="{{ route('superadmin.settings') }}"
+                        class="flex-1 text-center py-2.5 rounded-xl border border-white/60 bg-white/40 hover:bg-white/60 text-sm font-bold text-gray-800 transition-colors">
+                        {{ __('Pengaturan') }}
+                    </a>
+                @endif
                 <form method="POST" action="{{ route('logout') }}" class="flex-1">
                     @csrf
                     <button type="submit"

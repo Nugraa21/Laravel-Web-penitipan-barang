@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PenitipanApp - Titip Barang Aman & Mudah</title>
+    <title>{{ $app_settings['app_name'] ?? 'PenitipanApp' }} -
+        {{ $app_settings['hero_title'] ?? 'Titip Barang Aman & Mudah' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         .hero-section {
@@ -181,7 +182,7 @@
                         </path>
                     </svg>
                 </div>
-                <span>PenitipanApp</span>
+                <span>{{ $app_settings['app_name'] ?? 'PenitipanApp' }}</span>
             </a>
             <div style="display: flex; gap: 1rem; align-items: center;">
                 @if (Route::has('login'))
@@ -203,9 +204,10 @@
 
     <div class="hero-section" style="margin-top: 60px;">
         <div class="container hero-content">
-            <h1 class="hero-title">Titip Barang <br><span>Tenang & Mudah</span></h1>
-            <p class="hero-desc">Mau jalan-jalan tapi bawaan ribet? Titipkan di PenitipanApp! Fasilitas lengkap,
-                dapatkan Struk Digital, dan lacak realtime dengan antarmuka yang modern.</p>
+            <h1 class="hero-title"><span>{{ $app_settings['hero_title'] ?? 'Titip Barang Tenang & Mudah' }}</span></h1>
+            <p class="hero-desc">
+                {{ $app_settings['hero_description'] ?? 'Mau jalan-jalan tapi bawaan ribet? Titipkan di PenitipanApp! Fasilitas lengkap, dapatkan Struk Digital, dan lacak realtime dengan antarmuka yang modern.' }}
+            </p>
 
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <a href="{{ route('register') }}" class="btn-hero btn-hero-primary">Mulai Sekarang</a>
@@ -276,7 +278,7 @@
 
     <footer
         style="text-align: center; padding: 3rem 1rem; border-top: 1px solid rgba(0,0,0,0.1); background: transparent; color: var(--c-gray-500); font-size: 0.875rem; font-weight: 600;">
-        &copy; {{ date('Y') }} PenitipanApp. Liquid Glass Redesign.
+        &copy; {{ date('Y') }} {{ $app_settings['footer_text'] ?? 'PenitipanApp. Liquid Glass Redesign.' }}
     </footer>
 
 </body>

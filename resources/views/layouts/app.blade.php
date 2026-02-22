@@ -1,3 +1,13 @@
+@if (auth()->check() && auth()->user()->role === 'super_admin')
+    <x-superadmin-layout>
+        @if (isset($header))
+            <x-slot name="header">
+                {{ $header }}
+            </x-slot>
+        @endif
+        {{ $slot }}
+    </x-superadmin-layout>
+@else
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -5,7 +15,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'PenitipanApp') }}</title>
+    <title>{{ $app_settings['app_name'] ?? config('app.name', 'PenitipanApp') }}</title>
 
     <!-- Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -146,8 +156,8 @@
                             d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                     </svg>
                 </div>
-                <span class="font-black text-gray-800 uppercase tracking-wider text-xl">Penitipan<span
-                        class="text-amber-500">App</span></span>
+                <span
+                    class="font-black text-gray-800 uppercase tracking-wider text-xl">{{ $app_settings['app_name'] ?? 'PenitipanApp' }}</span>
             </div>
             <div class="text-gray-600 font-bold text-sm uppercase flex items-center gap-1.5">
                 <span>By</span>
@@ -224,7 +234,7 @@
             // Lightbox functionality
             const zoomableImages = document.querySelectorAll('.zoomable-image');
             zoomableImages.forEach(img => {
-                img.addEventListener('click', function() {
+                img.addEventListener('click', function () {
                     openLightbox(this.src);
                 });
             });
@@ -234,13 +244,13 @@
             const lightbox = document.getElementById('glass-lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const lightboxContent = document.getElementById('lightbox-content');
-            
+
             lightboxImg.src = imageSrc;
-            
+
             // Show lightbox
             lightbox.classList.remove('hidden');
             lightbox.classList.add('flex');
-            
+
             // Trigger animation
             setTimeout(() => {
                 lightbox.classList.remove('opacity-0');
@@ -248,7 +258,7 @@
                 lightboxContent.classList.remove('scale-95');
                 lightboxContent.classList.add('scale-100');
             }, 10);
-            
+
             // Prevent scrolling on body
             document.body.style.overflow = 'hidden';
         }
@@ -256,13 +266,13 @@
         function closeLightbox() {
             const lightbox = document.getElementById('glass-lightbox');
             const lightboxContent = document.getElementById('lightbox-content');
-            
+
             // Revert animation
             lightbox.classList.remove('opacity-100');
             lightbox.classList.add('opacity-0');
             lightboxContent.classList.remove('scale-100');
             lightboxContent.classList.add('scale-95');
-            
+
             // Hide lightbox after animation finishes
             setTimeout(() => {
                 lightbox.classList.remove('flex');
@@ -273,7 +283,7 @@
         }
 
         // Close on esc key
-        document.addEventListener('keydown', function(event) {
+        document.addEventListener('keydown', function (event) {
             if (event.key === "Escape") {
                 const lightbox = document.getElementById('glass-lightbox');
                 if (!lightbox.classList.contains('hidden')) {
@@ -285,3 +295,4 @@
 </body>
 
 </html>
+@endif
