@@ -8,6 +8,28 @@ use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
+    public function inbox()
+    {
+        $user = auth()->user();
+
+        $query = Item::query();
+        if ($user->role !== 'admin') {
+            $query->where('user_id', $user->id);
+        }
+
+        // Ambil semua item beserta pesannya, urutkan berdasarkan pesan terakhir atau waktu pembuatan item
+        $items = $query->with([
+            'user',
+            'messages' => function ($q) {
+                $q->orderBy('created_at', 'desc');
+            }
+        ])->get()->sortByDesc(function ($item) {
+            return $item->messages->first()->created_at ?? $item->created_at;
+        });
+
+        return view('chat.inbox', compact('items'));
+    }
+
     public function index(Item $item)
     {
         $user = auth()->user();

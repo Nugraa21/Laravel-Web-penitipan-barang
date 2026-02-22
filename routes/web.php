@@ -28,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/items/{item}/photos/{photo}', [ItemController::class, 'destroyPhoto'])->name('items.photos.destroy');
 
     // Chat routes
+    Route::get('/chats', [ChatController::class, 'inbox'])->name('chat.inbox');
     Route::get('/items/{item}/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::post('/items/{item}/chat', [ChatController::class, 'store'])->name('chat.store');
 
