@@ -19,7 +19,7 @@
                     </svg>
                 </div>
                 <x-text-input id="name" class="pl-10 block w-full" type="text" name="name" :value="old('name')" required
-                    autofocus autocomplete="name" placeholder="John Doe" />
+                    autofocus autocomplete="name" placeholder="Nugra" />
             </div>
             <x-input-error :messages="$errors->get('name')" class="mt-2 text-red-500 font-medium text-xs" />
         </div>
