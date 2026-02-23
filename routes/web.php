@@ -35,11 +35,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/items/{item}/photos/{photo}', [ItemController::class, 'destroyPhoto'])->name('items.photos.destroy');
     Route::get('/items/{item}/print', [ItemController::class, 'print'])->name('items.print');
 
-    // Chat routes
-    Route::get('/chats', [ChatController::class, 'inbox'])->name('chat.inbox');
-    Route::get('/items/{item}/chat', [ChatController::class, 'index'])->name('chat.index');
-    Route::get('/items/{item}/chat/poll', [ChatController::class, 'poll'])->name('chat.poll');
-    Route::post('/items/{item}/chat', [ChatController::class, 'store'])->name('chat.store');
+    // Unified Chat routes
+    Route::get('/inbox', [ChatController::class, 'inbox'])->name('chat.inbox');
+    Route::get('/chat-api/notifications', [ChatController::class, 'notifications'])->name('chat.notifications');
+    Route::get('/chat/{user?}', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/{user?}/poll', [ChatController::class, 'poll'])->name('chat.poll');
+    Route::post('/chat/{user?}', [ChatController::class, 'store'])->name('chat.store');
+    Route::delete('/chat/message/{message}', [ChatController::class, 'destroy'])->name('chat.destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $app_settings['app_name'] ?? 'PenitipanApp' }} -
-        {{ $app_settings['hero_title'] ?? 'Titip Barang Aman & Mudah' }}</title>
+        {{ $app_settings['hero_title'] ?? 'Titip Barang Aman & Mudah' }}
+    </title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Alpine.js for FAQ interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+
     <style>
         .hero-section {
-            padding: 8rem 1rem;
+            padding: 8rem 1rem 4rem 1rem;
             text-align: center;
             position: relative;
             background: transparent;
@@ -18,17 +23,17 @@
         .hero-content {
             position: relative;
             z-index: 10;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         .hero-title {
-            font-size: 4.5rem;
-            font-weight: 800;
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 900;
             color: var(--c-gray-900);
             line-height: 1.1;
             margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
         }
 
         .hero-title span {
@@ -40,14 +45,14 @@
         }
 
         .hero-desc {
-            font-size: 1.25rem;
+            font-size: clamp(1.125rem, 3vw, 1.25rem);
             color: var(--c-gray-600);
             margin-bottom: 3rem;
             font-weight: 500;
-            max-width: 600px;
+            max-width: 650px;
             margin-left: auto;
             margin-right: auto;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         .nav-wrapper {
@@ -79,43 +84,91 @@
             gap: 0.75rem;
         }
 
+        .section-title {
+            font-size: clamp(2rem, 5vw, 2.75rem);
+            font-weight: 800;
+            text-align: center;
+            color: var(--c-gray-900);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--c-gray-600);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto 4rem auto;
+            line-height: 1.6;
+        }
+
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            padding: 5rem 1rem;
+            padding: 2rem 1rem 6rem 1rem;
             position: relative;
         }
 
-        .feat-card {
+        .glass-card {
             padding: 2.5rem;
             background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 20px;
             box-shadow: var(--shadow-md);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
         }
 
-        .feat-card:hover {
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.8), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glass-card>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-card:hover {
             transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
         }
 
         .feat-icon {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, rgba(251, 211, 141, 0.5) 0%, rgba(251, 211, 141, 0.1) 100%);
-            border: 1px solid rgba(251, 211, 141, 0.5);
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, rgba(251, 211, 141, 0.8) 0%, rgba(251, 211, 141, 0.2) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             color: #d97706;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 16px rgba(251, 211, 141, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(217, 119, 6, 0.15);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover .feat-icon {
+            transform: scale(1.1) rotate(-5deg);
         }
 
         .feat-title {
@@ -142,6 +195,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 0.5rem;
         }
 
         .btn-hero:hover {
@@ -152,26 +206,383 @@
         .btn-hero-primary {
             background: var(--c-primary);
             color: #000;
-            box-shadow: 0 4px 6px -1px rgba(251, 211, 141, 0.5), 0 2px 4px -1px rgba(251, 211, 141, 0.3);
+            box-shadow: 0 6px 20px -5px rgba(251, 211, 141, 0.6), 0 2px 4px -1px rgba(251, 211, 141, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .btn-hero-outline {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.8);
             color: var(--c-gray-800);
             box-shadow: var(--shadow-sm);
         }
+
+        /* How to Use Steps - Premium Glass Timeline */
+        .step-container {
+            position: relative;
+            padding: 2rem 0;
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .step-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .step-container::before {
+                content: '';
+                position: absolute;
+                top: 5rem;
+                /* Center behind the icon circles */
+                left: 10%;
+                right: 10%;
+                height: 3px;
+                background: linear-gradient(90deg,
+                        rgba(251, 211, 141, 0) 0%,
+                        rgba(251, 211, 141, 0.8) 20%,
+                        rgba(251, 211, 141, 0.8) 80%,
+                        rgba(251, 211, 141, 0) 100%);
+                z-index: 0;
+                border-radius: 4px;
+            }
+        }
+
+        .step-item {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .step-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(251, 211, 141, 0.2) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .step-item:hover {
+            transform: translateY(-12px) scale(1.02);
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px -10px rgba(217, 119, 6, 0.15);
+        }
+
+        .step-item:hover::after {
+            opacity: 1;
+        }
+
+        .step-icon-wrapper {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #fff, #fef3c7);
+            color: #d97706;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -4rem auto 1.5rem auto;
+            box-shadow: 0 8px 20px rgba(217, 119, 6, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+            border: 4px solid var(--bg-glass);
+            position: relative;
+            transition: transform 0.4s bounce;
+        }
+
+        .step-item:hover .step-icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .step-icon-wrapper svg {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.3));
+        }
+
+        .step-number-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 24px;
+            height: 24px;
+            background: var(--c-gray-900);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Pricing Area - Hostinger Style */
+        .pricing-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--c-primary);
+            box-shadow: 0 20px 40px -10px rgba(217, 119, 6, 0.2);
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(217, 119, 6, 0.25);
+        }
+
+        .pricing-card.popular::before {
+            content: 'PALING LARIS';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, #d97706, #f59e0b);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 0.5rem 0;
+            text-align: center;
+            letter-spacing: 1px;
+            z-index: 20;
+        }
+
+        .price-val {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--c-gray-900);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 0.25rem;
+            margin: 1.5rem 0 0.5rem 0;
+            line-height: 1;
+        }
+
+        .price-val span {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--c-gray-500);
+            margin-top: 0.5rem;
+        }
+
+        .pricing-card.popular .price-val {
+            color: #000;
+        }
+
+        .pricing-list-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #374151;
+            font-size: 0.95rem;
+            text-align: left;
+            padding: 0.5rem 0;
+        }
+
+        .pricing-list-icon {
+            color: #10b981;
+            flex-shrink: 0;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .pricing-card.popular .btn-hero {
+            background: var(--c-primary);
+            color: #000;
+            border: none;
+            box-shadow: 0 4px 6px -1px rgba(217, 119, 6, 0.3);
+        }
+
+        .pricing-card:not(.popular) .btn-hero {
+            background: transparent;
+            color: var(--c-primary);
+            border: 2px solid var(--c-primary);
+            box-shadow: none;
+        }
+
+        .pricing-card:not(.popular) .btn-hero:hover {
+            background: var(--c-primary);
+            color: #000;
+        }
+
+        .price-val {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--c-gray-900);
+            margin: 1.5rem 0 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .price-val span {
+            font-size: 1.25rem;
+            margin-top: 0.25rem;
+            margin-right: 0.25rem;
+            color: var(--c-gray-500);
+        }
+
+        /* Location / Image Frame */
+        .image-glass-frame {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-xl);
+            transform: rotate(2deg);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .image-glass-frame:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .image-glass-frame img {
+            border-radius: 20px;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            aspect-ratio: 16/10;
+        }
+
+        /* Full Background Blobs */
+        .app-liquid-bg {
+            background: linear-gradient(135deg, #fdfbf7 0%, #fef3c7 100%);
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .app-blob-1,
+        .app-blob-2,
+        .app-blob-3 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+            animation: float 20s ease-in-out infinite alternate;
+        }
+
+        .app-blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(251, 211, 141, 0.6) 0%, rgba(251, 211, 141, 0) 70%);
+        }
+
+        .app-blob-2 {
+            top: 40%;
+            right: -20%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(52, 211, 153, 0.15) 0%, rgba(52, 211, 153, 0) 70%);
+            animation-duration: 25s;
+            animation-direction: alternate-reverse;
+        }
+
+        .app-blob-3 {
+            bottom: -10%;
+            left: 10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.15) 0%, rgba(96, 165, 250, 0) 70%);
+            animation-duration: 30s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(5%, 5%) scale(1.1);
+            }
+
+            100% {
+                transform: translate(-5%, -5%) scale(0.9);
+            }
+        }
+
+        .animate-float-slow {
+            animation: floatUpDown 6s ease-in-out infinite;
+        }
+
+        .animate-float-delay-1 {
+            animation: floatUpDown 6s ease-in-out 1s infinite;
+        }
+
+        .animate-float-delay-2 {
+            animation: floatUpDown 6s ease-in-out 2s infinite;
+        }
+
+        @keyframes floatUpDown {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 10;
+        }
     </style>
 </head>
 
-<body class="antialiased app-liquid-bg">
+<body class="antialiased app-liquid-bg text-gray-800">
     <div class="app-blob-1"></div>
     <div class="app-blob-2"></div>
+    <div class="app-blob-3"></div>
 
     <nav class="nav-wrapper">
-        <div class="container nav-inner">
+        <div class="container mx-auto px-4 nav-inner max-w-7xl">
             <a href="/" class="nav-brand" style="text-decoration: none;">
                 <div
                     style="background: linear-gradient(135deg, var(--c-primary) 0%, #fbbf24 100%); padding: 0.5rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(251, 211, 141, 0.4); display: flex; align-items: center; justify-content: center;">
@@ -184,13 +595,19 @@
                 </div>
                 <span>{{ $app_settings['app_name'] ?? 'PenitipanApp' }}</span>
             </a>
+            <div class="hidden md:flex items-center gap-6 font-bold text-gray-600 text-sm tracking-wide uppercase">
+                <a href="#cara-kerja" class="hover:text-amber-600 transition-colors">Cara Kerja</a>
+                <a href="#harga" class="hover:text-amber-600 transition-colors">Harga</a>
+                <a href="#lokasi" class="hover:text-amber-600 transition-colors">Lokasi</a>
+                <a href="#faq" class="hover:text-amber-600 transition-colors">FAQ</a>
+            </div>
             <div style="display: flex; gap: 1rem; align-items: center;">
                 @if (Route::has('login'))
                     @auth
                         <a href="{{ url('/dashboard') }}" class="btn-hero btn-hero-primary"
                             style="padding: 0.5rem 1.5rem; font-size: 0.875rem;">Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}" class="btn-hero btn-hero-outline"
+                        <a href="{{ route('login') }}" class="btn-hero btn-hero-outline hidden sm:flex"
                             style="padding: 0.5rem 1.5rem; font-size: 0.875rem;">Masuk</a>
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="btn-hero btn-hero-primary"
@@ -202,83 +619,643 @@
         </div>
     </nav>
 
-    <div class="hero-section" style="margin-top: 60px;">
-        <div class="container hero-content">
-            <h1 class="hero-title"><span>{{ $app_settings['hero_title'] ?? 'Titip Barang Tenang & Mudah' }}</span></h1>
-            <p class="hero-desc">
-                {{ $app_settings['hero_description'] ?? 'Mau jalan-jalan tapi bawaan ribet? Titipkan di PenitipanApp! Fasilitas lengkap, dapatkan Struk Digital, dan lacak realtime dengan antarmuka yang modern.' }}
-            </p>
+    <main class="content-layer">
+        <!-- Hero Section -->
+        <div class="hero-section" style="margin-top: 60px;">
+            <div class="container mx-auto px-4 hero-content">
+                <p
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-white/80 shadow-sm text-sm font-bold text-amber-700 mb-6 backdrop-blur-md">
+                    <span class="relative flex h-3 w-3">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                    </span>
+                    Solusi Cerdas Penyimpanan Barang
+                </p>
+                <h1 class="hero-title"><span>{{ $app_settings['hero_title'] ?? 'Titip Barang Tenang & Mudah' }}</span>
+                </h1>
+                <p class="hero-desc">
+                    {{ $app_settings['hero_description'] ?? 'Jalan-jalan makin bebas tanpa beban bawaan. Fasilitas lengkap, dapatkan Struk Digital QR Code seketika, dan lacak status pesanan realtime.' }}
+                </p>
 
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <a href="{{ route('register') }}" class="btn-hero btn-hero-primary">Mulai Sekarang</a>
-                <a href="{{ route('login') }}" class="btn-hero btn-hero-outline">Sudah Punya Akun</a>
-            </div>
-
-            <div
-                style="display: flex; gap: 3rem; justify-content: center; margin-top: 5rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 3rem; flex-wrap: wrap;">
-                <div
-                    style="background: rgba(255,255,255,0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.6); border-radius: 24px; box-shadow: var(--shadow-md); padding: 1.5rem 2rem; min-width: 200px; display: flex; flex-direction: column; align-items: center;">
-                    <h4 style="font-size: 2.5rem; font-weight: 800; color: var(--c-primary); margin-bottom: 0;">Struk
-                    </h4>
-                    <p style="color: var(--c-gray-600); font-weight: 700;">Digital Unik</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ route('register') }}" class="btn-hero btn-hero-primary">
+                        Mulai Titip Sekarang
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </a>
+                    <a href="#cara-kerja" class="btn-hero btn-hero-outline">Pelajari Lebih Lanjut</a>
                 </div>
-                <div
-                    style="background: rgba(251,211,141,0.2); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.8); border-radius: 24px; box-shadow: var(--shadow-md); padding: 1.5rem 2rem; min-width: 200px; display: flex; flex-direction: column; align-items: center;">
-                    <h4 style="font-size: 2.5rem; font-weight: 800; color: #d97706; margin-bottom: 0;">24/7</h4>
-                    <p style="color: #92400e; font-weight: 700;">Aman Total</p>
+
+                <!-- Floating Stats Badges -->
+                <div style="display: flex; gap: 2.5rem; justify-content: center; margin-top: 6rem; padding-top: 4rem; flex-wrap: wrap;"
+                    class="border-t border-gray-300/30 relative z-20">
+                    <div class="glass-card flex flex-col items-center animate-float-delay-1"
+                        style="min-width: 220px; padding: 2rem 1.5rem; border-color: rgba(217, 119, 6, 0.3);">
+                        <h4
+                            style="font-size: 2.5rem; font-weight: 900; color: var(--c-primary); margin-bottom: 0; line-height: 1; text-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);">
+                            Struk</h4>
+                        <p
+                            style="color: var(--c-gray-700); font-weight: 800; font-size: 1.1rem; margin-top: 0.5rem; letter-spacing: -0.01em;">
+                            Digital QR Code</p>
+                    </div>
+                    <div class="glass-card flex flex-col items-center animate-float-slow"
+                        style="min-width: 220px; padding: 2rem 1.5rem; box-shadow: 0 20px 40px -10px rgba(217, 119, 6, 0.15); background: rgba(255,255,255,0.7); transform: translateY(-10px);">
+                        <h4
+                            style="font-size: 2.5rem; font-weight: 900; color: #d97706; margin-bottom: 0; line-height: 1; text-shadow: 0 2px 4px rgba(217, 119, 6, 0.3);">
+                            24/7</h4>
+                        <p
+                            style="color: #92400e; font-weight: 800; font-size: 1.1rem; margin-top: 0.5rem; letter-spacing: -0.01em;">
+                            Aman Terjaga</p>
+                    </div>
+                    <div class="glass-card flex flex-col items-center animate-float-delay-2"
+                        style="min-width: 220px; padding: 2rem 1.5rem; border-color: rgba(16, 185, 129, 0.3);">
+                        <h4
+                            style="font-size: 2.5rem; font-weight: 900; color: #10b981; margin-bottom: 0; line-height: 1; text-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);">
+                            Live</h4>
+                        <p
+                            style="color: #047857; font-weight: 800; font-size: 1.1rem; margin-top: 0.5rem; letter-spacing: -0.01em;">
+                            Chat Internal</p>
+                    </div>
                 </div>
-                <div
-                    style="background: rgba(16,185,129,0.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.6); border-radius: 24px; box-shadow: var(--shadow-md); padding: 1.5rem 2rem; min-width: 200px; display: flex; flex-direction: column; align-items: center;">
-                    <h4 style="font-size: 2.5rem; font-weight: 800; color: #10b981; margin-bottom: 0;">Live</h4>
-                    <p style="color: #047857; font-weight: 700;">Chat Admin</p>
+            </div>
+        </div>
+
+        <!-- How it Works Section -->
+        <section id="cara-kerja" class="py-20">
+            <div class="container mx-auto px-4 max-w-7xl">
+                <h2 class="section-title">Semudah Menghitung 1, 2, 3</h2>
+                <p class="section-subtitle">Proses titip barang digital kami didesain agar Anda tidak perlu mengantre
+                    lama. Semua bisa disiapkan dari genggaman Anda sebelum tiba di lokasi.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 step-container mt-12">
+                    <div class="step-item group">
+                        <div class="step-number-badge">1</div>
+                        <div class="step-icon-wrapper">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-amber-700 transition-colors">
+                            Buat Akun</h3>
+                        <p class="text-gray-600 text-sm font-medium leading-relaxed">Daftar gratis melalui website kami
+                            hanya dalam 30 detik. Login untuk mengakses dashboard pintar Anda.</p>
+                    </div>
+
+                    <div class="step-item group">
+                        <div class="step-number-badge">2</div>
+                        <div class="step-icon-wrapper">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-amber-700 transition-colors">
+                            Input Barang</h3>
+                        <p class="text-gray-600 text-sm font-medium leading-relaxed">Klik "+ Titip Barang", isi
+                            deskripsi, estimasi jaminan, lalu foto barang Anda langsung dari HP.</p>
+                    </div>
+
+                    <div class="step-item group">
+                        <div class="step-number-badge">3</div>
+                        <div class="step-icon-wrapper">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-amber-700 transition-colors">
+                            Dapat Token</h3>
+                        <p class="text-gray-600 text-sm font-medium leading-relaxed">Sistem akan secara otomatis
+                            menerbitkan Token unik dan tiket QR Code sebagai bukti kepemilikan Anda.</p>
+                    </div>
+
+                    <div class="step-item group">
+                        <div class="step-number-badge">4</div>
+                        <div class="step-icon-wrapper">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-amber-700 transition-colors">
+                            Serahkan/Ambil</h3>
+                        <p class="text-gray-600 text-sm font-medium leading-relaxed">Tunjukkan layar HP Anda ke Admin di
+                            loket untuk proses verifikasi cepat saat menyimpan / mengambil.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div class="container feature-grid">
-        <div class="feat-card">
-            <div class="feat-icon">
-                <svg style="width: 32px; height: 32px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                </svg>
+        <!-- Features Section -->
+        <section class="py-10">
+            <div class="container mx-auto px-4 max-w-7xl">
+                <div class="feature-grid p-0 mt-0">
+                    <div class="glass-card">
+                        <div class="feat-icon">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="feat-title">Daftar & Foto Mandiri</h3>
+                        <p class="feat-desc">Tidak perlu lagi mengisi formulir kertas. Semua dicatat secara digital
+                            termasuk dokumentasi foto kondisi barang Anda untuk mencegah perselisihan.</p>
+                    </div>
+
+                    <div class="glass-card popular">
+                        <div class="feat-icon"
+                            style="color: #047857; background: linear-gradient(135deg, rgba(16,185,129,0.2) 0%, rgba(16,185,129,0.05) 100%); border-color: rgba(16,185,129,0.3); box-shadow: 0 8px 16px rgba(16,185,129,0.15)">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="feat-title">Keamanan Super Ekstra</h3>
+                        <p class="feat-desc">Gudang penyimpanan dilengkapi kamera CCTV 24 jam. Kami juga melakukan
+                            verifikasi ketat ganda (QR dan Face Match) sebelum merilis barang.</p>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="feat-icon"
+                            style="color: #1d4ed8; background: linear-gradient(135deg, rgba(59,130,246,0.2) 0%, rgba(59,130,246,0.05) 100%); border-color: rgba(59,130,246,0.3); box-shadow: 0 8px 16px rgba(59,130,246,0.15)">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="feat-title">Notifikasi & Live Chat</h3>
+                        <p class="feat-desc">Ada masalah atau perlu mengubah jadwal pengambilan? Buka dashboard dan
+                            bicara langsung dengan Admin via antarmuka obrolan realtime terintegrasi.</p>
+                    </div>
+                </div>
             </div>
-            <h3 class="feat-title">Daftar & Foto</h3>
-            <p class="feat-desc">Buat akun gratis, isi data barang, dan foto dari smartphone Anda. Dapatkan Token
-                Penitipan unik seketika.</p>
-        </div>
+        </section>
 
-        <div class="feat-card">
-            <div class="feat-icon">
-                <svg style="width: 32px; height: 32px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                    </path>
-                </svg>
+        <!-- Pricing Section -->
+        <section id="harga" class="py-20 bg-white/10 backdrop-blur-sm border-y border-white/30">
+            <div class="container mx-auto px-4 max-w-7xl">
+                <h2 class="section-title">Pilih Opsi Penitipan Sesuai Kebutuhan</h2>
+                <p class="section-subtitle max-w-3xl mx-auto">
+                    Khusus untuk lokasi <strong>Bandara</strong> atau <strong>Stasiun KRL/KAI</strong>.
+                    Pembayaran dilakukan secara lokal di loket oleh pegawai kami, namun Anda tetap dapat
+                    mendaftar dan memantau estimasi barang dari jarak jauh.
+                </p>
+
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 lg:gap-8 mt-12 max-w-6xl mx-auto items-stretch">
+                    <!-- Paket Kecil -->
+                    <div class="pricing-card h-full justify-between">
+                        <div class="w-full text-center flex flex-col items-center">
+                            <h4 class="text-xl font-extrabold text-gray-900 border-b border-gray-100 w-full pb-4">Loker
+                                Kecil</h4>
+                            <div class="price-val"><span>Rp</span>15.000</div>
+                            <p class="text-gray-500 font-bold text-sm mb-6">per 24 jam</p>
+
+                            <div class="mt-4 mb-8 w-full">
+                                <a href="{{ route('register') }}" class="btn-hero w-full !py-3 !text-sm">Pilih Paket</a>
+                            </div>
+                        </div>
+
+                        <div class="w-full border-t border-gray-100 pt-6">
+                            <p class="text-xs font-bold text-gray-900 uppercase tracking-wider mb-4 text-left">Fitur
+                                Unggulan:</p>
+                            <ul class="text-left w-full space-y-3 flex-1 pb-4">
+                                <li class="pricing-list-item">
+                                    <svg class="pricing-list-icon" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Dimensi Maks 30x30x30 cm
+                                </li>
+                                <li class="pricing-list-item">
+                                    <svg class="pricing-list-icon" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Muat Tas Ransel / Helm
+                                </li>
+                                <li class="pricing-list-item">
+                                    <svg class="pricing-list-icon" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Struk QR Otomatis
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Paket Besar (Populer) -->
+                    <div class="pricing-card popular h-full justify-between">
+                        <div class="w-full text-center flex flex-col items-center">
+                            <h4
+                                class="text-xl font-extrabold text-amber-900 border-b border-amber-100 w-full pb-4 pt-4">
+                                Loker Besar</h4>
+                            <div class="price-val"><span>Rp</span>35.000</div>
+                            <p class="text-amber-700 font-bold text-sm mb-6">per 24 jam</p>
+
+                            <div class="mt-4 mb-8 w-full">
+                                <a href="{{ route('register') }}" class="btn-hero w-full !py-3 !text-sm">Pilih
+                                    Sekarang</a>
+                            </div>
+                        </div>
+
+                        <div class="w-full border-t border-amber-100 pt-6">
+                            <p class="text-xs font-bold text-amber-900 uppercase tracking-wider mb-4 text-left">
+                                Semua fitur Loker Kecil, plus:</p>
+                            <ul class="text-left w-full space-y-3 flex-1 pb-4">
+                                <li class="pricing-list-item">
+                                    <svg class="pricing-list-icon" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="font-bold text-amber-900">Dimensi Maks 80x60x50 cm</span>
+                                </li>
+                                <li class="pricing-list-item">
+                                    <svg class="pricing-list-icon" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Muat Koper (Cabin/Medium)
+                                </li>
+                                <li class="pricing-list-item">
+                                    <svg class="pricing-list-icon" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Jaminan Asuransi Dasar
+                                </li>
+                                <li class="pricing-list-item">
+                                    <svg class="pricing-list-icon" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Keamanan Terjamin 24/7
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Paket VIP -->
+                    <div class="pricing-card h-full justify-between">
+                        <div class="w-full text-center flex flex-col items-center">
+                            <h4 class="text-xl font-extrabold text-gray-900 border-b border-gray-100 w-full pb-4">
+                                Khusus / VIP</h4>
+                            <div class="price-val"><span>Rp</span>75.000</div>
+                            <p class="text-gray-500 font-bold text-sm mb-6">per 24 jam</p>
+
+                            <div class="mt-4 mb-8 w-full">
+                                <a href="{{ route('register') }}" class="btn-hero w-full !py-3 !text-sm">Pilih
+                                    Paket</a>
+                            </div>
+                        </div>
+
+                        <div class="w-full border-t border-gray-100 pt-6">
+                            <p class="text-xs font-bold text-gray-900 uppercase tracking-wider mb-4 text-left">Cocok
+                                Untuk Bisnis:</p>
+                            <ul class="text-left w-full space-y-3 flex-1 pb-4">
+                                <li class="pricing-list-item">
+                                    <svg class="pricing-list-icon" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Barang Bernilai Tinggi / Lebar
+                                </li>
+                                <li class="pricing-list-item">
+                                    <svg class="pricing-list-icon" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Penyimpanan Ruang Khusus AC
+                                </li>
+                                <li class="pricing-list-item">
+                                    <svg class="pricing-list-icon" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Pengawasan 1 CCTV Dedicated
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-6 text-sm font-bold text-gray-500">* Harga di atas dapat berubah
+                    sewaktu-waktu tergantung kebijakan pengelola. Tanyakan Admin untuk konfirmasi promo harian.
+                </div>
             </div>
-            <h3 class="feat-title">Keamanan Ekstra</h3>
-            <p class="feat-desc">CCTV 24 jam + otorisasi role terpercaya. Barang Anda disimpan di gudang yang steril dan
-                aman.</p>
-        </div>
+        </section>
 
-        <div class="feat-card">
-            <div class="feat-icon">
-                <svg style="width: 32px; height: 32px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
-                    </path>
-                </svg>
+        <!-- Location Section -->
+        <section id="lokasi" class="py-24">
+            <div class="container mx-auto px-4 max-w-7xl">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">Lokasi Strategis &
+                            <br><span class="text-amber-600">Terjangkau</span>
+                        </h2>
+                        <p class="text-lg text-gray-600 font-medium mb-8">Kunjungi kantor layanan offline kami yang
+                            berada tepat di pusat mobilitas. Kami berdedikasi menjaga properti Anda selagi Anda
+                            beraktivitas.</p>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-white shadow-sm border border-amber-200 flex items-center justify-center text-amber-600 shrink-0">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                        </path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h5 class="text-lg font-bold text-gray-900">Alamat Pengecekan</h5>
+                                    <p class="text-gray-600 font-medium text-sm mt-1">Gedung Pusat Kegiatan Administrasi
+                                        Lt. 1,<br>Jalan Sudirman No. 45, Kompleks Area A.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-white shadow-sm border border-emerald-200 flex items-center justify-center text-emerald-600 shrink-0">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h5 class="text-lg font-bold text-gray-900">Jam Operasional</h5>
+                                    <p class="text-gray-600 font-medium text-sm mt-1">Senin - Minggu: 07.00 - 22.00
+                                        WIB<br><span class="text-emerald-600 font-bold">Layanan Live Chat: 24 Jam</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative px-4">
+                        <div class="relative z-10 w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+                            <!-- Google Maps Embed for UTDI -->
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.8809968417725!2d110.40612167575294!3d-7.78124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a59eb858348af%3A0xe5f86c1284b1d624!2sUniversitas%20Teknologi%20Digital%20Indonesia%20(UTDI)!5e0!3m2!1sen!2sid!4v1714150530467!5m2!1sen!2sid"
+                                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                            <div
+                                class="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-sm pb-3 pt-3 px-5 rounded-xl shadow-lg border border-gray-100 flex items-center justify-between">
+                                <div>
+                                    <span
+                                        class="block text-sm font-bold text-gray-900 border-b border-gray-100 pb-1 mb-1">Kantor
+                                        Pusat</span>
+                                    <span class="text-xs font-semibold text-gray-500">Buka di Maps untuk rute</span>
+                                </div>
+                                <a href="https://maps.app.goo.gl/9uK2C" target="_blank"
+                                    class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center hover:bg-amber-600 transition-colors shadow-md">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h3 class="feat-title">Live Tracking & Chat</h3>
-            <p class="feat-desc">Pantau status barang dari Dashboard. Hubungi admin langsung melalui Live Chat jika ada
-                pertanyaan.</p>
-        </div>
-    </div>
+        </section>
 
-    <footer
-        style="text-align: center; padding: 3rem 1rem; border-top: 1px solid rgba(0,0,0,0.1); background: transparent; color: var(--c-gray-500); font-size: 0.875rem; font-weight: 600;">
-        &copy; {{ date('Y') }} {{ $app_settings['footer_text'] ?? 'PenitipanApp. Liquid Glass Redesign.' }}
+        <!-- FAQ Section -->
+        <section id="faq" class="py-24 bg-white/30 backdrop-blur-md border-y border-white/50">
+            <div class="container mx-auto px-4 max-w-4xl">
+                <h2 class="section-title">Pertanyaan yang Sering Diajukan</h2>
+                <p class="section-subtitle">Punya pertanyaan lain? Jangan ragu hubungi Admin kami setelah Anda membuat
+                    akun secara gratis.</p>
+
+                <div class="mt-8 space-y-4" x-data="{ active: null }">
+                    <!-- FAQ Item 1 -->
+                    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                        @click="active = (active === 1) ? null : 1">
+                        <div
+                            class="p-5 md:px-8 md:py-6 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
+                            <h4 class="text-base md:text-lg font-bold text-gray-900 pr-4">Apakah barang berharga seperti
+                                Laptop boleh dititipkan?</h4>
+                            <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-amber-600 transform transition-transform duration-300"
+                                    :class="{'rotate-180': active === 1}" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div x-show="active === 1" x-collapse style="display: none;">
+                            <div
+                                class="p-5 md:px-8 pb-6 text-gray-600 text-sm md:text-base font-medium leading-relaxed border-t border-gray-100 bg-gray-50/50">
+                                Boleh, namun kami sangat menyarankan Anda memilih Paket VIP/Khusus agar barang
+                                Elektronik atau bernilai Tinggi Anda disimpan di ruangan yang dilengkapi AC konstan dan
+                                CCTV khusus. Harap pastikan barang Anda berfoto dalam keadaan nyala/baik saat input di
+                                aplikasi.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                        @click="active = (active === 2) ? null : 2">
+                        <div
+                            class="p-5 md:px-8 md:py-6 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
+                            <h4 class="text-base md:text-lg font-bold text-gray-900 pr-4">Bagaimana jika saya terlambat
+                                mengambil barang?</h4>
+                            <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-amber-600 transform transition-transform duration-300"
+                                    :class="{'rotate-180': active === 2}" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div x-show="active === 2" x-collapse style="display: none;">
+                            <div
+                                class="p-5 md:px-8 pb-6 text-gray-600 text-sm md:text-base font-medium leading-relaxed border-t border-gray-100 bg-gray-50/50">
+                                Kami memberikan toleransi waktu 2 jam dari kesepakatan 24 jam. Jika lewat dari itu,
+                                sistem akan otomatis mengakumulasi denda sebagai tambahan 1 hari penitipan. Harap chat
+                                ke operasional jika mengalami kendala di perjalanan.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                        @click="active = (active === 3) ? null : 3">
+                        <div
+                            class="p-5 md:px-8 md:py-6 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
+                            <h4 class="text-base md:text-lg font-bold text-gray-900 pr-4">Apa jaminan jika barang saya
+                                rusak atau hilang?</h4>
+                            <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-amber-600 transform transition-transform duration-300"
+                                    :class="{'rotate-180': active === 3}" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div x-show="active === 3" x-collapse style="display: none;">
+                            <div
+                                class="p-5 md:px-8 pb-6 text-gray-600 text-sm md:text-base font-medium leading-relaxed border-t border-gray-100 bg-gray-50/50">
+                                Kami memberikan garansi ganti rugi maksimal sesuai dengan "Estimasi Nilai Barang" yang
+                                Anda lampirkan di formulir pendaftaran barang (wajib verifikasi nota atau kelayakan).
+                                Batas asuransi dasar mencapai Rp 2.000.000,- per loker.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                        @click="active = (active === 4) ? null : 4">
+                        <div
+                            class="p-5 md:px-8 md:py-6 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
+                            <h4 class="text-base md:text-lg font-bold text-gray-900 pr-4">Apakah pembayaran bisa via
+                                cicilan?</h4>
+                            <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-amber-600 transform transition-transform duration-300"
+                                    :class="{'rotate-180': active === 4}" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div x-show="active === 4" x-collapse style="display: none;">
+                            <div
+                                class="p-5 md:px-8 pb-6 text-gray-600 text-sm md:text-base font-medium leading-relaxed border-t border-gray-100 bg-gray-50/50">
+                                Maaf, untuk penitipan harian pembayaran bersifat tunai/QRIS lunas di awal penitipan.
+                                Jika Anda perlu langganan bulanan di masa depan, silakan bicarakan di Loket.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pre-footer CTA Ribbon -->
+            <section class="relative z-20 py-20 mt-10">
+                <div class="container mx-auto px-4 max-w-5xl">
+                    <div
+                        class="bg-gray-900 rounded-3xl p-10 md:p-14 text-center shadow-2xl relative overflow-hidden border border-gray-800">
+                        <!-- Glow effect inside CTA -->
+                        <div
+                            class="absolute top-0 left-1/2 transform -translate-x-1/2 w-full max-w-3xl h-full background-glow blur-3xl opacity-20 bg-amber-500 pointer-events-none rounded-full">
+                        </div>
+
+                        <div class="relative z-10">
+                            <h3 class="text-3xl md:text-4xl font-black text-white mb-6">Siap Menitipkan Barang Anda?
+                            </h3>
+                            <p
+                                class="text-gray-400 font-medium mb-10 max-w-2xl mx-auto text-lg hover:text-gray-300 transition-colors">
+                                Buat akun hari ini, dapatkan pengalaman keamanan dan kenyamanan penitipan barang modern
+                                100% digital tanpa antre.</p>
+                            <a href="{{ route('register') }}"
+                                class="btn-hero btn-hero-primary !py-4 !px-8 text-lg inline-flex items-center gap-2 hover:scale-105 transition-transform">
+                                Daftar Akun Sekarang Gratis
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+    </main>
+
+    <footer class="border-t border-gray-200 bg-white relative z-10 pt-16 pb-4 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <div class="p-1 rounded-xl bg-gradient-to-br from-amber-200 to-amber-400 border border-white">
+                            <svg class="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                            </svg>
+                        </div>
+                        <span
+                            class="font-black text-xl text-gray-900 uppercase tracking-wider">{{ $app_settings['app_name'] ?? 'PenitipanApp' }}</span>
+                    </div>
+                    <p class="text-gray-600 font-medium max-w-sm mb-6 leading-relaxed">Platform penitipan barang digital
+                        pertama yang menghubungkan keamanan fisik ekstra dengan kenyamanan web monitoring modern.</p>
+                </div>
+
+                <div>
+                    <h4 class="font-black text-gray-900 uppercase tracking-wide mb-4">Akses Cepat</h4>
+                    <ul class="space-y-3 font-semibold text-gray-600">
+                        <li><a href="#cara-kerja" class="hover:text-amber-600 transition-colors">Cara Kerja</a></li>
+                        <li><a href="#harga" class="hover:text-amber-600 transition-colors">Harga Loker</a></li>
+                        <li><a href="#faq" class="hover:text-amber-600 transition-colors">Bantuan (FAQ)</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-black text-gray-900 uppercase tracking-wide mb-4">Legal & Dukungan</h4>
+                    <ul class="space-y-3 font-semibold text-gray-600">
+                        <li><a href="#" class="hover:text-amber-600 transition-colors">Syarat Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-amber-600 transition-colors">Kebijakan Privasi</a></li>
+                        @if (!empty($app_settings['facebook_url']) || !empty($app_settings['instagram_url']))
+                            <li class="pt-2 flex gap-3">
+                                @if (!empty($app_settings['facebook_url']))
+                                    <a href="{{ $app_settings['facebook_url'] }}" target="_blank"
+                                        class="w-8 h-8 rounded-full bg-white/50 border border-white flex items-center justify-center hover:bg-amber-100 text-amber-700 transition-colors">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                                        </svg>
+                                    </a>
+                                @endif
+                                @if (!empty($app_settings['instagram_url']))
+                                    <a href="{{ $app_settings['instagram_url'] }}" target="_blank"
+                                        class="w-8 h-8 rounded-full bg-white/50 border border-white flex items-center justify-center hover:bg-amber-100 text-amber-700 transition-colors">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                        </svg>
+                                    </a>
+                                @endif
+                            </li>
+                        @endif
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-white/40 text-center text-sm font-bold text-gray-500">
+                &copy; {{ date('Y') }} {{ $app_settings['footer_text'] ?? 'PenitipanApp' }}. All rights reserved. <span
+                    class="text-amber-600 ml-1">Liquid Glass Crafted.</span>
+            </div>
+        </div>
     </footer>
 
 </body>

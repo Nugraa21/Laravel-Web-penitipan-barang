@@ -167,49 +167,136 @@
     </footer>
 
     <!-- Glass Toast Notification System -->
-    @if(session('success') || session('error'))
-        @php
-            $type = session('success') ? 'success' : 'error';
-            $message = session('success') ?? session('error');
-        @endphp
-        <div id="glass-toast" class="glass-toast">
-            <div class="toast-icon toast-{{ $type }}-icon">
-                @if($type === 'success')
-                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                @else
-                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                @endif
-            </div>
-            <div class="font-medium text-sm">{!! $message !!}</div>
-            <button onclick="document.getElementById('glass-toast').classList.remove('show')"
-                style="margin-left: auto; background: none; border: none; cursor: pointer; color: #9ca3af; transition: color 0.2s;"
-                onmouseover="this.style.color='#1f2937'" onmouseout="this.style.color='#9ca3af'">
-                <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+    <!-- Glass Toast Notification System -->
+    <div id="glass-toast" class="glass-toast">
+        <div id="toast-icon-wrapper" class="toast-icon">
+            <svg id="toast-icon-svg" style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path id="toast-icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+            </svg>
         </div>
+        <div id="toast-message" class="font-medium text-sm"></div>
+        <button onclick="document.getElementById('glass-toast').classList.remove('show'); window.event.stopPropagation();"
+            style="margin-left: auto; background: none; border: none; cursor: pointer; color: #9ca3af; transition: color 0.2s;"
+            onmouseover="this.style.color='#1f2937'" onmouseout="this.style.color='#9ca3af'">
+            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const toast = document.getElementById('glass-toast');
+    <!-- Notification Sound -->
+    <audio id="notification-sound" preload="auto">
+        <source src="data:audio/mp3;base64,//NExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq" type="audio/mpeg">
+    </audio>
 
-                // Show toast slightly after load for animation effect
+    <!-- Floating Chat Button (FAB) -->
+    @auth
+    <a href="{{ Auth::user()->role === 'admin' ? route('chat.inbox') : route('chat.index') }}" 
+       id="floating-chat-btn"
+       class="fixed bottom-6 right-6 z-[9000] w-14 h-14 bg-slate-800 hover:bg-slate-900 text-white rounded-full flex items-center justify-center shadow-lg shadow-slate-900/20 transition-transform hover:scale-105 group border-2 border-white/50"
+       title="Pesan">
+        <svg class="w-6 h-6 group-hover:animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+        </svg>
+        <span id="fab-badge" class="absolute -top-1.5 -right-1.5 w-6 h-6 bg-red-500 text-white text-[0.65rem] font-black rounded-full flex items-center justify-center border-2 border-white shadow-sm transition-all duration-300 {{ (isset($unread_chats_count) && $unread_chats_count > 0) ? 'scale-100' : 'scale-0' }}">
+            {{ (isset($unread_chats_count) && $unread_chats_count > 9) ? '9+' : ($unread_chats_count ?? 0) }}
+        </span>
+    </a>
+    @endauth
+
+    <script>
+        function showToast(message, type = 'success', onClickUrl = null) {
+            const toast = document.getElementById('glass-toast');
+            const msgEl = document.getElementById('toast-message');
+            const iconWrapper = document.getElementById('toast-icon-wrapper');
+            const iconPath = document.getElementById('toast-icon-path');
+
+            msgEl.innerHTML = message;
+            iconWrapper.className = 'toast-icon';
+            
+            if (type === 'success') {
+                iconWrapper.classList.add('toast-success-icon');
+                iconPath.setAttribute('d', 'M5 13l4 4L19 7');
+            } else if (type === 'error') {
+                iconWrapper.classList.add('toast-error-icon');
+                iconPath.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            } else if (type === 'chat') {
+                iconWrapper.classList.add('text-blue-500');
+                iconPath.setAttribute('d', 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z');
+            }
+
+            if (onClickUrl) {
+                toast.style.cursor = 'pointer';
+                toast.onclick = function(e) {
+                    if(!e.target.closest('button')) {
+                        window.location.href = onClickUrl;
+                    }
+                };
+            } else {
+                toast.style.cursor = 'default';
+                toast.onclick = null;
+            }
+
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 5000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            @if(session('success') || session('error'))
+                @php
+                    $sessionType = session('success') ? 'success' : 'error';
+                    $sessionMessage = session('success') ?? session('error');
+                @endphp
                 setTimeout(() => {
-                    toast.classList.add('show');
+                    showToast(`{!! addslashes($sessionMessage) !!}`, '{{ $sessionType }}');
                 }, 100);
+            @endif
 
-                // Auto hide after 5 seconds
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                }, 5000);
-            });
-        </script>
-    @endif
+            @auth
+            // Global Notification Polling
+            let currentUnreadCount = {{ $unread_chats_count ?? 0 }};
+            const chatUrl = "{{ Auth::user()->role === 'admin' ? route('chat.inbox') : route('chat.index') }}";
+            
+            setInterval(() => {
+                fetch('{{ route('chat.notifications') }}')
+                    .then(res => res.json())
+                    .then(data => {
+                        const newCount = data.count;
+                        
+                        // Update FAB badge in DOM
+                        const fabBadge = document.getElementById('fab-badge');
+                        if (fabBadge) {
+                            if (newCount > 0) {
+                                fabBadge.textContent = newCount > 9 ? '9+' : newCount;
+                                fabBadge.classList.replace('scale-0', 'scale-100');
+                                fabBadge.classList.add('animate-bounce');
+                                setTimeout(() => fabBadge.classList.remove('animate-bounce'), 1000);
+                            } else {
+                                fabBadge.classList.replace('scale-100', 'scale-0');
+                            }
+                        }
+                        
+                        // If there is a new message that we haven't seen yet
+                        if (newCount > currentUnreadCount && data.latest) {
+                            const sender = data.latest.sender_name;
+                            const msg = data.latest.message;
+                            
+                            // Try playing sound silently
+                            const audio = document.getElementById('notification-sound');
+                            if(audio) audio.play().catch(e => {}); 
+                            
+                            showToast(`<div><p class="font-black text-gray-900 mb-0.5">${sender}</p><p class="text-[0.7rem] leading-tight text-gray-500 font-semibold">${msg}</p></div>`, 'chat', chatUrl);
+                        }
+                        
+                        currentUnreadCount = newCount;
+                    })
+                    .catch(e => console.error('Polling error:', e));
+            }, 5000);
+            @endauth
+        });
+    </script>
 
     <!-- Universal Image Lightbox -->
     <div id="glass-lightbox"

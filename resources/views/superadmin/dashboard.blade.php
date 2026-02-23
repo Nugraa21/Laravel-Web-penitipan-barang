@@ -51,7 +51,8 @@
                 <!-- Total Nilai Barang -->
                 <div class="glass-card p-6 border-t-4 border-t-amber-400 group">
                     <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">
-                        {{ __('Total Nilai Barang') }}</p>
+                        {{ __('Total Nilai Barang') }}
+                    </p>
                     <p class="text-3xl font-black text-gray-900 truncate"
                         title="Rp {{ number_format($totalEstimatedValue, 0, ',', '.') }}">
                         Rp {{ number_format($totalEstimatedValue, 0, ',', '.') }}
@@ -73,7 +74,8 @@
                 <!-- Warehouse Overview -->
                 <div class="glass-card p-6 border-t-4 border-t-slate-800 group">
                     <p class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">
-                        {{ __('Ringkasan Gudang') }}</p>
+                        {{ __('Ringkasan Gudang') }}
+                    </p>
                     <div class="flex gap-2 items-baseline">
                         <p class="text-4xl font-black text-gray-900">{{ $storedItems }}</p>
                         <p class="text-xs font-bold text-gray-400 uppercase">{{ __('aktif') }}</p>
@@ -98,7 +100,7 @@
 
                 <!-- Recent Item Activity: Aligned with Admin Dashboard UI -->
                 <div class="lg:col-span-2 glass-card p-0 overflow-hidden flex flex-col">
-                    <div class="flex justify-between items-center px-6 py-5 border-b border-gray-100">
+                    <div class="flex justify-between items-center px-6 py-5 border-b border-gray-100 flex-wrap gap-4">
                         <div class="flex items-center gap-3">
                             <div
                                 class="w-10 h-10 rounded-xl bg-gray-100 text-gray-800 flex items-center justify-center">
@@ -113,10 +115,25 @@
                                 </p>
                             </div>
                         </div>
-                        <a href="{{ route('superadmin.logs.items') }}"
-                            class="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors">
-                            {{ __('Log Lengkap') }} &rarr;
-                        </a>
+                        <div class="flex items-center gap-4">
+                            <!-- Search Input -->
+                            <div class="relative">
+                                <input type="text" id="dashboard-search-item" onkeyup="filterDashboardItems()"
+                                    placeholder="Cari nama/token..."
+                                    class="pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 w-48 transition-all">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <a href="{{ route('superadmin.logs.items') }}"
+                                class="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors">
+                                {{ __('Log Lengkap') }} &rarr;
+                            </a>
+                        </div>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
@@ -136,7 +153,8 @@
                             </thead>
                             <tbody class="divide-y divide-gray-50">
                                 @forelse($recentItems as $item)
-                                    <tr class="hover:bg-white/40 transition-colors group">
+                                    <tr class="hover:bg-white/40 transition-colors group dashboard-item-row"
+                                        data-search="{{ strtolower($item->name . ' ' . $item->receipt_token . ' ' . $item->user->name) }}">
                                         <td class="py-4 px-6">
                                             <div class="flex flex-col">
                                                 <span
@@ -165,7 +183,8 @@
                                 @empty
                                     <tr>
                                         <td colspan="3" class="py-12 text-center text-gray-400 font-bold italic">
-                                            {{ __('Belum ada barang terdaftar.') }}</td>
+                                            {{ __('Belum ada barang terdaftar.') }}
+                                        </td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -197,7 +216,8 @@
                                 <div class="flex-1 min-w-0">
                                     <p class="font-bold text-gray-900 text-base">{{ __('Pengaturan Core') }}</p>
                                     <p class="text-gray-500 text-xs truncate mt-0.5">
-                                        {{ __('Konfigurasi sistem utama') }}</p>
+                                        {{ __('Konfigurasi sistem utama') }}
+                                    </p>
                                 </div>
                             </a>
 
@@ -265,4 +285,23 @@
 
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            function filterDashboardItems() {
+                const input = document.getElementById('dashboard-search-item');
+                const filter = input.value.toLowerCase();
+                const rows = document.querySelectorAll('.dashboard-item-row');
+
+                rows.forEach(row => {
+                    const text = row.getAttribute('data-search');
+                    if (text.indexOf(filter) > -1) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+        </script>
+    @endpush
 </x-superadmin-layout>

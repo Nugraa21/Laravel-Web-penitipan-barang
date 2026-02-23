@@ -83,7 +83,7 @@
     "Kelola Pengguna": "Kelola Pengguna",
     "Lihat & atur akun user": "Lihat & atur akun user",
     "Update & verifikasi status": "Update & verifikasi status",
-    "Distribusi Status": "Distribusi Status",
+    "Distribusi Status Gudang": "Distribusi Status Gudang",
     "Kelola Akses Pengguna": "Kelola Akses Pengguna",
     "Memonitor seluruh akun user yang terdaftar di aplikasi penitipan barang.": "Memonitor seluruh akun user yang terdaftar di aplikasi penitipan barang.",
     "Tambah Admin": "Tambah Admin",
@@ -187,7 +187,6 @@
     "Konfigurasi sistem utama": "Konfigurasi sistem utama",
     "Kelola Semua Akun": "Kelola Semua Akun",
     "Admin & Pelanggan Aktif": "Admin & Pelanggan Aktif",
-    "Distribusi Status Gudang": "Distribusi Status Gudang",
     "Log Transaksi Barang": "Log Transaksi Barang",
     "Log Aktivitas Pengguna": "Log Aktivitas Pengguna",
     "Super Admin": "Super Admin",
@@ -224,5 +223,13 @@
     "Durasi Penitipan": "Durasi Penitipan",
     "Durasi Estimasi": "Durasi Estimasi",
     "Estimasi Biaya": "Estimasi Biaya",
-    "Nilai Barang": "Nilai Barang"
+    "Nilai Barang": "Nilai Barang",
+    "Sertakan Barang": "Sertakan Barang",
+    "Pilihan Barang": "Pilihan Barang",
+    "Pilih Barang": "Pilih Barang",
+    "Pilih barang sebagai konteks obrolan": "Pilih barang sebagai konteks obrolan",
+    "Tidak ada barang yang terdaftar.": "Tidak ada barang yang terdaftar.",
+    "Shortcut Item": "Pintasan Barang",
+    "Ketik pesan...": "Ketik pesan...",
+    "Menyertakan Item Konteks": "Menyertakan Item Konteks"
 }

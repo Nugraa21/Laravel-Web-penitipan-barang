@@ -17,7 +17,7 @@
                         </button>
                     </form>
                 @endif
-                <a href="{{ route('chat.index', $item) }}" class="btn btn-outline" style="color: var(--c-primary); border-color: var(--c-primary-light); background: var(--c-primary-light);">
+                <a href="{{ route('chat.index', ['item_id' => $item->id]) }}" class="btn btn-outline" style="color: var(--c-primary); border-color: var(--c-primary-light); background: var(--c-primary-light);">
                     <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                     {{ __('Live Chat') }}
                 </a>

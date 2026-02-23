@@ -21,6 +21,52 @@
 
 
         @if(Auth::user()->role !== 'admin')
+            <!-- Quick Guide / Tutorial Banner -->
+            <div x-data="{ showGuide: localStorage.getItem('hideGuide') !== 'true' }" 
+                 x-show="showGuide" 
+                 x-transition.duration.500ms
+                 class="glass-card mb-8 relative border-emerald-200 bg-gradient-to-r from-emerald-50/50 to-teal-50/50" 
+                 style="padding: 1.5rem 2rem;">
+                
+                <!-- Close Button -->
+                <button @click="showGuide = false; localStorage.setItem('hideGuide', 'true')" class="absolute top-4 right-4 text-emerald-600 hover:bg-emerald-100 p-1 rounded-full transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-black text-gray-900 border-b-0 m-0 pb-0">Panduan Cepat Penitipan Baru</h3>
+                        <p class="text-emerald-700 font-bold text-sm m-0">Ikuti 3 langkah mudah ini untuk mengamankan properti Anda.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative mt-6">
+                    <!-- Connector line for md+ screens -->
+                    <div class="hidden md:block absolute top-1/2 left-[10%] right-[10%] h-0.5 bg-emerald-200/50 -z-10 -translate-y-1/2"></div>
+                    
+                    <div class="bg-white/60 p-4 rounded-xl border border-white/80 shadow-sm flex flex-col items-center text-center relative z-10 transition-transform hover:-translate-y-1">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white font-black flex items-center justify-center mb-3 shadow-md border-2 border-white">1</div>
+                        <h4 class="font-bold text-gray-900 text-sm mb-1">Klik "+ Titip Barang"</h4>
+                        <p class="text-xs font-semibold text-gray-600 leading-snug">Gunakan tombol biru di kanan atas untuk memulai formulir pendaftaran barang penitipan.</p>
+                    </div>
+                    
+                    <div class="bg-white/60 p-4 rounded-xl border border-white/80 shadow-sm flex flex-col items-center text-center relative z-10 transition-transform hover:-translate-y-1">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white font-black flex items-center justify-center mb-3 shadow-md border-2 border-white">2</div>
+                        <h4 class="font-bold text-gray-900 text-sm mb-1">Isi Detail & Foto</h4>
+                        <p class="text-xs font-semibold text-gray-600 leading-snug">Lengkapi nama, deskripsi, estimasi harga, dan <b>foto barang</b> dengan jelas sebagai bukti asuransi.</p>
+                    </div>
+                    
+                    <div class="bg-white/60 p-4 rounded-xl border border-white/80 shadow-sm flex flex-col items-center text-center relative z-10 transition-transform hover:-translate-y-1">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white font-black flex items-center justify-center mb-3 shadow-md border-2 border-white">3</div>
+                        <h4 class="font-bold text-gray-900 text-sm mb-1">Dapatkan Token</h4>
+                        <p class="text-xs font-semibold text-gray-600 leading-snug">Serahkan barang fisik ke Loket Admin dengan menunjukkan Token Resi Digital untuk verifikasi akhir.</p>
+                    </div>
+                </div>
+            </div>
+
             @php
                 $total = $items->count();
                 $pending = $items->where('status', 'pending')->count();
