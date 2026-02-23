@@ -28,46 +28,71 @@
                         @if(Auth::user()->role === 'admin') {{ __('Barang Masuk') }} @else {{ __('Dashboard') }} @endif
                     </a>
 
-                    @if(Auth::user()->role === 'super_admin')
-                        <a href="{{ route('superadmin.dashboard') }}"
-                            class="flex items-center gap-2 px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all rounded-xl {{ request()->routeIs('superadmin.dashboard') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/30' : 'text-indigo-600 hover:bg-indigo-50' }}">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5">
-                                </path>
-                            </svg>
-                            {{ __('Super Admin') }}
-                        </a>
-                    @endif
-
+                    <!-- Admin Dropdown Menu -->
                     @if(in_array(Auth::user()->role, ['admin', 'super_admin']))
-                        <a href="{{ route('admin.dashboard') }}"
-                            class="flex items-center gap-2 px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all rounded-xl {{ request()->routeIs('admin.dashboard') ? 'bg-gray-800 text-white shadow-md' : 'text-gray-600 hover:bg-white/50 hover:text-gray-900' }}">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                                </path>
-                            </svg>
-                            {{ __('Overview') }}
-                        </a>
-                        <a href="{{ route('admin.users.index') }}"
-                            class="flex items-center gap-2 px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all rounded-xl {{ request()->routeIs('admin.users.index') ? 'bg-gray-800 text-white shadow-md' : 'text-gray-600 hover:bg-white/50 hover:text-gray-900' }}">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
-                                </path>
-                            </svg>
-                            {{ __('Pengguna') }}
-                        </a>
-                        <a href="{{ route('admin.scan') }}"
-                            class="flex items-center gap-2 px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all rounded-xl {{ request()->routeIs('admin.scan') ? 'bg-gradient-to-r from-amber-300 to-amber-500 text-gray-900 shadow-md' : 'text-gray-600 hover:bg-white/50 hover:text-gray-900' }}">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 00-1 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z">
-                                </path>
-                            </svg>
-                            {{ __('Scan Token') }}
-                        </a>
+                        <div x-data="{ adminMenuOpen: false }" class="relative">
+                            <button @click="adminMenuOpen = !adminMenuOpen" @click.outside="adminMenuOpen = false"
+                                class="flex items-center gap-2 px-4 py-2 text-sm font-bold uppercase tracking-wide transition-all rounded-xl text-gray-600 hover:bg-white/50 hover:text-gray-900 {{ request()->routeIs('admin.*') || request()->routeIs('superadmin.*') ? 'bg-indigo-50 text-indigo-700' : '' }}">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h7">
+                                    </path>
+                                </svg>
+                                {{ __('Menu Admin') }}
+                                <svg class="w-4 h-4 transition-transform duration-200"
+                                    :class="{'rotate-180': adminMenuOpen}" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+
+                            <div x-show="adminMenuOpen" style="display: none;" x-transition
+                                class="absolute left-0 mt-2 w-56 bg-white rounded-xl border border-gray-100 shadow-xl overflow-hidden z-50 py-1">
+
+                                @if(Auth::user()->role === 'super_admin')
+                                    <a href="{{ route('superadmin.dashboard') }}"
+                                        class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold uppercase transition-colors hover:bg-indigo-50 text-indigo-600 {{ request()->routeIs('superadmin.dashboard') ? 'bg-indigo-50' : '' }}">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5">
+                                            </path>
+                                        </svg>
+                                        {{ __('Super Admin') }}
+                                    </a>
+                                    <div class="h-px bg-gray-100 my-1"></div>
+                                @endif
+
+                                <a href="{{ route('admin.dashboard') }}"
+                                    class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold uppercase transition-colors text-gray-700 hover:bg-gray-50 {{ request()->routeIs('admin.dashboard') ? 'bg-gray-50 text-indigo-600' : '' }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                                        </path>
+                                    </svg>
+                                    {{ __('Overview') }}
+                                </a>
+                                <a href="{{ route('admin.users.index') }}"
+                                    class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold uppercase transition-colors text-gray-700 hover:bg-gray-50 {{ request()->routeIs('admin.users.index') ? 'bg-gray-50 text-indigo-600' : '' }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                                        </path>
+                                    </svg>
+                                    {{ __('Pengguna') }}
+                                </a>
+                                <a href="{{ route('admin.scan') }}"
+                                    class="flex items-center gap-3 px-4 py-2.5 text-sm font-bold uppercase transition-colors text-gray-700 hover:bg-gray-50 {{ request()->routeIs('admin.scan') ? 'bg-amber-50 text-amber-600' : '' }}">
+                                    <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 00-1 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z">
+                                        </path>
+                                    </svg>
+                                    {{ __('Scan Token') }}
+                                </a>
+                            </div>
+                        </div>
                     @endif
 
                     <a href="{{ Auth::user()->role === 'admin' ? route('chat.inbox') : route('chat.index') }}"

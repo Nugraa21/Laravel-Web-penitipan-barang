@@ -108,10 +108,12 @@ class ChatController extends Controller
             abort(403, 'Abaikan: Super admin hanya bisa chat dengan admin.');
         }
 
-        // Fetch user items for selection (for users or for admin looking at user)
+        // Fetch user items for selection
         $userItems = collect();
-        if ($chatUser->role === 'user') {
-            $userItems = Item::where('user_id', $userId)->latest()->get();
+        if (in_array($currentUser->role, ['admin', 'super_admin'])) {
+            $userItems = Item::with('user')->latest()->get();
+        } else {
+            $userItems = Item::where('user_id', $currentUser->id)->latest()->get();
         }
 
         // Order by DESC for flex-col-reverse

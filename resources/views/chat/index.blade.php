@@ -179,8 +179,12 @@
                             <h4 class="font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors">
                                 {{ $item->name }}
                             </h4>
-                            <p class="text-xs font-bold text-gray-500 mt-0.5">TOKEN: <span
+                            <p class="text-[0.65rem] font-bold text-gray-500 mt-0.5">TOKEN: <span
                                     class="text-blue-500">{{ $item->receipt_token }}</span></p>
+                            @if(in_array(Auth::user()->role, ['admin', 'super_admin']) && $item->user)
+                                <p class="text-[0.65rem] font-bold text-gray-400 mt-0.5">Pemilik: <span
+                                        class="text-indigo-500">{{ $item->user->name }}</span></p>
+                            @endif
                         </div>
                         <div
                             class="opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
