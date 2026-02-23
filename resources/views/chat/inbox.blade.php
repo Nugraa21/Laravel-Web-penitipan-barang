@@ -12,9 +12,10 @@
                             </path>
                         </svg>
                     </span>
-                    Kotak Pesan
+                    {{ __('Kotak Pesan') }}
                 </h1>
-                <p class="text-gray-500 font-medium mt-2">Kelola obrolan langsung terkait layanan penitipan.</p>
+                <p class="text-gray-500 font-medium mt-2">{{ __('Kelola obrolan langsung terkait layanan penitipan.') }}
+                </p>
             </div>
 
             <div class="glass-card px-4 py-2.5 rounded-full flex items-center gap-3 w-full md:w-auto">
@@ -22,7 +23,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
-                <input type="text" id="search-inbox" placeholder="Cari nama pelanggan..."
+                <input type="text" id="search-inbox" placeholder="{{ __('Cari nama pelanggan...') }}"
                     class="bg-transparent border-none focus:ring-0 p-0 text-sm font-semibold w-full md:w-48 placeholder-gray-400">
             </div>
         </div>
@@ -62,14 +63,14 @@
                                         class="text-sm truncate font-medium {{ $conv->unread_count > 0 ? 'text-gray-900' : 'text-gray-500' }}">
                                         @if($conv->last_message)
                                             @if($conv->last_message->sender_id === Auth::id())
-                                                <span class="text-gray-400 font-bold mr-1">Anda:</span>
+                                                <span class="text-gray-400 font-bold mr-1">{{ __('Anda:') }}</span>
                                             @endif
                                             @if($conv->last_message->item_id)
                                                 <span class="text-blue-500 font-bold">[Item]</span>
                                             @endif
                                             {{ Str::limit($conv->last_message->message, 80) }}
                                         @else
-                                            <span class="italic font-normal text-gray-400">Belum ada percakapan.</span>
+                                            <span class="italic font-normal text-gray-400">{{ __('Belum ada percakapan.') }}</span>
                                         @endif
                                     </p>
                                     @if($conv->unread_count > 0)
@@ -93,8 +94,8 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-black text-gray-900 mb-1">Belum Ada Percakapan</h3>
-                    <p class="font-medium text-sm max-w-sm">Saat ini belum ada obrolan aktif dari pelanggan.</p>
+                    <h3 class="text-lg font-black text-gray-900 mb-1">{{ __('Belum ada percakapan.') }}</h3>
+                    <p class="font-medium text-sm max-w-sm">{{ __('Saat ini belum ada obrolan aktif dari pelanggan.') }}</p>
                 </div>
             @endif
         </div>

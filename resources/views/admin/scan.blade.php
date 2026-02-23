@@ -127,14 +127,14 @@
                     </path>
                 </svg>
             </div>
-            <h1 class="text-4xl font-black text-gray-900 mb-2 tracking-tight">Scan Token Barang</h1>
-            <p class="text-gray-600 font-medium mb-8">Masukkan kode struk/token penitipan untuk melihat detail dan foto
-                barang secara instan.</p>
+            <h1 class="text-4xl font-black text-gray-900 mb-2 tracking-tight">{{ __('Scan Token Barang') }}</h1>
+            <p class="text-gray-600 font-medium mb-8">
+                {{ __('Masukkan kode struk/token penitipan untuk melihat detail dan foto barang secara instan.') }}</p>
 
             <form action="{{ route('admin.scan.process') }}" method="POST" class="flex flex-col sm:flex-row gap-4">
                 @csrf
                 <input type="text" name="token" value="{{ request('token') }}" autocomplete="off"
-                    placeholder="Contoh: RCP-12345678"
+                    placeholder="{{ __('Contoh: RCP-12345678') }}"
                     class="glass-input flex-grow text-xl text-center sm:text-left text-gray-900 font-bold px-6 py-4 placeholder-gray-500 uppercase"
                     required autofocus>
                 <button type="submit" class="glass-btn px-8 py-4 text-lg flex items-center justify-center gap-2">
@@ -158,7 +158,7 @@
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-2xl font-black text-gray-900">{{ $item->name }}</h2>
                             <span class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider
-                                    {{ $item->status === 'pending' ? 'bg-amber-100 text-amber-800 border border-amber-200' :
+                                        {{ $item->status === 'pending' ? 'bg-amber-100 text-amber-800 border border-amber-200' :
             ($item->status === 'stored' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' :
                 'bg-gray-200 text-gray-800 border border-gray-300') }}">
                                 {{ $item->status }}
@@ -171,7 +171,7 @@
                                     class="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-700">
                                 <div
                                     class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                                    <p class="text-white font-bold text-sm">Foto Utama Barang</p>
+                                    <p class="text-white font-bold text-sm">{{ __('Foto Utama Barang') }}</p>
                                 </div>
                             </div>
                         @else
@@ -187,13 +187,16 @@
 
                         <div class="space-y-4">
                             <div class="profile-glass p-4">
-                                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">Deskripsi & Jenis
+                                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">
+                                    {{ __('Deskripsi & Jenis') }}
                                 </p>
-                                <p class="font-medium text-gray-900">{{ $item->description ?: 'Tidak ada deskripsi.' }}</p>
+                                <p class="font-medium text-gray-900">{{ $item->description ?: __('Tidak ada deskripsi.') }}
+                                </p>
                                 @if($item->item_type)
                                     <p
                                         class="inline-block mt-2 px-3 py-1 bg-white/50 rounded-lg text-sm font-bold text-gray-700">
-                                        {{ $item->item_type }}</p>
+                                        {{ $item->item_type }}
+                                    </p>
                                 @endif
                             </div>
 
@@ -223,8 +226,7 @@
 
                             <h3 class="text-xl font-black text-gray-900 mb-1">{{ $item->user->name }}</h3>
                             <span
-                                class="inline-block px-3 py-1 bg-white/60 rounded-full text-xs font-bold text-gray-600 mb-4 border border-white">Profile
-                                Penitip</span>
+                                class="inline-block px-3 py-1 bg-white/60 rounded-full text-xs font-bold text-gray-600 mb-4 border border-white">{{ __('Profile Penitip') }}</span>
 
                             <div class="space-y-3 text-left border-t border-white/40 pt-4 mt-2">
                                 <div class="flex items-center gap-3 text-sm text-gray-700 font-medium">
@@ -243,7 +245,7 @@
                                             d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
                                         </path>
                                     </svg>
-                                    <span>{{ $item->user->phone ?: 'Tidak ada nomor' }}</span>
+                                    <span>{{ $item->user->phone ?: __('Tidak ada nomor') }}</span>
                                 </div>
                                 <div class="flex items-start gap-3 text-sm text-gray-700 font-medium">
                                     <svg class="w-5 h-5 text-gray-500 shrink-0 mt-0.5" fill="none" stroke="currentColor"
@@ -254,7 +256,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     </svg>
-                                    <span class="line-clamp-2">{{ $item->user->address ?: 'Tidak ada alamat' }}</span>
+                                    <span class="line-clamp-2">{{ $item->user->address ?: __('Tidak ada alamat') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -266,11 +268,11 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Eksekusi Barang
+                                {{ __('Eksekusi Barang') }}
                             </a>
                             <a href="{{ route('items.show', $item) }}"
                                 class="w-full flex items-center justify-center gap-2 py-3 mt-3 bg-white/50 hover:bg-white text-gray-800 border border-white rounded-xl font-bold transition-all shadow-sm">
-                                Lihat Detail Lengkap
+                                {{ __('Lihat Detail Lengkap') }}
                             </a>
                         </div>
                     </div>

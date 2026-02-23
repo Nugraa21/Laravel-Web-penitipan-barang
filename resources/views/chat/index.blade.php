@@ -23,7 +23,7 @@
                             <h2 class="text-base md:text-lg font-black text-gray-900 leading-none">{{ $chatUser->name }}
                             </h2>
                             <p class="text-xs font-bold text-gray-500 mt-1 uppercase tracking-wider">
-                                {{ $chatUser->role === 'admin' ? 'Customer Support' : 'Pelanggan' }}
+                                {{ $chatUser->role === 'admin' ? __('Customer Support') : __('Pelanggan') }}
                             </p>
                         </div>
                     </div>
@@ -47,7 +47,8 @@
                                 </path>
                             </svg>
                         </div>
-                        <p class="text-sm font-bold text-gray-500">Belum ada pesan. Mulai percakapan sekarang!</p>
+                        <p class="text-sm font-bold text-gray-500">{{ __('Belum ada pesan. Mulai percakapan sekarang!') }}
+                        </p>
                     </div>
                 @endif
             </div>
@@ -70,8 +71,8 @@
                         @endif
                     </div>
                     <div>
-                        <p class="text-[0.65rem] font-black text-blue-600 uppercase tracking-widest">Menyertakan Item
-                            Context</p>
+                        <p class="text-[0.65rem] font-black text-blue-600 uppercase tracking-widest">
+                            {{ __('Menyertakan Item Konteks') }}</p>
                         <h4 class="text-xs font-bold text-gray-900" id="context-item-name">
                             {{ $contextItem->name ?? '' }}
                         </h4>
@@ -102,13 +103,14 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4">
                             </path>
                         </svg>
-                        <span class="font-bold text-sm whitespace-nowrap hidden sm:inline">Pilih Barang</span>
+                        <span
+                            class="font-bold text-sm whitespace-nowrap hidden sm:inline">{{ __('Pilih Barang') }}</span>
                     </button>
 
                     <div class="relative flex-1">
                         <textarea name="message" id="message-input" rows="1"
                             class="w-full rounded-2xl border-gray-200 bg-white shadow-inner focus:border-slate-800 focus:ring focus:ring-slate-200 focus:bg-white transition-all resize-none py-3 pl-4 pr-12 text-sm md:text-base font-semibold text-gray-800"
-                            placeholder="Ketik pesan..." required
+                            placeholder="{{ __('Ketik pesan...') }}" required
                             oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"
                             style="max-height: 120px; outline: none;"></textarea>
                     </div>
@@ -133,9 +135,9 @@
             class="glass-card w-full max-w-lg bg-white border border-white shadow-2xl rounded-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                 <div>
-                    <h3 class="font-black text-gray-900 uppercase tracking-wider">Sertakan Barang</h3>
-                    <p class="text-[0.65rem] font-bold text-gray-500 uppercase mt-0.5">Pilih barang sebagai konteks
-                        obrolan</p>
+                    <h3 class="font-black text-gray-900 uppercase tracking-wider">{{ __('Sertakan Barang') }}</h3>
+                    <p class="text-[0.65rem] font-bold text-gray-500 uppercase mt-0.5">
+                        {{ __('Pilih barang sebagai konteks obrolan') }}</p>
                 </div>
                 <button onclick="closeItemModal()"
                     class="p-2 rounded-full hover:bg-gray-200 text-gray-400 transition-colors">
@@ -182,7 +184,7 @@
                             <p class="text-[0.65rem] font-bold text-gray-500 mt-0.5">TOKEN: <span
                                     class="text-blue-500">{{ $item->receipt_token }}</span></p>
                             @if(in_array(Auth::user()->role, ['admin', 'super_admin']) && $item->user)
-                                <p class="text-[0.65rem] font-bold text-gray-400 mt-0.5">Pemilik: <span
+                                <p class="text-[0.65rem] font-bold text-gray-400 mt-0.5">{{ __('Pemilik') }}: <span
                                         class="text-indigo-500">{{ $item->user->name }}</span></p>
                             @endif
                         </div>
@@ -196,7 +198,7 @@
                     </button>
                 @empty
                     <div class="py-10 text-center text-gray-400">
-                        <p class="text-sm font-bold italic">Tidak ada barang yang terdaftar.</p>
+                        <p class="text-sm font-bold italic">{{ __('Tidak ada barang yang terdaftar.') }}</p>
                     </div>
                 @endforelse
             </div>
@@ -232,7 +234,7 @@
                     const list = document.getElementById('item-list');
                     list.insertAdjacentHTML('beforeend', `
                         <div id="modal-empty-state" class="py-10 text-center text-gray-400">
-                            <p class="text-sm font-bold italic">Tidak ada hasil pencarian.</p>
+                            <p class="text-sm font-bold italic">{{ __("Tidak ada hasil pencarian.") }}</p>
                         </div>
                     `);
                 }
@@ -275,7 +277,7 @@
         }
 
         function deleteMessage(messageId) {
-            if (confirm('Yakin ingin menghapus pesan ini?')) {
+            if (confirm('{{ __("Yakin ingin menghapus pesan ini?") }}')) {
                 fetch(`/chat/message/${messageId}`, {
                     method: 'DELETE',
                     headers: {
@@ -291,12 +293,12 @@
                                 msgElement.remove();
                             }
                         } else {
-                            alert(data.message || 'Gagal menghapus pesan.');
+                            alert(data.message || '{{ __("Gagal menghapus pesan.") }}');
                         }
                     })
                     .catch(error => {
                         console.error('Error deleting message:', error);
-                        alert('Terjadi kesalahan sistem.');
+                        alert('{{ __("Terjadi kesalahan sistem.") }}');
                     });
             }
         }
