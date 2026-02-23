@@ -72,6 +72,15 @@
                                 </svg>
                                 {{ __('Tarif & Biaya') }}
                             </button>
+                            
+                            <button @click="activeSection = 'social'"
+                                :class="{ 'bg-indigo-50 text-indigo-700': activeSection === 'social', 'text-gray-600 hover:bg-gray-50 hover:text-gray-900': activeSection !== 'social' }"
+                                class="w-full flex items-center px-4 py-3 text-sm font-bold rounded-xl transition-colors">
+                                <svg class="mr-3 h-5 w-5" :class="{ 'text-indigo-500': activeSection === 'social', 'text-gray-400': activeSection !== 'social' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                                </svg>
+                                {{ __('Sosial Media') }}
+                            </button>
                        </nav>
                     </div>
                 </div>
@@ -123,6 +132,68 @@
                                         class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">{{ old('hero_description', $settings['hero_description'] ?? '') }}</textarea>
                                     <p class="mt-2 text-xs text-gray-500">{{ __('Gunakan kalimat yang meyakinkan pelanggan untuk menitipkan barang mereka di tempat Anda.') }}</p>
                                 </div>
+                                
+                                <div class="pt-4 border-t border-gray-100 mt-6">
+                                    <label for="promo_text" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Teks Promo Global') }}</label>
+                                    <div class="relative rounded-xl shadow-sm">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <svg class="h-5 w-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
+                                        </div>
+                                        <input type="text" name="promo_text" id="promo_text" value="{{ old('promo_text', $settings['promo_text'] ?? '') }}" 
+                                            class="block w-full pl-10 rounded-xl border-gray-200 focus:border-amber-500 focus:ring-amber-500 bg-amber-50/50 py-3 font-bold text-gray-800" placeholder="Contoh: Promo Spesial: Diskon 20% Penitipan Mingguan!">
+                                    </div>
+                                    <p class="mt-2 text-xs text-gray-500">{{ __('Teks ini akan muncul sebagai banner atau pengumuman di landing page.') }}</p>
+                                </div>
+
+                                <div class="pt-6 mt-6 border-t border-gray-100">
+                                    <h4 class="font-bold text-gray-900 mb-4">{{ __('Teks Bagian Harga (Pricing)') }}</h4>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="welcome_pricing_title" class="block text-sm font-bold text-gray-700 mb-1">{{ __('Judul Bagian Harga') }}</label>
+                                            <input type="text" name="welcome_pricing_title" id="welcome_pricing_title" value="{{ old('welcome_pricing_title', $settings['welcome_pricing_title'] ?? '') }}" class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                        </div>
+                                        <div>
+                                            <label for="welcome_pricing_subtitle" class="block text-sm font-bold text-gray-700 mb-1">{{ __('Sub-judul Bagian Harga') }}</label>
+                                            <textarea name="welcome_pricing_subtitle" id="welcome_pricing_subtitle" rows="3" class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">{{ old('welcome_pricing_subtitle', $settings['welcome_pricing_subtitle'] ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pt-6 mt-6 border-t border-gray-100">
+                                    <h4 class="font-bold text-gray-900 mb-4">{{ __('Teks Bagian Lokasi') }}</h4>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="welcome_location_title" class="block text-sm font-bold text-gray-700 mb-1">{{ __('Judul Lokasi') }}</label>
+                                            <input type="text" name="welcome_location_title" id="welcome_location_title" value="{{ old('welcome_location_title', $settings['welcome_location_title'] ?? '') }}" class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                        </div>
+                                        <div>
+                                            <label for="welcome_location_subtitle" class="block text-sm font-bold text-gray-700 mb-1">{{ __('Sub-judul Lokasi') }}</label>
+                                            <textarea name="welcome_location_subtitle" id="welcome_location_subtitle" rows="3" class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">{{ old('welcome_location_subtitle', $settings['welcome_location_subtitle'] ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pt-6 mt-6 border-t border-gray-100">
+                                    <h4 class="font-bold text-gray-900 mb-4">{{ __('Teks Bagian FAQ & Footer') }}</h4>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="welcome_faq_title" class="block text-sm font-bold text-gray-700 mb-1">{{ __('Judul FAQ') }}</label>
+                                            <input type="text" name="welcome_faq_title" id="welcome_faq_title" value="{{ old('welcome_faq_title', $settings['welcome_faq_title'] ?? '') }}" class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                        </div>
+                                        <div>
+                                            <label for="welcome_faq_subtitle" class="block text-sm font-bold text-gray-700 mb-1">{{ __('Sub-judul FAQ') }}</label>
+                                            <textarea name="welcome_faq_subtitle" id="welcome_faq_subtitle" rows="2" class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">{{ old('welcome_faq_subtitle', $settings['welcome_faq_subtitle'] ?? '') }}</textarea>
+                                        </div>
+                                        <div>
+                                            <label for="welcome_prefooter_title" class="block text-sm font-bold text-gray-700 mb-1">{{ __('Judul Ajakan (Call to Action)') }}</label>
+                                            <input type="text" name="welcome_prefooter_title" id="welcome_prefooter_title" value="{{ old('welcome_prefooter_title', $settings['welcome_prefooter_title'] ?? '') }}" class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                        </div>
+                                        <div>
+                                            <label for="welcome_prefooter_subtitle" class="block text-sm font-bold text-gray-700 mb-1">{{ __('Sub-judul Ajakan') }}</label>
+                                            <textarea name="welcome_prefooter_subtitle" id="welcome_prefooter_subtitle" rows="3" class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">{{ old('welcome_prefooter_subtitle', $settings['welcome_prefooter_subtitle'] ?? '') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -154,6 +225,13 @@
                                 </div>
                                 
                                 <div class="pt-4 border-t border-gray-100 mt-6">
+                                    <label for="store_map_url" class="block text-sm font-bold text-gray-700 mb-2">{{ __('URL Embed Google Maps (iframe URL)') }}</label>
+                                    <input type="url" name="store_map_url" id="store_map_url" value="{{ old('store_map_url', $settings['store_map_url'] ?? '') }}" 
+                                        class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3 text-sm" placeholder="https://www.google.com/maps/embed?pb=...">
+                                    <p class="mt-2 text-xs text-gray-500">{{ __('URL src dari iframe Google Maps toko Anda untuk ditampilkan di halaman depan.') }}</p>
+                                </div>
+
+                                <div class="pt-4 border-t border-gray-100 mt-6">
                                     <label for="footer_text" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Hak Cipta Footer') }}</label>
                                     <input type="text" name="footer_text" id="footer_text" value="{{ old('footer_text', $settings['footer_text'] ?? '') }}" 
                                         class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3 text-sm" placeholder="© 2026 Hak Cipta Dilindungi">
@@ -183,7 +261,7 @@
                                         </div>
                                     </div>
 
-                                    <div>
+                                     <div>
                                         <label for="price_per_day" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Tarif Per Hari (IDR)') }}</label>
                                         <div class="relative rounded-xl shadow-sm">
                                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -210,6 +288,49 @@
                                         <input type="number" step="0.1" name="multiplier_others" id="multiplier_others" value="{{ old('multiplier_others', $settings['multiplier_others'] ?? '1.0') }}" 
                                             class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-6 mt-8 border-t border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-4">{{ __('Tarif Paket (Ditampilkan di Landing Page)') }}</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div>
+                                        <label for="price_daily" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Paket Harian (IDR)') }}</label>
+                                        <input type="number" name="price_daily" id="price_daily" value="{{ old('price_daily', $settings['price_daily'] ?? '15000') }}" 
+                                            class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                    </div>
+                                    <div>
+                                        <label for="price_weekly" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Paket Mingguan (IDR)') }}</label>
+                                        <input type="number" name="price_weekly" id="price_weekly" value="{{ old('price_weekly', $settings['price_weekly'] ?? '50000') }}" 
+                                            class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                    </div>
+                                    <div>
+                                        <label for="price_monthly" class="block text-sm font-bold text-gray-700 mb-2">{{ __('Paket Bulanan (IDR)') }}</label>
+                                        <input type="number" name="price_monthly" id="price_monthly" value="{{ old('price_monthly', $settings['price_monthly'] ?? '150000') }}" 
+                                            class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media Section -->
+                        <div x-show="activeSection === 'social'" x-cloak x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-x-4" x-transition:enter-end="opacity-100 transform translate-x-0" class="p-8">
+                            <div class="mb-8">
+                                <h3 class="text-xl font-black text-gray-900">{{ __('Sosial Media') }}</h3>
+                                <p class="text-sm text-gray-500 mt-1">{{ __('Tautan sosial media untuk ditampilkan di bagian footer landing page.') }}</p>
+                            </div>
+                            <div class="space-y-6">
+                                <div>
+                                    <label for="social_facebook" class="block text-sm font-bold text-gray-700 mb-2">Facebook URL</label>
+                                    <input type="url" name="social_facebook" id="social_facebook" value="{{ old('social_facebook', $settings['social_facebook'] ?? '') }}" class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                </div>
+                                <div>
+                                    <label for="social_instagram" class="block text-sm font-bold text-gray-700 mb-2">Instagram URL</label>
+                                    <input type="url" name="social_instagram" id="social_instagram" value="{{ old('social_instagram', $settings['social_instagram'] ?? '') }}" class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
+                                </div>
+                                <div>
+                                    <label for="social_twitter" class="block text-sm font-bold text-gray-700 mb-2">Twitter/X URL</label>
+                                    <input type="url" name="social_twitter" id="social_twitter" value="{{ old('social_twitter', $settings['social_twitter'] ?? '') }}" class="block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 bg-white/50 py-3">
                                 </div>
                             </div>
                         </div>

@@ -623,15 +623,17 @@
         <!-- Hero Section -->
         <div class="hero-section" style="margin-top: 60px;">
             <div class="container mx-auto px-4 hero-content">
-                <p
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-white/80 shadow-sm text-sm font-bold text-amber-700 mb-6 backdrop-blur-md">
-                    <span class="relative flex h-3 w-3">
-                        <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
-                    </span>
-                    Solusi Cerdas Penyimpanan Barang
-                </p>
+                @if(!empty($app_settings['promo_text']))
+                    <p
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-amber-300 shadow-sm text-sm font-bold text-amber-700 mb-6 backdrop-blur-md">
+                        <span class="relative flex h-3 w-3">
+                            <span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                        </span>
+                        {{ $app_settings['promo_text'] }}
+                    </p>
+                @endif
                 <h1 class="hero-title"><span>{{ $app_settings['hero_title'] ?? 'Titip Barang Tenang & Mudah' }}</span>
                 </h1>
                 <p class="hero-desc">
@@ -806,11 +808,10 @@
         <!-- Pricing Section -->
         <section id="harga" class="py-20 bg-white/10 backdrop-blur-sm border-y border-white/30">
             <div class="container mx-auto px-4 max-w-7xl">
-                <h2 class="section-title">Pilih Opsi Penitipan Sesuai Kebutuhan</h2>
+                <h2 class="section-title">
+                    {{ $app_settings['welcome_pricing_title'] ?? 'Pilih Opsi Penitipan Sesuai Kebutuhan' }}</h2>
                 <p class="section-subtitle max-w-3xl mx-auto">
-                    Khusus untuk lokasi <strong>Bandara</strong> atau <strong>Stasiun KRL/KAI</strong>.
-                    Pembayaran dilakukan secara lokal di loket oleh pegawai kami, namun Anda tetap dapat
-                    mendaftar dan memantau estimasi barang dari jarak jauh.
+                    {{ $app_settings['welcome_pricing_subtitle'] ?? 'Khusus untuk lokasi Bandara atau Stasiun KRL/KAI. Pembayaran dilakukan secara lokal di loket oleh pegawai kami, namun Anda tetap dapat mendaftar dan memantau estimasi barang dari jarak jauh.' }}
                 </p>
 
                 <div
@@ -820,7 +821,9 @@
                         <div class="w-full text-center flex flex-col items-center">
                             <h4 class="text-xl font-extrabold text-gray-900 border-b border-gray-100 w-full pb-4">Loker
                                 Kecil</h4>
-                            <div class="price-val"><span>Rp</span>15.000</div>
+                            <div class="price-val">
+                                <span>Rp</span>{{ number_format($app_settings['price_daily'] ?? 15000, 0, ',', '.') }}
+                            </div>
                             <p class="text-gray-500 font-bold text-sm mb-6">per 24 jam</p>
 
                             <div class="mt-4 mb-8 w-full">
@@ -866,8 +869,10 @@
                             <h4
                                 class="text-xl font-extrabold text-amber-900 border-b border-amber-100 w-full pb-4 pt-4">
                                 Loker Besar</h4>
-                            <div class="price-val"><span>Rp</span>35.000</div>
-                            <p class="text-amber-700 font-bold text-sm mb-6">per 24 jam</p>
+                            <div class="price-val">
+                                <span>Rp</span>{{ number_format($app_settings['price_weekly'] ?? 50000, 0, ',', '.') }}
+                            </div>
+                            <p class="text-amber-700 font-bold text-sm mb-6">per 7 hari</p>
 
                             <div class="mt-4 mb-8 w-full">
                                 <a href="{{ route('register') }}" class="btn-hero w-full !py-3 !text-sm">Pilih
@@ -920,8 +925,10 @@
                         <div class="w-full text-center flex flex-col items-center">
                             <h4 class="text-xl font-extrabold text-gray-900 border-b border-gray-100 w-full pb-4">
                                 Khusus / VIP</h4>
-                            <div class="price-val"><span>Rp</span>75.000</div>
-                            <p class="text-gray-500 font-bold text-sm mb-6">per 24 jam</p>
+                            <div class="price-val">
+                                <span>Rp</span>{{ number_format($app_settings['price_monthly'] ?? 150000, 0, ',', '.') }}
+                            </div>
+                            <p class="text-gray-500 font-bold text-sm mb-6">per 30 hari</p>
 
                             <div class="mt-4 mb-8 w-full">
                                 <a href="{{ route('register') }}" class="btn-hero w-full !py-3 !text-sm">Pilih
@@ -972,12 +979,12 @@
             <div class="container mx-auto px-4 max-w-7xl">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div>
-                        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">Lokasi Strategis &
-                            <br><span class="text-amber-600">Terjangkau</span>
+                        <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
+                            {!! nl2br(e($app_settings['welcome_location_title'] ?? 'Lokasi Strategis & Terjangkau')) !!}
                         </h2>
-                        <p class="text-lg text-gray-600 font-medium mb-8">Kunjungi kantor layanan offline kami yang
-                            berada tepat di pusat mobilitas. Kami berdedikasi menjaga properti Anda selagi Anda
-                            beraktivitas.</p>
+                        <p class="text-lg text-gray-600 font-medium mb-8">
+                            {{ $app_settings['welcome_location_subtitle'] ?? 'Kunjungi kantor layanan offline kami yang berada tepat di pusat mobilitas. Kami berdedikasi menjaga properti Anda selagi Anda beraktivitas.' }}
+                        </p>
 
                         <div class="space-y-6">
                             <div class="flex items-start gap-4">
@@ -993,8 +1000,9 @@
                                 </div>
                                 <div>
                                     <h5 class="text-lg font-bold text-gray-900">Alamat Pengecekan</h5>
-                                    <p class="text-gray-600 font-medium text-sm mt-1">Gedung Pusat Kegiatan Administrasi
-                                        Lt. 1,<br>Jalan Sudirman No. 45, Kompleks Area A.</p>
+                                    <p class="text-gray-600 font-medium text-sm mt-1">
+                                        {!! nl2br(e($app_settings['contact_address'] ?? "Gedung Pusat Kegiatan Administrasi Lt. 1,\nJalan Sudirman No. 45, Kompleks Area A.")) !!}
+                                    </p>
                                 </div>
                             </div>
                             <div class="flex items-start gap-4">
@@ -1017,9 +1025,9 @@
 
                     <div class="relative px-4">
                         <div class="relative z-10 w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-                            <!-- Google Maps Embed for UTDI -->
+                            <!-- Google Maps Embed -->
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.8809968417725!2d110.40612167575294!3d-7.78124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a59eb858348af%3A0xe5f86c1284b1d624!2sUniversitas%20Teknologi%20Digital%20Indonesia%20(UTDI)!5e0!3m2!1sen!2sid!4v1714150530467!5m2!1sen!2sid"
+                                src="{{ $app_settings['store_map_url'] ?? 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.8809968417725!2d110.40612167575294!3d-7.78124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a59eb858348af%3A0xe5f86c1284b1d624!2sUniversitas%20Teknologi%20Digital%20Indonesia%20(UTDI)!5e0!3m2!1sen!2sid!4v1714150530467!5m2!1sen!2sid' }}"
                                 width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                                 referrerpolicy="no-referrer-when-downgrade">
                             </iframe>
@@ -1048,9 +1056,11 @@
         <!-- FAQ Section -->
         <section id="faq" class="py-24 bg-white/30 backdrop-blur-md border-y border-white/50">
             <div class="container mx-auto px-4 max-w-4xl">
-                <h2 class="section-title">Pertanyaan yang Sering Diajukan</h2>
-                <p class="section-subtitle">Punya pertanyaan lain? Jangan ragu hubungi Admin kami setelah Anda membuat
-                    akun secara gratis.</p>
+                <h2 class="section-title">{{ $app_settings['welcome_faq_title'] ?? 'Pertanyaan yang Sering Diajukan' }}
+                </h2>
+                <p class="section-subtitle">
+                    {{ $app_settings['welcome_faq_subtitle'] ?? 'Punya pertanyaan lain? Jangan ragu hubungi Admin kami setelah Anda membuat akun secara gratis.' }}
+                </p>
 
                 <div class="mt-8 space-y-4" x-data="{ active: null }">
                     <!-- FAQ Item 1 -->
@@ -1170,12 +1180,12 @@
                         </div>
 
                         <div class="relative z-10">
-                            <h3 class="text-3xl md:text-4xl font-black text-white mb-6">Siap Menitipkan Barang Anda?
-                            </h3>
+                            <h3 class="text-3xl md:text-4xl font-black text-white mb-6">
+                                {{ $app_settings['welcome_prefooter_title'] ?? 'Siap Menitipkan Barang Anda?' }}</h3>
                             <p
                                 class="text-gray-400 font-medium mb-10 max-w-2xl mx-auto text-lg hover:text-gray-300 transition-colors">
-                                Buat akun hari ini, dapatkan pengalaman keamanan dan kenyamanan penitipan barang modern
-                                100% digital tanpa antre.</p>
+                                {{ $app_settings['welcome_prefooter_subtitle'] ?? 'Buat akun hari ini, dapatkan pengalaman keamanan dan kenyamanan penitipan barang modern 100% digital tanpa antre.' }}
+                            </p>
                             <a href="{{ route('register') }}"
                                 class="btn-hero btn-hero-primary !py-4 !px-8 text-lg inline-flex items-center gap-2 hover:scale-105 transition-transform">
                                 Daftar Akun Sekarang Gratis
@@ -1223,10 +1233,10 @@
                     <ul class="space-y-3 font-semibold text-gray-600">
                         <li><a href="#" class="hover:text-amber-600 transition-colors">Syarat Ketentuan</a></li>
                         <li><a href="#" class="hover:text-amber-600 transition-colors">Kebijakan Privasi</a></li>
-                        @if (!empty($app_settings['facebook_url']) || !empty($app_settings['instagram_url']))
+                        @if (!empty($app_settings['social_facebook']) || !empty($app_settings['social_instagram']) || !empty($app_settings['social_twitter']))
                             <li class="pt-2 flex gap-3">
-                                @if (!empty($app_settings['facebook_url']))
-                                    <a href="{{ $app_settings['facebook_url'] }}" target="_blank"
+                                @if (!empty($app_settings['social_facebook']))
+                                    <a href="{{ $app_settings['social_facebook'] }}" target="_blank"
                                         class="w-8 h-8 rounded-full bg-white/50 border border-white flex items-center justify-center hover:bg-amber-100 text-amber-700 transition-colors">
                                         <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
                                             fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -1234,8 +1244,8 @@
                                         </svg>
                                     </a>
                                 @endif
-                                @if (!empty($app_settings['instagram_url']))
-                                    <a href="{{ $app_settings['instagram_url'] }}" target="_blank"
+                                @if (!empty($app_settings['social_instagram']))
+                                    <a href="{{ $app_settings['social_instagram'] }}" target="_blank"
                                         class="w-8 h-8 rounded-full bg-white/50 border border-white flex items-center justify-center hover:bg-amber-100 text-amber-700 transition-colors">
                                         <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
                                             fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -1245,13 +1255,24 @@
                                         </svg>
                                     </a>
                                 @endif
+                                @if (!empty($app_settings['social_twitter']))
+                                    <a href="{{ $app_settings['social_twitter'] }}" target="_blank"
+                                        class="w-8 h-8 rounded-full bg-white/50 border border-white flex items-center justify-center hover:bg-amber-100 text-amber-700 transition-colors">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path
+                                                d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                @endif
                             </li>
                         @endif
                     </ul>
                 </div>
             </div>
 
-            <div class="pt-8 border-t border-white/40 text-center text-sm font-bold text-gray-500">
+            <div class="pt-8 border-t border-gray-200 text-center text-sm font-bold text-gray-500">
                 &copy; {{ date('Y') }} {{ $app_settings['footer_text'] ?? 'PenitipanApp' }}. All rights reserved. <span
                     class="text-amber-600 ml-1">Liquid Glass Crafted.</span>
             </div>
