@@ -56,7 +56,7 @@
         }
 
         .nav-wrapper {
-            position: fixed;
+            position: sticky;
             top: 0;
             width: 100%;
             z-index: 50;
@@ -581,6 +581,25 @@
     <div class="app-blob-2"></div>
     <div class="app-blob-3"></div>
 
+    @if(!empty(\App\Helpers\SettingHelper::get_localized('promo_text')))
+        <!-- Top Promo Banner -->
+        <div class="bg-amber-100/80 backdrop-blur-md relative z-50">
+            <div class="max-w-7xl mx-auto py-2.5 px-3 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-center flex-wrap gap-2 text-center">
+                    <span class="flex p-1 rounded-lg bg-amber-200/50">
+                        <svg class="h-4 w-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                        </svg>
+                    </span>
+                    <p class="font-bold text-amber-800 text-xs sm:text-sm tracking-wide">
+                        {{ \App\Helpers\SettingHelper::get_localized('promo_text') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <nav class="nav-wrapper">
         <div class="container mx-auto px-4 nav-inner max-w-7xl">
             <a href="/" class="nav-brand" style="text-decoration: none;">
@@ -594,6 +613,7 @@
                     </svg>
                 </div>
                 <span>{{ $app_settings['app_name'] ?? 'PenitipanApp' }}</span>
+                <span>{{ \App\Helpers\SettingHelper::get_localized('app_name') ?? 'PenitipanApp' }}</span>
             </a>
             <div class="hidden md:flex items-center gap-6 font-bold text-gray-600 text-sm tracking-wide uppercase">
                 <a href="#cara-kerja" class="hover:text-amber-600 transition-colors">Cara Kerja</a>
@@ -602,16 +622,58 @@
                 <a href="#faq" class="hover:text-amber-600 transition-colors">FAQ</a>
             </div>
             <div style="display: flex; gap: 1rem; align-items: center;">
+                <!-- Language Switcher -->
+                <div class="relative group" x-data="{ open: false }">
+                    <button @click="open = !open" @click.away="open = false"
+                        class="flex items-center gap-1 font-bold text-gray-600 hover:text-amber-600 transition-colors bg-white/50 px-3 py-1.5 rounded-lg border border-gray-200 backdrop-blur-sm shadow-sm"
+                        style="font-size: 0.875rem;">
+                        @php $currentLang = session('locale', str_replace('_', '-', app()->getLocale())); @endphp
+                        @if($currentLang == 'en')
+                            🇬🇧 EN
+                        @elseif($currentLang == 'ja')
+                            🇯🇵 JA
+                        @else
+                            🇮🇩 ID
+                        @endif
+                        <svg class="w-4 h-4 transition-transform duration-200" :class="{'rotate-180': open}" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <!-- Dropdown -->
+                    <div x-cloak x-show="open" x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="transform opacity-0 scale-95"
+                        x-transition:enter-end="transform opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="transform opacity-100 scale-100"
+                        x-transition:leave-end="transform opacity-0 scale-95"
+                        class="absolute right-0 mt-2 w-36 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+                        <a href="{{ route('lang.switch', 'id') }}"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-600 font-medium {{ $currentLang == 'id' ? 'bg-amber-50 text-amber-600' : '' }}">
+                            🇮🇩 Indonesia
+                        </a>
+                        <a href="{{ route('lang.switch', 'en') }}"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-600 font-medium {{ $currentLang == 'en' ? 'bg-amber-50 text-amber-600' : '' }}">
+                            🇬🇧 English
+                        </a>
+                        <a href="{{ route('lang.switch', 'ja') }}"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-600 font-medium {{ $currentLang == 'ja' ? 'bg-amber-50 text-amber-600' : '' }}">
+                            🇯🇵 日本語
+                        </a>
+                    </div>
+                </div>
+
                 @if (Route::has('login'))
                     @auth
                         <a href="{{ url('/dashboard') }}" class="btn-hero btn-hero-primary"
                             style="padding: 0.5rem 1.5rem; font-size: 0.875rem;">Dashboard</a>
                     @else
                         <a href="{{ route('login') }}" class="btn-hero btn-hero-outline hidden sm:flex"
-                            style="padding: 0.5rem 1.5rem; font-size: 0.875rem;">Masuk</a>
+                            style="padding: 0.5rem 1.5rem; font-size: 0.875rem;">{{ \App\Helpers\SettingHelper::get_localized('login_btn_text', 'Masuk') }}</a>
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="btn-hero btn-hero-primary"
-                                style="padding: 0.5rem 1.5rem; font-size: 0.875rem;">Daftar Gratis</a>
+                                style="padding: 0.5rem 1.5rem; font-size: 0.875rem;">{{ \App\Helpers\SettingHelper::get_localized('register_btn_text', 'Daftar Gratis') }}</a>
                         @endif
                     @endauth
                 @endif
@@ -621,9 +683,9 @@
 
     <main class="content-layer">
         <!-- Hero Section -->
-        <div class="hero-section" style="margin-top: 60px;">
+        <div class="hero-section">
             <div class="container mx-auto px-4 hero-content">
-                @if(!empty($app_settings['promo_text']))
+                @if(!empty(\App\Helpers\SettingHelper::get_localized('promo_text')))
                     <p
                         class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-amber-300 shadow-sm text-sm font-bold text-amber-700 mb-6 backdrop-blur-md">
                         <span class="relative flex h-3 w-3">
@@ -631,13 +693,14 @@
                                 class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
                         </span>
-                        {{ $app_settings['promo_text'] }}
+                        {{ \App\Helpers\SettingHelper::get_localized('promo_text') }}
                     </p>
                 @endif
-                <h1 class="hero-title"><span>{{ $app_settings['hero_title'] ?? 'Titip Barang Tenang & Mudah' }}</span>
+                <h1 class="hero-title">
+                    <span>{{ \App\Helpers\SettingHelper::get_localized('hero_title') ?? 'Titip Barang Tenang & Mudah' }}</span>
                 </h1>
                 <p class="hero-desc">
-                    {{ $app_settings['hero_description'] ?? 'Jalan-jalan makin bebas tanpa beban bawaan. Fasilitas lengkap, dapatkan Struk Digital QR Code seketika, dan lacak status pesanan realtime.' }}
+                    {{ \App\Helpers\SettingHelper::get_localized('hero_description') ?? 'Jalan-jalan makin bebas tanpa beban bawaan. Fasilitas lengkap, dapatkan Struk Digital QR Code seketika, dan lacak status pesanan realtime.' }}
                 </p>
 
                 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
@@ -809,9 +872,10 @@
         <section id="harga" class="py-20 bg-white/10 backdrop-blur-sm border-y border-white/30">
             <div class="container mx-auto px-4 max-w-7xl">
                 <h2 class="section-title">
-                    {{ $app_settings['welcome_pricing_title'] ?? 'Pilih Opsi Penitipan Sesuai Kebutuhan' }}</h2>
+                    {{ \App\Helpers\SettingHelper::get_localized('welcome_pricing_title') ?? 'Pilih Opsi Penitipan Sesuai Kebutuhan' }}
+                </h2>
                 <p class="section-subtitle max-w-3xl mx-auto">
-                    {{ $app_settings['welcome_pricing_subtitle'] ?? 'Khusus untuk lokasi Bandara atau Stasiun KRL/KAI. Pembayaran dilakukan secara lokal di loket oleh pegawai kami, namun Anda tetap dapat mendaftar dan memantau estimasi barang dari jarak jauh.' }}
+                    {{ \App\Helpers\SettingHelper::get_localized('welcome_pricing_subtitle') ?? 'Khusus untuk lokasi Bandara atau Stasiun KRL/KAI. Pembayaran dilakukan secara lokal di loket oleh pegawai kami, namun Anda tetap dapat mendaftar dan memantau estimasi barang dari jarak jauh.' }}
                 </p>
 
                 <div
@@ -822,7 +886,7 @@
                             <h4 class="text-xl font-extrabold text-gray-900 border-b border-gray-100 w-full pb-4">Loker
                                 Kecil</h4>
                             <div class="price-val">
-                                <span>Rp</span>{{ number_format($app_settings['price_daily'] ?? 15000, 0, ',', '.') }}
+                                <span>Rp</span>{{ number_format(\App\Helpers\SettingHelper::get_localized('price_daily') ?? 15000, 0, ',', '.') }}
                             </div>
                             <p class="text-gray-500 font-bold text-sm mb-6">per 24 jam</p>
 
@@ -870,7 +934,7 @@
                                 class="text-xl font-extrabold text-amber-900 border-b border-amber-100 w-full pb-4 pt-4">
                                 Loker Besar</h4>
                             <div class="price-val">
-                                <span>Rp</span>{{ number_format($app_settings['price_weekly'] ?? 50000, 0, ',', '.') }}
+                                <span>Rp</span>{{ number_format(\App\Helpers\SettingHelper::get_localized('price_weekly') ?? 50000, 0, ',', '.') }}
                             </div>
                             <p class="text-amber-700 font-bold text-sm mb-6">per 7 hari</p>
 
@@ -926,7 +990,7 @@
                             <h4 class="text-xl font-extrabold text-gray-900 border-b border-gray-100 w-full pb-4">
                                 Khusus / VIP</h4>
                             <div class="price-val">
-                                <span>Rp</span>{{ number_format($app_settings['price_monthly'] ?? 150000, 0, ',', '.') }}
+                                <span>Rp</span>{{ number_format(\App\Helpers\SettingHelper::get_localized('price_monthly') ?? 150000, 0, ',', '.') }}
                             </div>
                             <p class="text-gray-500 font-bold text-sm mb-6">per 30 hari</p>
 
@@ -980,10 +1044,10 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div>
                         <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
-                            {!! nl2br(e($app_settings['welcome_location_title'] ?? 'Lokasi Strategis & Terjangkau')) !!}
+                            {!! nl2br(e(\App\Helpers\SettingHelper::get_localized('welcome_location_title') ?? 'Lokasi Strategis & Terjangkau')) !!}
                         </h2>
                         <p class="text-lg text-gray-600 font-medium mb-8">
-                            {{ $app_settings['welcome_location_subtitle'] ?? 'Kunjungi kantor layanan offline kami yang berada tepat di pusat mobilitas. Kami berdedikasi menjaga properti Anda selagi Anda beraktivitas.' }}
+                            {{ \App\Helpers\SettingHelper::get_localized('welcome_location_subtitle') ?? 'Kunjungi kantor layanan offline kami yang berada tepat di pusat mobilitas. Kami berdedikasi menjaga properti Anda selagi Anda beraktivitas.' }}
                         </p>
 
                         <div class="space-y-6">
@@ -1001,7 +1065,7 @@
                                 <div>
                                     <h5 class="text-lg font-bold text-gray-900">Alamat Pengecekan</h5>
                                     <p class="text-gray-600 font-medium text-sm mt-1">
-                                        {!! nl2br(e($app_settings['contact_address'] ?? "Gedung Pusat Kegiatan Administrasi Lt. 1,\nJalan Sudirman No. 45, Kompleks Area A.")) !!}
+                                        {!! nl2br(e(\App\Helpers\SettingHelper::get_localized('contact_address') ?? "Gedung Pusat Kegiatan Administrasi Lt. 1,\nJalan Sudirman No. 45, Kompleks Area A.")) !!}
                                     </p>
                                 </div>
                             </div>
@@ -1054,147 +1118,96 @@
         </section>
 
         <!-- FAQ Section -->
-        <section id="faq" class="py-24 bg-white/30 backdrop-blur-md border-y border-white/50">
+        <section id="faq" class="py-24 bg-white/5 backdrop-blur-sm relative z-10">
             <div class="container mx-auto px-4 max-w-4xl">
-                <h2 class="section-title">{{ $app_settings['welcome_faq_title'] ?? 'Pertanyaan yang Sering Diajukan' }}
+                <h2 class="section-title">
+                    {{ \App\Helpers\SettingHelper::get_localized('welcome_faq_title', 'FAQ (Pertanyaan Umum)') }}
                 </h2>
-                <p class="section-subtitle">
-                    {{ $app_settings['welcome_faq_subtitle'] ?? 'Punya pertanyaan lain? Jangan ragu hubungi Admin kami setelah Anda membuat akun secara gratis.' }}
+                <p class="section-subtitle max-w-2xl mx-auto mb-16">
+                    {{ \App\Helpers\SettingHelper::get_localized('welcome_faq_subtitle', 'Temukan jawaban cepat untuk pertanyaan yang sering diajukan pelanggan kami.') }}
                 </p>
 
                 <div class="mt-8 space-y-4" x-data="{ active: null }">
-                    <!-- FAQ Item 1 -->
-                    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                        @click="active = (active === 1) ? null : 1">
-                        <div
-                            class="p-5 md:px-8 md:py-6 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
-                            <h4 class="text-base md:text-lg font-bold text-gray-900 pr-4">Apakah barang berharga seperti
-                                Laptop boleh dititipkan?</h4>
-                            <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-amber-600 transform transition-transform duration-300"
-                                    :class="{'rotate-180': active === 1}" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div x-show="active === 1" x-collapse style="display: none;">
-                            <div
-                                class="p-5 md:px-8 pb-6 text-gray-600 text-sm md:text-base font-medium leading-relaxed border-t border-gray-100 bg-gray-50/50">
-                                Boleh, namun kami sangat menyarankan Anda memilih Paket VIP/Khusus agar barang
-                                Elektronik atau bernilai Tinggi Anda disimpan di ruangan yang dilengkapi AC konstan dan
-                                CCTV khusus. Harap pastikan barang Anda berfoto dalam keadaan nyala/baik saat input di
-                                aplikasi.
-                            </div>
-                        </div>
-                    </div>
+                    @php
+                        $faqItemsRaw = \App\Models\Setting::where('key', 'faq_data')->value('value');
+                        $faqItems = [];
+                        if ($faqItemsRaw) {
+                            $decoded = json_decode($faqItemsRaw, true);
+                            if (is_array($decoded)) {
+                                $faqItems = array_filter($decoded, function ($item) {
+                                    $qId = $item['question']['id'] ?? '';
+                                    return !empty(trim($qId));
+                                });
+                            }
+                        }
+                    @endphp
 
-                    <!-- FAQ Item 2 -->
-                    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                        @click="active = (active === 2) ? null : 2">
-                        <div
-                            class="p-5 md:px-8 md:py-6 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
-                            <h4 class="text-base md:text-lg font-bold text-gray-900 pr-4">Bagaimana jika saya terlambat
-                                mengambil barang?</h4>
-                            <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-amber-600 transform transition-transform duration-300"
-                                    :class="{'rotate-180': active === 2}" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div x-show="active === 2" x-collapse style="display: none;">
-                            <div
-                                class="p-5 md:px-8 pb-6 text-gray-600 text-sm md:text-base font-medium leading-relaxed border-t border-gray-100 bg-gray-50/50">
-                                Kami memberikan toleransi waktu 2 jam dari kesepakatan 24 jam. Jika lewat dari itu,
-                                sistem akan otomatis mengakumulasi denda sebagai tambahan 1 hari penitipan. Harap chat
-                                ke operasional jika mengalami kendala di perjalanan.
-                            </div>
-                        </div>
-                    </div>
+                    @forelse($faqItems as $index => $item)
+                        @php
+                            $qId = $item['question']['id'] ?? '';
+                            $qEn = $item['question']['en'] ?? $qId;
+                            $qJa = $item['question']['ja'] ?? $qId;
+                            $question = app()->getLocale() == 'en' ? $qEn : (app()->getLocale() == 'ja' ? $qJa : $qId);
 
-                    <!-- FAQ Item 3 -->
-                    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                        @click="active = (active === 3) ? null : 3">
-                        <div
-                            class="p-5 md:px-8 md:py-6 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
-                            <h4 class="text-base md:text-lg font-bold text-gray-900 pr-4">Apa jaminan jika barang saya
-                                rusak atau hilang?</h4>
-                            <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-amber-600 transform transition-transform duration-300"
-                                    :class="{'rotate-180': active === 3}" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div x-show="active === 3" x-collapse style="display: none;">
+                            $aId = $item['answer']['id'] ?? '';
+                            $aEn = $item['answer']['en'] ?? $aId;
+                            $aJa = $item['answer']['ja'] ?? $aId;
+                            $answer = app()->getLocale() == 'en' ? $aEn : (app()->getLocale() == 'ja' ? $aJa : $aId);
+                        @endphp
+                        <div class="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                            @click="active = (active === {{ $index }}) ? null : {{ $index }}">
                             <div
-                                class="p-5 md:px-8 pb-6 text-gray-600 text-sm md:text-base font-medium leading-relaxed border-t border-gray-100 bg-gray-50/50">
-                                Kami memberikan garansi ganti rugi maksimal sesuai dengan "Estimasi Nilai Barang" yang
-                                Anda lampirkan di formulir pendaftaran barang (wajib verifikasi nota atau kelayakan).
-                                Batas asuransi dasar mencapai Rp 2.000.000,- per loker.
+                                class="p-5 md:px-8 md:py-6 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
+                                <h4 class="text-base md:text-lg font-bold text-gray-900 pr-4">{{ $question }}</h4>
+                                <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
+                                    <svg class="w-5 h-5 text-amber-600 transform transition-transform duration-300"
+                                        :class="{'rotate-180': active === {{ $index }}}" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div x-show="active === {{ $index }}" x-collapse style="display: none;">
+                                <div
+                                    class="p-5 md:px-8 pb-6 text-gray-600 text-sm md:text-base font-medium leading-relaxed border-t border-gray-100 bg-gray-50/50">
+                                    {!! nl2br(e($answer)) !!}
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- FAQ Item 4 -->
-                    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                        @click="active = (active === 4) ? null : 4">
-                        <div
-                            class="p-5 md:px-8 md:py-6 flex justify-between items-center bg-white hover:bg-gray-50 transition-colors">
-                            <h4 class="text-base md:text-lg font-bold text-gray-900 pr-4">Apakah pembayaran bisa via
-                                cicilan?</h4>
-                            <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-amber-600 transform transition-transform duration-300"
-                                    :class="{'rotate-180': active === 4}" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
+                    @empty
+                        <div class="text-center p-8 bg-white/50 rounded-xl border border-gray-100">
+                            <p class="text-gray-500 font-medium">{{ __('FAQ belum tersedia saat ini.') }}</p>
                         </div>
-                        <div x-show="active === 4" x-collapse style="display: none;">
-                            <div
-                                class="p-5 md:px-8 pb-6 text-gray-600 text-sm md:text-base font-medium leading-relaxed border-t border-gray-100 bg-gray-50/50">
-                                Maaf, untuk penitipan harian pembayaran bersifat tunai/QRIS lunas di awal penitipan.
-                                Jika Anda perlu langganan bulanan di masa depan, silakan bicarakan di Loket.
-                            </div>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
 
             <!-- Pre-footer CTA Ribbon -->
-            <section class="relative z-20 py-20 mt-10">
+            <section class="py-20 relative z-10">
                 <div class="container mx-auto px-4 max-w-5xl">
-                    <div
-                        class="bg-gray-900 rounded-3xl p-10 md:p-14 text-center shadow-2xl relative overflow-hidden border border-gray-800">
-                        <!-- Glow effect inside CTA -->
-                        <div
-                            class="absolute top-0 left-1/2 transform -translate-x-1/2 w-full max-w-3xl h-full background-glow blur-3xl opacity-20 bg-amber-500 pointer-events-none rounded-full">
+                    <div class="bg-gradient-to-br from-amber-400 via-amber-300 to-amber-500 border border-amber-200 rounded-[2.5rem] p-12 lg:p-16 text-center shadow-2xl shadow-amber-500/20 relative overflow-hidden slide-up"
+                        style="animation-delay: 500ms">
+                        <!-- Decor -->
+                        <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-white/40 rounded-full blur-2xl">
+                        </div>
+                        <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-white/30 rounded-full blur-2xl">
                         </div>
 
-                        <div class="relative z-10">
-                            <h3 class="text-3xl md:text-4xl font-black text-white mb-6">
-                                {{ $app_settings['welcome_prefooter_title'] ?? 'Siap Menitipkan Barang Anda?' }}</h3>
-                            <p
-                                class="text-gray-400 font-medium mb-10 max-w-2xl mx-auto text-lg hover:text-gray-300 transition-colors">
-                                {{ $app_settings['welcome_prefooter_subtitle'] ?? 'Buat akun hari ini, dapatkan pengalaman keamanan dan kenyamanan penitipan barang modern 100% digital tanpa antre.' }}
-                            </p>
-                            <a href="{{ route('register') }}"
-                                class="btn-hero btn-hero-primary !py-4 !px-8 text-lg inline-flex items-center gap-2 hover:scale-105 transition-transform">
-                                Daftar Akun Sekarang Gratis
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                                </svg>
-                            </a>
-                        </div>
+                        <h2 class="text-3xl md:text-5xl font-black mb-6 relative z-10 text-amber-950">
+                            {{ \App\Helpers\SettingHelper::get_localized('welcome_prefooter_title', 'Siap Menitipkan Barang Anda?') }}
+                        </h2>
+                        <p class="text-lg md:text-xl text-amber-800 mb-10 max-w-2xl mx-auto relative z-10 font-bold">
+                            {{ \App\Helpers\SettingHelper::get_localized('welcome_prefooter_subtitle', 'Login sekarang untuk mulai mencatat dan menitipkan barang Anda dengan sistem QR dan Face Match kami.') }}
+                        </p>
+                        <a href="{{ route('register') }}"
+                            class="btn-hero bg-white text-amber-700 shadow-md border border-amber-100 !py-4 !px-8 text-lg inline-flex items-center gap-2 hover:scale-105 hover:bg-amber-50 transition-all">
+                            Daftar Akun Sekarang Gratis
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </section>

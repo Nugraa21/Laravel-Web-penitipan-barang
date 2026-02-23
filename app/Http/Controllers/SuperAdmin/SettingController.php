@@ -31,6 +31,12 @@ class SettingController extends Controller
         $changesCount = 0;
 
         foreach ($data as $key => $value) {
+            // If the value is an array (e.g., from localized inputs like hero_title[id], hero_title[en]),
+            // encode it as a JSON string before saving.
+            if (is_array($value)) {
+                $value = json_encode($value, JSON_UNESCAPED_UNICODE);
+            }
+
             $setting = Setting::where('key', $key)->first();
 
             if (!$setting) {
@@ -43,21 +49,18 @@ class SettingController extends Controller
                 UserLog::create([
                     'user_id' => Auth::id(),
                     'action' => 'Create Pengaturan',
-                    'description' => "Sistem: Menambahkan pengaturan baru '{$key}' dengan nilai '" . Str::limit($value ?? '', 50) . "'.",
+                    'description' => "Sistem: Menambahkan pengaturan baru '{$key}'.",
                     'ip_address' => $request->ip(),
                     'user_agent' => $request->userAgent(),
                 ]);
             } else if ($setting->value !== $value) {
-                $oldValue = Str::limit($setting->value ?? '', 50);
-                $newValue = Str::limit($value ?? '', 50);
-
                 $setting->update(['value' => $value]);
                 $changesCount++;
 
                 UserLog::create([
                     'user_id' => Auth::id(),
                     'action' => 'Update Pengaturan',
-                    'description' => "Sistem: Mengubah pengaturan '{$key}' dari '{$oldValue}' menjadi '{$newValue}'.",
+                    'description' => "Sistem: Mengubah pengaturan '{$key}'.",
                     'ip_address' => $request->ip(),
                     'user_agent' => $request->userAgent(),
                 ]);
