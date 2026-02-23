@@ -66,11 +66,17 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
 });
 
 use App\Http\Controllers\SuperAdmin\SettingController;
+use App\Http\Controllers\SuperAdmin\FaqController;
 
 Route::middleware(['auth', 'verified', 'super_admin'])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\SuperAdmin\SuperAdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/settings', [SettingController::class, 'edit'])->name('settings');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    // FAQ Management
+    Route::post('/faqs', [FaqController::class, 'store'])->name('faqs.store');
+    Route::put('/faqs/{faq}', [FaqController::class, 'update'])->name('faqs.update');
+    Route::delete('/faqs/{faq}', [FaqController::class, 'destroy'])->name('faqs.destroy');
 
     // Transactions & Logs specifically for Super Admin
     Route::get('/transactions', [\App\Http\Controllers\SuperAdmin\TransactionController::class, 'index'])->name('transactions');

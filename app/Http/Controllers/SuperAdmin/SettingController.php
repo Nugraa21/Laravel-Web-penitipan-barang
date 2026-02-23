@@ -14,7 +14,15 @@ class SettingController extends Controller
     public function edit()
     {
         $settings = Setting::all()->pluck('value', 'key')->toArray();
-        return view('superadmin.settings', compact('settings'));
+        $faqs = \App\Models\Faq::orderBy('order', 'asc')->get();
+        // Get the latest 10 logs specifically relating to settings or FAQs for inline display
+        $recentLogs = UserLog::with('user')
+            ->whereIn('action', ['Update Pengaturan', 'Create Pengaturan', 'Create FAQ', 'Update FAQ', 'Delete FAQ'])
+            ->latest()
+            ->take(8)
+            ->get();
+
+        return view('superadmin.settings', compact('settings', 'faqs', 'recentLogs'));
     }
 
     public function update(Request $request)
